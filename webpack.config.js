@@ -1,7 +1,7 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
-let htmlPageNames = ["test", "jsprogrammers"];
+let htmlPageNames = ["test", "types"];
 let multipleHtmlPlugins = htmlPageNames.map((name) => {
   return new HtmlWebpackPlugin({
     template: `./src/${name}/index.html`, // relative path to the HTML files
@@ -15,7 +15,7 @@ module.exports = {
   entry: {
     main: "./src/index.ts",
     test: "./src/test/index.ts",
-    jsprogrammers: "./src/jsprogrammers/index.ts",
+    types: "./src/types/index.ts",
     //... repeat until example 4
   },
   devServer: {
