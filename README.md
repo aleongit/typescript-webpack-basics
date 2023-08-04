@@ -30,6 +30,8 @@ App per a la realització de tutorial/exercicis TypeScript (The TypeScript Handb
 - `npm install --save-dev html-webpack-plugin`
 - `npm install --save-dev webpack-dev-server`
 - `npm install --save-dev express webpack-dev-middleware`
+- `npm install --save-dev typescript ts-loader`
+- `npm install --save-dev @types/lodash`
 
 
 
@@ -494,6 +496,7 @@ module.exports = {
     "build": "webpack"
 ...
  }
+}
 ```
 
 - run `npm start`
@@ -561,10 +564,158 @@ app.listen(3000, function () {
     "build": "webpack"
    },
 ...
+}
 ```
 
 - Now in your terminal run `npm run server`
 - `http://localhost:3000/`
+
+
+
+### TypeScript
+
+- https://webpack.js.org/guides/typescript/
+
+
+#### Basic Setup
+
+- `npm install --save-dev typescript ts-loader`
+
+- Now we'll modify the directory structure & the configuration files.
+
+- ⚠️ change all files in `/src/*.js` to `ts`
+
+- add `tsconfig.json`
+```js
+{
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "noImplicitAny": true,
+    "module": "es6",
+    "target": "es5",
+    "jsx": "react",
+    "allowJs": true,
+    "moduleResolution": "node"
+  }
+}
+```
+
+- **webpack.config.js**
+```ts
+const path = require('path');
+
+module.exports = {
+  entry: './src/index.ts',
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      },
+    ],
+  },
+  resolve: {
+    extensions: ['.tsx', '.ts', '.js'],
+  },
+  output: {
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'dist'),
+  },
+};
+```
+
+- This will direct webpack to enter through `./index.ts`, load all `.ts` and `.tsx` files through the `ts-loader`, and output a `bundle.js` file in our current directory.
+
+- Now lets change the import of lodash in our `./index.ts` due to the fact that there is no default export present in `lodash` definitions.
+
+- **./index.ts**
+```ts
+import * as _ from 'lodash';
+
+  function component() {
+    const element = document.createElement('div');
+
+    element.innerHTML = _.join(['Hello', 'webpack'], ' ');
+
+    return element;
+  }
+
+  document.body.appendChild(component());
+```
+
+
+#### Loader
+
+- We use `ts-loader` in this guide as it makes enabling additional webpack features, such as importing other web assets, a bit easier.
+
+- ⚠️ `ts-loader` uses `tsc`, the TypeScript compiler, and relies on your `tsconfig.json` configuration. Make sure to avoid setting module to "CommonJS", or webpack won't be able to tree-shake your code.
+
+
+
+#### Source Maps
+
+- To enable *source maps*, we must configure TypeScript to output inline source maps to our compiled JavaScript files. The following line must be added to our TypeScript configuration:
+
+- **tsconfig.json**
+```json
+{
+...
+"sourceMap": true,
+...
+}
+```
+
+- **webpack.config.js**
+```js
+...
+module.exports = {
+  entry: './src/index.ts',
+  devtool: 'inline-source-map',
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      },
+    ],
+  },
+```
+
+
+
+#### Using Third Party Libraries
+
+- When installing third party libraries from *npm*, it is important to remember to install the typing definition for that library.
+
+- For example, if we want to install `lodash` we can run the following command to get the typings for it.
+
+```
+npm install --save-dev @types/lodash
+```
+
+- If the npm package already includes its declaration typings in the package bundle, downloading the corresponding `@types` package is not needed.
+
+
+#### Importing Other Assets
+
+To use *non-code assets* with TypeScript, we need to defer the type for these imports. This requires a `custom.d.ts` file which signifies custom definitions for TypeScript in our project. 
+
+- Let's set up a declaration for .svg files.
+- **custom.d.ts**
+```ts
+declare module '*.svg' {
+  const content: any;
+  export default content;
+}
+```
+
+- Here we declare a new module for SVGs by specifying any import that ends in `.svg` and defining the module's content as any. We could be more explicit about it being a url by defining the type as string. The same concept applies to other assets including CSS, SCSS, JSON and more.
+
+
+
+- run `npm run build` without errors
 
 
 
@@ -578,6 +729,7 @@ app.listen(3000, function () {
 ### typescript
 - https://www.typescriptlang.org/
 - https://www.typescriptlang.org/download
+- https://www.typescriptlang.org/docs/handbook/tsconfig-json.html
 - https://www.typescriptlang.org/docs/handbook/migrating-from-javascript.html#webpack
 - https://www.typescriptlang.org/docs/handbook/intro.html
 
@@ -601,8 +753,14 @@ app.listen(3000, function () {
 - https://github.com/webpack/webpack-dev-middleware
 
 
-### HTML Webpack Plugin
+
+### webpack - HTML Webpack Plugin
 - https://github.com/jantimon/html-webpack-plugin
+
+
+
+### webpack - tsloader
+- https://github.com/TypeStrong/ts-loader
 
 
 ### package.json

@@ -13,8 +13,8 @@ let multipleHtmlPlugins = htmlPageNames.map((name) => {
 module.exports = {
   mode: "development",
   entry: {
-    main: "./src/index.js",
-    test: "./src/test/test.js",
+    main: "./src/index.ts",
+    test: "./src/test/test.ts",
     //... repeat until example 4
   },
   devServer: {
@@ -43,6 +43,11 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      },
+      {
         test: /\.css$/i,
         use: ["style-loader", "css-loader"],
       },
@@ -55,5 +60,8 @@ module.exports = {
         type: "asset/resource",
       },
     ],
+  },
+  resolve: {
+    extensions: ['.tsx', '.ts', '.js'],
   },
 };

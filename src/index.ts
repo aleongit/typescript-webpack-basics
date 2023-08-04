@@ -1,4 +1,5 @@
-import _ from "lodash"; // Lodash, now imported by this script
+//import _ from "lodash"; // Lodash, now imported by this script
+import * as _ from 'lodash'; //typscript
 import "./style.css";
 import Alpaca from "./alpaca.jpg";
 
