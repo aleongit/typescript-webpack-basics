@@ -442,15 +442,13 @@ const path = require('path');
 
 - **package.json**
 ```js
- {
-...
-   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "webpack --watch",
-    "build": "webpack"
-   },
-...
- }
+{
+"scripts": {
+  "test": "echo \"Error: no test specified\" && exit 1",
+  "watch": "webpack --watch",
+  "build": "webpack"
+},
+}
 ```
 
 - now run `npm run watch` from the command line and see how webpack compiles your code. You can see that it doesn't exit the command line because the script is currently watching your files.
@@ -488,13 +486,11 @@ module.exports = {
 - add `start` script in **package.json**
 ```json
 {
-...
-   "scripts": {
+  "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "webpack --watch",
     "start": "webpack serve --open",
     "build": "webpack"
-...
  }
 }
 ```
@@ -555,15 +551,13 @@ app.listen(3000, function () {
 - add `server` in `package.json`
 ```json
 {
-...
-   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "webpack --watch",
-    "start": "webpack serve --open",
-    "server": "node server.js",
-    "build": "webpack"
-   },
-...
+"scripts": {
+  "test": "echo \"Error: no test specified\" && exit 1",
+  "watch": "webpack --watch",
+  "start": "webpack serve --open",
+  "server": "node server.js",
+  "build": "webpack"
+},
 }
 ```
 
