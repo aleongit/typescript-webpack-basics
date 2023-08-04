@@ -69,9 +69,11 @@ App per a la realització de tutorial/exercicis TypeScript (The TypeScript Handb
 
 ### Getting Started
 
+- https://webpack.js.org/guides/getting-started/
+
+
 #### Basic Setup
 
-- **https://webpack.js.org/guides/getting-started/**
 - `mkdir typescript-webpack-basics`
 - `cd typescript-webpack-basics`
 - `npm init -y`
