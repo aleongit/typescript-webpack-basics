@@ -1,7 +1,6 @@
 import _ from "lodash"; // Lodash, now imported by this script
 import "./style.css";
 import Alpaca from "./alpaca.jpg";
-//import Mountain from './mountain.jpg';
 
 const background = () => {
   const head = document.createElement("div");
