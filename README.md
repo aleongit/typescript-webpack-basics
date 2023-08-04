@@ -654,9 +654,7 @@ import * as _ from 'lodash';
 - **tsconfig.json**
 ```json
 {
-...
 "sourceMap": true,
-...
 }
 ```
 
