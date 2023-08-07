@@ -50,7 +50,6 @@ App per a la realització de tutorial/exercicis TypeScript (The TypeScript Handb
 ## Run
 
 - cd typescript-webpack-basics
-- `npm run start` or `npm run server`
 - `npm run start` and open `http://localhost:8080/`
 - or 
 - `npm run server`and open `http://localhost:9000/`
