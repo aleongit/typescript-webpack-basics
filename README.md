@@ -32,6 +32,9 @@ App per a la realització de tutorial/exercicis TypeScript (The TypeScript Handb
 - `npm install --save-dev express webpack-dev-middleware`
 - `npm install --save-dev typescript ts-loader`
 - `npm install --save-dev @types/lodash`
+- `npm install --save-dev --save-exact prettier`
+- `npm install --save-dev --save-exact eslint eslint-config-prettier eslint-plugin-prettier @typescript-eslint/eslint-plugin @typescript-eslint/parser`
+- `npm install --save-dev eslint-webpack-plugin`
 
 
 
@@ -54,6 +57,20 @@ App per a la realització de tutorial/exercicis TypeScript (The TypeScript Handb
 - or 
 - `npm run server`and open `http://localhost:9000/`
 
+
+
+### prettier CLI
+```
+npx prettier . --check
+npx prettier . --write
+```
+
+
+### eslint CLI
+```
+npx eslint .
+npx eslint . --fix
+```
 
 
 ## Dev environment
@@ -565,7 +582,7 @@ app.listen(3000, function () {
 
 
 
-### TypeScript
+### add TypeScript in WebPack
 
 - https://webpack.js.org/guides/typescript/
 
@@ -704,11 +721,116 @@ declare module '*.svg' {
 
 - Here we declare a new module for SVGs by specifying any import that ends in `.svg` and defining the module's content as any. We could be more explicit about it being a url by defining the type as string. The same concept applies to other assets including CSS, SCSS, JSON and more.
 
-
-
 - run `npm run build` without errors
 
 
+
+### add ESLint and Prettier in Webpack
+
+#### add Prettier
+- **Prettier** is an opinionated code formatter
+
+- https://prettier.io/docs/en/install
+```
+npm install --save-dev --save-exact prettier
+```
+
+- create **.prettierrc.json**
+```json
+{
+  "semi": true,
+  "tabWidth": 2,
+  "printWidth": 100,
+  "singleQuote": true,
+  "trailingComma": "none",
+  "endOfLine": "auto"
+}
+```
+
+- create a **.prettierignore** if is necessary
+
+- Now, format all files with Prettier:
+```
+npx prettier . --check
+npx prettier . --write
+```
+
+- Install `prettier-vscode` for Visual Studio Code
+
+
+
+
+#### add ESLint with *.prettierrc* rules
+
+- ESLint is a tool for identifying and reporting on patterns found in ECMAScript/JavaScript code, with the goal of making code more consistent and avoiding bugs.
+
+- https://eslint.org/docs/latest/use/getting-started
+
+- install **ESLint** and extensions for **webpack**, **prettier** and **typescript**
+```
+npm install --save-dev --save-exact eslint eslint-config-prettier eslint-plugin-prettier @typescript-eslint/eslint-plugin @typescript-eslint/parser`
+```
+
+- add **.eslintrc**
+```json
+{
+  "root": true,
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": { "project": ["./tsconfig.json"] },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "plugins": ["prettier"],
+  "rules": {
+    "prettier/prettier": "warn"
+  }
+}
+```
+- this configuration reads `.prettierrc.json` by default
+
+- add **.eslintignore** if is necessary
+
+
+
+#### add EslintWebpackPlugin
+
+- install `npm install eslint-webpack-plugin --save-dev`
+
+- then add the plugin to your webpack config.
+
+- **webpack.config.js**
+```js
+const ESLintPlugin = require('eslint-webpack-plugin');
+
+module.exports = {
+  // ...
+  plugins: [new ESLintPlugin(options)],
+  // ...
+};
+```
+
+- ⚠️ **configure options**
+- `cache: false` is important to apply changes in webpack
+```js
+plugins: [
+    new ESLintPlugin({
+      eslintPath: require.resolve('eslint'),
+      extensions: ['ts', 'tsx', 'js', 'jsx'],
+      cache: false
+    }),
+    new HtmlWebpackPlugin({
+      title: 'Development',
+      template: 'src/index.html',
+      chunks: ['main']
+    })
+  ],
+```
 
 
 ## Doc
@@ -752,6 +874,32 @@ declare module '*.svg' {
 
 ### webpack - tsloader
 - https://github.com/TypeStrong/ts-loader
+
+
+### prettier
+- https://prettier.io/docs/en/install.html
+- https://prettier.io/docs/en/ignore
+- https://prettier.io/docs/en/configuration
+- https://github.com/prettier/eslint-config-prettier/blob/main/CHANGELOG.md#version-800-2021-02-21
+- https://stackoverflow.com/questions/53516594/why-do-i-keep-getting-eslint-delete-cr-prettier-prettier
+
+
+### eslint
+- https://eslint.org/
+- https://eslint.org/docs/latest/use/getting-started
+- https://eslint.org/docs/latest/use/getting-started#quick-start
+- https://eslint.org/docs/latest/use/configure/
+- https://eslint.org/docs/latest/use/configure/configuration-files#configuration-file-formats
+- https://eslint.org/docs/latest/use/integrations
+- https://github.com/prettier/eslint-plugin-prettier
+- https://medium.com/@mrkhedri/custom-webpack-5-eslint-and-prettier-config-for-reactjs-and-typescript-project-d4b6f3b7ff53
+- https://dev.to/rinconcamilo/setting-up-eslint-prettier-with-webpack-in-vscode-29fg
+
+
+### eslint-webpack-plugin
+- https://webpack.js.org/plugins/eslint-webpack-plugin/
+- https://www.npmjs.com/package/eslint-webpack-plugin
+- https://stackoverflow.com/questions/64461635/adding-eslint-webpack-plugin-into-project-to-provide-typescript-linting
 
 
 ### package.json
