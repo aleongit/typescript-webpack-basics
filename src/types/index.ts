@@ -1,6 +1,6 @@
 import * as init from "../init";
 import "../main.css"; 
-import "./styles.css"; //component styles
+//import "./styles.css"; //component styles
 
 let sortida: string = "";
 

@@ -9,6 +9,7 @@ const fesMenu = () => {
     const a = document.createElement("a");
     const text = document.createTextNode(el);
     a.setAttribute("href", `/${el}/`);
+    a.setAttribute("class", "button sense-deco");
     a.appendChild(text);
     nav.appendChild(a);
   });

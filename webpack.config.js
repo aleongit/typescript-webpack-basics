@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 let htmlPageNames = ["types"];
 let multipleHtmlPlugins = htmlPageNames.map((name) => {
   return new HtmlWebpackPlugin({
-    template: `./src/${name}/index.html`, // relative path to the HTML files
+    template: `./src/index.html`, // relative path to the HTML files
     filename: `${name}/index.html`, // output HTML files
     chunks: [`${name}`], // respective JS files
   });
