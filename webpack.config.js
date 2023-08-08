@@ -1,43 +1,51 @@
-const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+const path = require('path');
 
-let htmlPageNames = ["types"];
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
+
+let htmlPageNames = ['types'];
 let multipleHtmlPlugins = htmlPageNames.map((name) => {
   return new HtmlWebpackPlugin({
     template: `./src/index.html`, // relative path to the HTML files
     filename: `${name}/index.html`, // output HTML files
-    chunks: [`${name}`], // respective JS files
+    chunks: [`${name}`] // respective JS files
   });
 });
 
 module.exports = {
-  mode: "development",
+  mode: 'development',
   entry: {
-    main: "./src/index.ts",
-    types: "./src/types/index.ts",
+    main: './src/index.ts',
+    types: './src/types/index.ts',
     //... repeat until example 4
+    init: './src/init.ts'
   },
   devServer: {
-    static: "./dist",
+    static: './dist'
   },
   output: {
-    filename: "build/[name].js",
-    path: path.resolve(__dirname, "dist"),
-    publicPath: "/",
-    clean: true,
+    filename: 'build/[name].js',
+    path: path.resolve(__dirname, 'dist'),
+    publicPath: '/',
+    clean: true
   },
   optimization: {
-    runtimeChunk: "single",
+    runtimeChunk: 'single'
   },
 
-  devtool: "inline-source-map",
+  devtool: 'inline-source-map',
 
   plugins: [
-    new HtmlWebpackPlugin({
-      title: "Development",
-      template: "src/index.html",
-      chunks: ["main"],
+    new ESLintPlugin({
+      eslintPath: require.resolve('eslint'),
+      extensions: ['ts', 'tsx', 'js', 'jsx'],
+      cache: false
     }),
+    new HtmlWebpackPlugin({
+      title: 'Development',
+      template: 'src/index.html',
+      chunks: ['main']
+    })
   ].concat(multipleHtmlPlugins),
 
   module: {
@@ -45,23 +53,23 @@ module.exports = {
       {
         test: /\.tsx?$/,
         use: 'ts-loader',
-        exclude: /node_modules/,
+        exclude: /node_modules/
       },
       {
         test: /\.css$/i,
-        use: ["style-loader", "css-loader"],
+        use: ['style-loader', 'css-loader']
       },
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
-        type: "asset/resource",
+        type: 'asset/resource'
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/i,
-        type: "asset/resource",
-      },
-    ],
+        type: 'asset/resource'
+      }
+    ]
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
-  },
+    extensions: ['.tsx', '.ts', '.js']
+  }
 };
