@@ -1,14 +1,14 @@
-import * as init from "../init";
-import "../main.css"; 
+import * as init from '../init';
+import '../main.css';
 //import "./styles.css"; //component styles
 
-let sortida: string = "";
+let sortida: string = '';
 
 const primitives = () => {
   /*
 The primitives: string, number, and boolean
 */
-  sortida = "<h2>The primitives: string, number, and boolean</h2>";
+  sortida = '<h2>The primitives: string, number, and boolean</h2>';
   /*
 JavaScript has three very commonly used primitives: string, number, and boolean.
 Each has a corresponding type in TypeScript. 
@@ -28,7 +28,7 @@ ut refer to some special built-in types that will very rarely appear in your cod
 Always use string, number, or boolean for types.
 */
 
-  const paraula: string = "paraula";
+  const paraula: string = 'paraula';
   const number: number = 42;
   const bolea: boolean = true;
 
@@ -45,7 +45,7 @@ const arrays = () => {
   /*
 Arrays
 */
-  sortida = "<h2>Arrays</h2>";
+  sortida = '<h2>Arrays</h2>';
 
   /*
 To specify the type of an array like [1, 2, 3], you can use the syntax number[];
@@ -57,7 +57,7 @@ Note that [number] is a different thing; refer to the section on Tuples.
 */
 
   const nombres: number[] = [1, 2, 3, 4, 5];
-  const lletres: Array<string> = ["a", "b", "c", "d", "e"];
+  const lletres: Array<string> = ['a', 'b', 'c', 'd', 'e'];
 
   sortida += `<code>
 <la variable <b>nombres</b> de tipus <b>${typeof nombres}</b> amb valor <b>${nombres}</b><br>
@@ -68,4 +68,4 @@ la variable <b>lletres</b> de tipus <b>${typeof lletres}</b> amb valor <b>${llet
 };
 
 init.montaPagina();
-document.getElementById("sortida").innerHTML = primitives() + arrays();
+document.getElementById('sortida').innerHTML = primitives() + arrays();

@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css?family=Roboto Mono&display=swap");
+@import url('https://fonts.googleapis.com/css?family=Roboto Mono&display=swap');
 
 * {
   box-sizing: border-box;
@@ -17,7 +17,7 @@ a:hover {
 }
 
 body {
-  font-family: "Roboto Mono", monospace, Courier;
+  font-family: 'Roboto Mono', monospace, Courier;
   background-color: whitesmoke;
   color: black;
   font-size: 1rem;
@@ -203,7 +203,7 @@ nav {
 }
 
 .main pre {
-  font-family: "Roboto Mono", monospace, Courier !important;
+  font-family: 'Roboto Mono', monospace, Courier !important;
   font-size: 1em !important;
   margin-bottom: 2em;
   white-space: pre-wrap;
@@ -301,7 +301,7 @@ input,
 select,
 textarea,
 .submit {
-  font-family: "Roboto Mono", monospace, Courier;
+  font-family: 'Roboto Mono', monospace, Courier;
   width: 100%;
   padding: 12px;
   border: 1px solid #ccc;
@@ -317,7 +317,7 @@ label {
   font-weight: bold;
 }
 
-input[type="submit"],
+input[type='submit'],
 .submit {
   background-color: #4d4d4d;
   color: white;
@@ -328,7 +328,7 @@ input[type="submit"],
   text-decoration: none;
 }
 
-input[type="submit"]:hover,
+input[type='submit']:hover,
 .submit:hover {
   background-color: #404040;
 }
@@ -377,7 +377,7 @@ h1.error {
 
 /* Clear floats after the columns */
 .row:after {
-  content: "";
+  content: '';
   display: table;
   clear: both;
 }
@@ -405,10 +405,10 @@ ul {
     margin-top: 0;
   }
 
-  input[type="submit"],
+  input[type='submit'],
   .input_petit,
   .submit,
-  input[type="text"],
+  input[type='text'],
   select {
     width: 100%;
   }

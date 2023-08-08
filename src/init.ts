@@ -1,15 +1,15 @@
-const menu = ["types"];
+const menu = ['types'];
 
 const fesMenu = () => {
   //agafa nav
-  const nav = document.getElementById("menu");
+  const nav = document.getElementById('menu');
 
   //crea links
   menu.forEach((el) => {
-    const a = document.createElement("a");
+    const a = document.createElement('a');
     const text = document.createTextNode(el);
-    a.setAttribute("href", `/${el}/`);
-    a.setAttribute("class", "button sense-deco");
+    a.setAttribute('href', `/${el}/`);
+    a.setAttribute('class', 'button sense-deco');
     a.appendChild(text);
     nav.appendChild(a);
   });
@@ -17,8 +17,8 @@ const fesMenu = () => {
 
 const getPath = () => {
   const path = window.location.pathname;
-  const h1 = document.getElementById("titol");
-  h1.innerText = "Hello! " + path;
+  const h1 = document.getElementById('titol');
+  h1.innerText = 'Hello! ' + path;
 };
 
 export const montaPagina = () => {
