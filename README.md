@@ -1,7 +1,7 @@
 ## TypeScript-Webpack-Basics
 
 
-App per a la realització de tutorial/exercicis TypeScript (The TypeScript Handbook) amb entorn de compilació Webpack.
+Tutorial TypeScript (The TypeScript Handbook) amb entorn de compilació Webpack, TypeScript, ESLint i Prettier.
 
 
 - TODO:
