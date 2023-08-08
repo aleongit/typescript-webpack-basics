@@ -67,5 +67,65 @@ la variable <b>lletres</b> de tipus <b>${typeof lletres}</b> amb valor <b>${llet
   return sortida;
 };
 
+const ani = () => {
+  /*
+  Any
+  */
+  sortida = '<h2>Any</h2>';
+  /*
+  TypeScript also has a special type, any, 
+  that you can use whenever you don’t want a particular value to cause typechecking errors.
+
+  When a value is of type any, you can access any properties of it 
+  (which will in turn be of type any), call it like a function, 
+  assign it to (or from) a value of any type, 
+  or pretty much anything else that’s syntactically legal:
+  */
+
+  const obj: any = { x: 0 };
+  let test: any;
+
+  // None of the following lines of code will throw compiler errors.
+  // Using `any` disables all further type checking, and it is assumed
+  // you know the environment better than TypeScript.
+
+  /*
+  obj.foo();
+  obj();
+  obj.bar = 100;
+  obj = 'hello';
+  const n: number = obj;
+  */
+
+  sortida += `<code>
+  <b>obj</b> de tipus 'any' és <b>${typeof obj}</b> i conté <b>${JSON.stringify(obj)}</b><br>
+  <b>'x' in obj</b> ${'x' in obj} amb valor <b>${obj.x}</b><br>
+  <b>'y' in obj</b> ${'y' in obj} amb valor <b>${obj.y}</b><br>
+  </code>
+  `;
+
+  /*
+  The any type is useful when you don’t want to write out a long type just to convince TypeScript
+  that a particular line of code is okay.
+
+  noImplicitAny
+
+  When you don’t specify a type, and TypeScript can’t infer it from context, 
+  the compiler will typically default to any.
+  You usually want to avoid this, though, because any isn’t type-checked.
+  Use the compiler flag noImplicitAny to flag any implicit any as an error.
+  */
+
+  /*
+  function fn(s) {
+    // No error?
+    console.log(s.subtr(3));
+  }
+  fn(42);
+  */
+
+  return sortida;
+};
+
 init.montaPagina();
-document.getElementById('sortida').innerHTML = primitives() + arrays();
+document.getElementById('sortida').innerHTML = primitives() + arrays() + ani();
