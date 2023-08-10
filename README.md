@@ -3,9 +3,9 @@
 
 Tutorial TypeScript (The TypeScript Handbook) amb entorn de compilació Webpack, TypeScript, ESLint i Prettier.
 
+- https://www.typescriptlang.org/docs/handbook/intro.html
 
-- TODO:
-- [Tutorial](tutorial.md)
+1. Everyday Types
 
 
 
