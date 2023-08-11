@@ -6,6 +6,7 @@ const ESLintPlugin = require('eslint-webpack-plugin');
 let htmlPageNames = ['types'];
 let multipleHtmlPlugins = htmlPageNames.map((name) => {
   return new HtmlWebpackPlugin({
+    title: name.charAt(0).toUpperCase() + name.slice(1),
     template: `./src/index.html`, // relative path to the HTML files
     filename: `${name}/index.html`, // output HTML files
     chunks: [`${name}`] // respective JS files
@@ -42,7 +43,7 @@ module.exports = {
       cache: false
     }),
     new HtmlWebpackPlugin({
-      title: 'Development',
+      title: 'TypeScript Basics by aleon',
       template: 'src/index.html',
       chunks: ['main']
     })
