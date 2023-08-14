@@ -5,7 +5,7 @@ Tutorial TypeScript (The TypeScript Handbook) amb entorn de compilació Webpack,
 
 - https://www.typescriptlang.org/docs/handbook/intro.html
 
-1. Everyday Types
+1. [Everyday Types](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html)
 
 
 
