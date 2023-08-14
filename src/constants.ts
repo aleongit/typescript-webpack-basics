@@ -1,0 +1,1 @@
+export const htmlPageNames: string[] = ['types', 'narrowing'];

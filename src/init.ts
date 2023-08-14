@@ -1,4 +1,5 @@
-const menu = ['types'];
+import { htmlPageNames } from './constants';
+const menu = htmlPageNames;
 
 const fesMenu = () => {
   //agafa nav
