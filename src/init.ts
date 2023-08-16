@@ -12,14 +12,14 @@ const fesMenu = () => {
     a.setAttribute('href', `/${el}/`);
     a.setAttribute('class', 'button sense-deco');
     a.appendChild(text);
-    nav.appendChild(a);
+    nav!.appendChild(a);
   });
 };
 
 const getPath = () => {
   const path = window.location.pathname;
   const h1 = document.getElementById('titol');
-  h1.innerText = 'Hello! ' + path;
+  h1!.innerText = 'Hello! ' + path;
 };
 
 export const montaPagina = () => {

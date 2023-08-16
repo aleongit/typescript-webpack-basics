@@ -1418,17 +1418,19 @@ const lessCommonPrimitives = () => {
 
 init.montaPagina();
 const sortida = document.getElementById('sortida');
-sortida.innerHTML += primitives();
-sortida.innerHTML += arrays();
-sortida.innerHTML += typeAni();
-sortida.innerHTML += typeAnnotationVar();
-sortida.innerHTML += functions();
-sortida.innerHTML += objectTypes();
-sortida.innerHTML += unionTypes();
-sortida.innerHTML += typeAliases();
-sortida.innerHTML += interfaces();
-sortida.innerHTML += typeAssertions();
-sortida.innerHTML += literalTypes();
-sortida.innerHTML += nullUndefined();
-sortida.innerHTML += enums();
-sortida.innerHTML += lessCommonPrimitives();
+if (sortida) {
+  sortida.innerHTML += primitives();
+  sortida.innerHTML += arrays();
+  sortida.innerHTML += typeAni();
+  sortida.innerHTML += typeAnnotationVar();
+  sortida.innerHTML += functions();
+  sortida.innerHTML += objectTypes();
+  sortida.innerHTML += unionTypes();
+  sortida.innerHTML += typeAliases();
+  sortida.innerHTML += interfaces();
+  sortida.innerHTML += typeAssertions();
+  sortida.innerHTML += literalTypes();
+  sortida.innerHTML += nullUndefined();
+  sortida.innerHTML += enums();
+  sortida.innerHTML += lessCommonPrimitives();
+}
