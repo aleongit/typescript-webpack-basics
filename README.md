@@ -6,7 +6,8 @@ Tutorial TypeScript (The TypeScript Handbook) amb entorn de compilació Webpack,
 - https://www.typescriptlang.org/docs/handbook/intro.html
 
 1. [Everyday Types](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html)
-
+2. [Narrowing](https://www.typescriptlang.org/docs/handbook/2/narrowing.html)
+3. [More on Functions](https://www.typescriptlang.org/docs/handbook/2/functions.html)
 
 
 
