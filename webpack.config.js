@@ -46,7 +46,7 @@ module.exports = {
       cache: false
     }),
     new HtmlWebpackPlugin({
-      title: 'TypeScript Basics by aleon',
+      title: 'TypeScript - Basics by aleon',
       template: 'src/index.html',
       chunks: ['main']
     })
