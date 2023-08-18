@@ -14,16 +14,22 @@ let multipleHtmlPlugins = htmlPageNames.map((name) => {
   });
 });
 
+//generar objecte {} amb punts d'entrada ts per expandir module.exports.entry
+//array to object amb 'reduce'
+//let obj = ['a', 'b', 'c'].reduce((a, v) => ({ ...a, [v]: v }), {});
+let entries = htmlPageNames.reduce((acumulat, item, index, arra) => {
+  acumulat[item] = `./src/${item}/index.ts`;
+  return acumulat;
+}, {}); // {} inici objecte buit
+
 module.exports = {
   mode: 'development',
   entry: {
     main: './src/index.ts',
-    types: './src/types/index.ts',
-    narrowing: './src/narrowing/index.ts',
-    functions: './src/functions/index.ts',
-    objects: './src/objects/index.ts',
-    //... repeat until example 4
-    init: './src/init.ts'
+    init: './src/init.ts',
+    //types: './src/types/index.ts',
+    //...
+    ...entries //expandir objecte 'entries'
   },
   devServer: {
     static: './dist'
