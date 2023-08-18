@@ -1400,6 +1400,7 @@ object
   function doSomething(f: Function) {
     return f(1, 2, 3);
   }
+  //error @typescript-eslint/ban-types
 
   //filtra noms que comencen per P
   const filtrarNomsP = (arr: string[]): string[] => {
@@ -1418,6 +1419,7 @@ object
   function doSomething(f: <mark>Function</mark>) {<br>
     &nbsp;return f(1, 2, 3);<br>
   }<br>
+  <mark>//error @typescript-eslint/ban-types</mark><br>
   </code>
   `;
   sortida += `<code>
@@ -1617,7 +1619,6 @@ const parameterDestructuring = () => {
 };
 
 const assignabilityFunctions = () => {
-  
   /*
   Assignability of Functions
   */
@@ -1701,14 +1702,13 @@ const assignabilityFunctions = () => {
   const returnVoid = src.forEach((el) => dst.push(el));
 
   function f4(): void {
-    // @ts-expect-error
+    // @ts-expect-error test
     return true;
   }
   const f5 = function (): void {
-    // @ts-expect-error
+    // @ts-expect-error test
     return true;
   };
-
 
   sortida += `<code>
   <b>//The 'void' return type for functions can produce some unusual, but expected behavior<br>
@@ -1744,10 +1744,8 @@ const assignabilityFunctions = () => {
   </code>
 `;
 
-
-
   return sortida;
-}
+};
 
 init.montaPagina();
 const sortida = document.getElementById('sortida');
