@@ -53,23 +53,23 @@ Function Type Expressions
 
   sortida += `<code>
 
-  <span class="ressalta">//funció que requereix com a primer paràmetre una altra funció amb un argument string</span><br>
-  function greeter(<span class="ressalta">fn: (a: string) => void)</span> {<br>
+  <mark>//funció que requereix com a primer paràmetre una altra funció amb un argument string</mark><br>
+  function greeter(<mark>fn: (a: string) => void)</mark> {<br>
     &nbsp;fn('Hello, World');<br>
   }<br>
   <b>//The syntax (a: string) => void means</b><br>
   <b>//= a function with one parameter (a) of type string, that doesn't have a return value</b><br><br>
-  //<span class="ressalta">funció que cumpleix amb el paràmetre de l'anterior funció</span><br>
+  //<mark>funció que cumpleix amb el paràmetre de l'anterior funció</mark><br>
   function printToConsole(s: string) {<br>
     &nbsp;console.log(s);<br>
   }<br><br>
-  <span class="ressalta">//pas de funció com a paràmetre<br>
+  <mark>//pas de funció com a paràmetre<br>
   greeter(printToConsole);<br>
 </code>
 `;
 
   sortida += `<code>
-  <span class="ressalta">//Of course, we can use a type alias to name a function type:</span><br>
+  <mark>//Of course, we can use a type alias to name a function type:</mark><br>
   type GreetFunction = (a: string) => void;<br>
   function greeter(fn: GreetFunction) {<br>
   // ...<br>
@@ -129,8 +129,8 @@ const callSignatures = () => {
   sortida += `<code>
   <b>//for describe something callable with properties, we can write a call signature in an object type</b><br>
   type DescribableFunction = {<br>
-    <span class="ressalta">&nbsp;description: string;<br>
-    &nbsp;(someArg: number): boolean;</span><br>
+    <mark>&nbsp;description: string;<br>
+    &nbsp;(someArg: number): boolean;</mark><br>
   };<br>
   <b>//Note that the syntax is slightly different compared to a function type expression</b><br>
   <b>//use : between the parameter list and the return type rather than =></b><br><br>
@@ -140,7 +140,7 @@ const callSignatures = () => {
   function myFunc(someArg: number) {<br>
     &nbsp;return someArg > 3;<br>
   }<br><br>
-  <span class="ressalta">myFunc.description = 'default description';</span><br><br>
+  <mark>myFunc.description = 'default description';</mark><br><br>
   doSomething(myFunc);<br>
 </code>
 `;
@@ -179,7 +179,7 @@ const constructSignatures = () => {
   sortida += `<code>
   <b>//You can write a construct signature by adding the 'new' keyword in front of a call signature</b><br>
   type SomeConstructor = {<br>
-    <span class="ressalta">&nbsp;new (s: string): SomeObject;</span><br>
+    <mark>&nbsp;new (s: string): SomeObject;</mark><br>
   };<br>
   function fn(ctor: SomeConstructor) {<br>
     &nbsp;return new ctor("hello");<br>
@@ -265,7 +265,7 @@ const genericFunctions = () => {
 
   sortida += `<code>
 <b>//adding a type parameter 'Type'</b><br>
-function firstElement<span class="ressalta">&lt;Type&gt;</span>(arr: <b>Type[]</b>): <b>Type</b> | undefined {<br>
+function firstElement<mark>&lt;Type&gt;</mark>(arr: <b>Type[]</b>): <b>Type</b> | undefined {<br>
   return arr[0];<br>
 }<br><br>
 <b>// s is of type 'string'</b><br>
@@ -315,7 +315,7 @@ Inference
 
   sortida += `<code>
   <b>//The type was inferred - chosen automatically - by TypeScript</b><br>
-  function map<span class="ressalta">&lt;Input, Output&gt;</span>(arr: Input[], func: (arg: Input) => Output): Output[] {<br>
+  function map<mark>&lt;Input, Output&gt;</mark>(arr: Input[], func: (arg: Input) => Output): Output[] {<br>
     &nbsp;return arr.map(func);<br>
   }<br>
   <b>//Parameter 'n' is of type 'string'</b><br>
@@ -391,7 +391,7 @@ Inference
 
   sortida += `<code>
   <b>//constrain Type to { length: number } to access the .length property of the 'a' and 'b' parameters</b><br>
-  function longest<span class="ressalta">&lt;Type extends { length: number }&gt;</span>(a: Type, b: Type) {<br>
+  function longest<mark>&lt;Type extends { length: number }&gt;</mark>(a: Type, b: Type) {<br>
     &nbsp;if (a.length >= b.length) {<br>
       &nbsp;&nbsp;return a;<br>
     &nbsp;} else {<br>
@@ -403,7 +403,7 @@ Inference
   const longerString = longest('alice', 'bob');<br>
   <b>//longerString is of type 'alice' | 'bob'</b><br><br>
   <b>//const notOK = longest(10, 100);</b><br>
-  <span class="ressalta">//Error! Numbers don't have a 'length' property</span><br>
+  <mark>//Error! Numbers don't have a 'length' property</mark><br>
   <b>//Argument of type 'number' is not assignable to parameter of type '{ length: number; }'</b><br>
   </code>
   `;
@@ -477,14 +477,14 @@ Inference
   console.log(arr);
 
   sortida += `<code>
-  function combine<span class="ressalta">&lt;Type&gt;</span>(arr1: Type[], arr2: Type[]): Type[] {<br>
+  function combine<mark>&lt;Type&gt;</mark>(arr1: Type[], arr2: Type[]): Type[] {<br>
     return arr1.concat(arr2);<br>
   }<br><br>
   <b>//TypeScript can usually infer the intended type arguments in a generic call, but not always</b><br>
-  <span class="ressalta">//const arr = combine([1, 2, 3], ["hello"]); //error</span><br>
+  <mark>//const arr = combine([1, 2, 3], ["hello"]); //error</mark><br>
   <b>//Type 'string' is not assignable to type 'number'</b><br><br>
   <b>//if you intended to do this, however, you could manually specify Type</b><br>
-  const arr = combine<span class="ressalta">&lt;string | number&gt;</span>([1, 2, 3], ["hello"]);<br>
+  const arr = combine<mark>&lt;string | number&gt;</mark>([1, 2, 3], ["hello"]);<br>
   </code>
   `;
 
@@ -545,13 +545,13 @@ Inference
   const b = firstElement2([1, 2, 3]);
 
   sortida += `<code>
-  <span class="ressalta">//Rule: When possible, use the type parameter itself rather than constraining it</span><br>
+  <mark>//Rule: When possible, use the type parameter itself rather than constraining it</mark><br>
   <b>//good</b><br>
-  function firstElement1<span class="ressalta">&lt;Type&gt;</span>(arr: Type[]) {<br>
+  function firstElement1<mark>&lt;Type&gt;</mark>(arr: Type[]) {<br>
     &nbsp;return arr[0];<br>
   }<br><br>
   <b>//bad</b><br>
-  function firstElement2<span class="ressalta">&lt;Type extends any[]&gt;</span>(arr: Type) {<br>
+  function firstElement2<mark>&lt;Type extends any[]&gt;</mark>(arr: Type) {<br>
     return arr[0];<br>
   }<br><br>
   const a = firstElement1([1, 2, 3]);<br>
@@ -598,11 +598,11 @@ Inference
   }
 
   sortida += `<code>
-  <span class="ressalta">//Rule: Always use as few type parameters as possible</span><br>
-  function filter1<span class="ressalta">&lt;Type&gt;</span>(arr: Type[], func: (arg: Type) => boolean): Type[] {<br>
+  <mark>//Rule: Always use as few type parameters as possible</mark><br>
+  function filter1<mark>&lt;Type&gt;</mark>(arr: Type[], func: (arg: Type) => boolean): Type[] {<br>
     &nbsp;return arr.filter(func);<br>
   }<br><br>  
-  function filter2<span class="ressalta">&lt;Type, Func extends (arg: Type) => boolean&gt;</span>(<br>
+  function filter2<mark>&lt;Type, Func extends (arg: Type) => boolean&gt;</mark>(<br>
     &nbsp;arr: Type[],<br>
     &nbsp;func: Func<br>
   ): Type[] {<br>
@@ -654,13 +654,13 @@ Inference
   greet2('world');
 
   sortida += `<code>
-  <span class="ressalta">//Rule: If a type parameter only appears in one location, strongly reconsider if you actually need it</span><br>
+  <mark>//Rule: If a type parameter only appears in one location, strongly reconsider if you actually need it</mark><br>
   <b>//Sometimes we forget that a function might not need to be generic</b><br>
-  function greet1<span class="ressalta">&lt;Str extends string&gt;</span>(s: Str) {<br>
+  function greet1<mark>&lt;Str extends string&gt;</mark>(s: Str) {<br>
     &nbsp;console.log("Hello, " + s);<br>
   }<br>
   greet1("world");<br><br>  
-  <span class="ressalta">//We could just as easily have written a simpler version</span><br>
+  <mark>//We could just as easily have written a simpler version</mark><br>
   function greet2(s: string) {<br>
     &nbsp;console.log("Hello, " + s);<br>
   }<br>
@@ -735,9 +735,9 @@ const optionalParameters = () => {
   f(undefined);
 
   sortida += `<code>
-  <span class="ressalta">//We can model this in TypeScript by marking the parameter as optional with (?)</span><br>
+  <mark>//We can model this in TypeScript by marking the parameter as optional with (?)</mark><br>
   <b>//the x parameter will have the type number | undefined</b><br> 
-  function f(x<span class="ressalta">?</span>: number) {<br>
+  function f(x<mark>?</mark>: number) {<br>
     &nbsp;// ...<br>
   }<br><br>
   f(); // OK<br>
@@ -748,8 +748,8 @@ const optionalParameters = () => {
   `;
 
   sortida += `<code>
-  <span class="ressalta">//You can also provide a parameter default</span><br>
-  function f(<span class="ressalta">x = 10</span>) {<br>
+  <mark>//You can also provide a parameter default</mark><br>
+  function f(<mark>x = 10</mark>) {<br>
     &nbsp;// ...<br>
   }<br>
   </code>
@@ -818,9 +818,9 @@ const optionalParameters = () => {
   });
 
   sortida += `<code>
-  <span class="ressalta">//Rule: When writing a function type for a callback,<br>
-  //never write an optional parameter unless you intend to call the function without passing that argument</span><br>
-  function myForEach(arr: any[], callback: (arg: any, <span class="ressalta">index?</span>: number) => void) { <span class="ressalta">//treure opcional (?)</span><br>
+  <mark>//Rule: When writing a function type for a callback,<br>
+  //never write an optional parameter unless you intend to call the function without passing that argument</mark><br>
+  function myForEach(arr: any[], callback: (arg: any, <mark>index?</mark>: number) => void) { <mark>//treure opcional (?)</mark><br>
     &nbsp;for (let i = 0; i < arr.length; i++) {<br>
       &nbsp;&nbsp;callback(arr[i], i);<br>
     &nbsp;}<br>
@@ -906,8 +906,8 @@ const functionOverloads = () => {
   }<br><br>
   const d1 = <b>makeDate(12345678);</b><br>
   const d2 = <b>makeDate(5, 5, 5);</b><br>
-  <span class="ressalta">//const d3 = makeDate(1, 3); //error<br>
-  //No overload expects 2 arguments, but overloads do exist that expect either 1 or 3 arguments.</span><br>
+  <mark>//const d3 = makeDate(1, 3); //error<br>
+  //No overload expects 2 arguments, but overloads do exist that expect either 1 or 3 arguments.</mark><br>
   </code>
   `;
 
@@ -957,32 +957,32 @@ const functionOverloads = () => {
   */
 
   sortida += `<code>
-    <span class="ressalta">//The signature of the implementation is not visible from the outside<br>
-    When writing an overloaded function, you should always have two or more signatures above the implementation of the function</span><br>
+    <mark>//The signature of the implementation is not visible from the outside<br>
+    When writing an overloaded function, you should always have two or more signatures above the implementation of the function</mark><br>
     function fn(x: string): void;<br>
     function fn() {<br>
       // ...<br>
     }<br>
-    <span class="ressalta">//fn(); // Expected to be able to call with zero arguments<br>
-    //Expected 1 arguments, but got 0</span><br>
+    <mark>//fn(); // Expected to be able to call with zero arguments<br>
+    //Expected 1 arguments, but got 0</mark><br>
   </code>
   `;
 
   sortida += `<code>
-  <span class="ressalta">//The implementation signature must also be compatible with the overload signatures</span><br>
+  <mark>//The implementation signature must also be compatible with the overload signatures</mark><br>
   function fn(x: boolean): void;<br><br>
-  <span class="ressalta">//function fn(x: string): void;<br>
-  //Argument type isn't right</span><br>
+  <mark>//function fn(x: string): void;<br>
+  //Argument type isn't right</mark><br>
   <b>//This overload signature is not compatible with its implementation signature.</b><br><br>
   function fn(x: boolean) {}<br>
   </code>
 `;
 
   sortida += `<code>
-  <span class="ressalta">//The implementation signature must also be compatible with the overload signatures</span><br>
+  <mark>//The implementation signature must also be compatible with the overload signatures</mark><br>
   function fn(x: string): string;<br><br>
-  <span class="ressalta">//function fn(x: number): boolean;<br>
-  //Return type isn't right</span><br>
+  <mark>//function fn(x: number): boolean;<br>
+  //Return type isn't right</mark><br>
   <b>This overload signature is not compatible with its implementation signature.</b><br><br>
   function fn(x: string | number) {<br>
     &nbsp;return "oops";<br>
@@ -1042,8 +1042,8 @@ const functionOverloads = () => {
   */
 
   sortida += `<code>
-  <span class="ressalta">//Always prefer parameters with union types instead of overloads when possible<br>
-  //make your function easier to call, easier to understand, and easier to implement.</span><br>
+  <mark>//Always prefer parameters with union types instead of overloads when possible<br>
+  //make your function easier to call, easier to understand, and easier to implement.</mark><br>
   function len(x: any[] | string) {<br>
     &nbsp;return x.length;<br>
   }<br>
@@ -1051,7 +1051,7 @@ const functionOverloads = () => {
   `;
 
   sortida += `<code>
-  <span class="ressalta">//bad</span><br>
+  <mark>//bad</mark><br>
   function len(s: string): number;<br>
   function len(arr: any[]): number;<br>
   function len(x: any) {<br>
@@ -1059,7 +1059,7 @@ const functionOverloads = () => {
   }<br><br>
   len(""); // OK<br>
   len([0]); // OK<br>
-  <span class="ressalta">len(Math.random() > 0.5 ? "hello" : [0]); //ERRORS</span><br>
+  <mark>len(Math.random() > 0.5 ? "hello" : [0]); //ERRORS</mark><br>
   No overload matches this call<br>
     &nbsp;...<br>
   </code>
@@ -1127,15 +1127,627 @@ const otherTypes = () => {
   let sortida = '<h2>Other Types to Know About</h2>';
 
   /*
-   */
+  There are some additional types you’ll want to recognize
+  that appear often when working with function types. 
+  Like all types, you can use them everywhere,
+  but these are especially relevant in the context of functions.
+  
+  void
+  
+  */
+  sortida += '<h3>void</h3>';
+
+  /*
+  void represents the return value of functions which don’t return a value. 
+  It’s the inferred type any time a function doesn’t have any return statements, 
+  or doesn’t return any explicit value from those return statements:
+
+  // The inferred return type is void
+  function noop() {
+    return;
+  }
+
+  In JavaScript, a function that doesn’t return any value will implicitly return the value undefined.
+  However, void and undefined are not the same thing in TypeScript. 
+  There are further details at the end of this chapter.
+
+  void is not the same as undefined.
+  */
+
+  // The inferred return type is void
+  function noop() {
+    return;
+  }
+
+  const esVoid1 = () => console.log('void!');
+  const esVoid2 = (): void => console.log('void!');
+  console.log(esVoid1);
+  console.log(esVoid2);
 
   sortida += `<code>
-  test
+  <b>//The inferred return type is void</b><br>
+  <b>//void is not the same as undefined</b><br>
+  function noop() {<br>
+    &nbsp;return;<br>
+  }<br><br>
+  const esVoid1 = () => console.log('void!')<br>
+  const esVoid2 = ():void => console.log('void!')<br>
+  </code>
+`;
+
+  /*
+object
+*/
+  sortida += '<h3>object</h3>';
+
+  /*
+
+  The special type object refers to any value that isn’t a primitive 
+  (string, number, bigint, boolean, symbol, null, or undefined). 
+  
+  This is different from the empty object type { }, and also different from the global type Object. 
+  It’s very likely you will never use Object.
+
+  object is not Object. Always use object!
+
+  Note that in JavaScript, function values are objects: 
+  They have properties, have Object.prototype in their prototype chain, 
+  are instanceof Object, you can call Object.keys on them, and so on. 
+  For this reason, function types are considered to be objects in TypeScript.
+  */
+  const obj1 = {};
+  const obj2 = { nom: 'Pepet', cognom: 'Vilallonga' };
+  const arra = [];
+  const func1 = () => console.log('function is object!');
+  function func2(fn: (a: string) => void) {
+    fn('Hello, World');
+  }
+
+  const objects = [obj1, obj2, arra, func1, func2];
+  console.log(objects);
+
+  sortida += `<code>
+  <mark>//The special type object refers to any value that isn't a primitive</mark><br>
+  <b>//(string, number, bigint, boolean, symbol, null, or undefined)<br>
+  //This is different from the empty object type { },<br>
+  //and also different from the global type Object.<br>
+  //object is not Object. Always use object!</b><br>
+  const obj1 = {};<br>
+  const obj2 = { nom: 'Pepet', cognom: 'Vilallonga' };<br>
+  const arra = [];<br>
+  const func1 = () => console.log('function is object!');<br>
+  function func2(fn: (a: string) => void) {<br>
+    &nbsp;fn('Hello, World');<br>
+  }<br>
+  const objects = [obj1, obj2, arra, func1, func2];<br>
+  ${objects
+    .map((obj, i) => {
+      return `variable ${i} és typeof ${typeof obj} i instanceof Object ${obj instanceof Object}`;
+    })
+    .join('<br>')}<br>
+  </code>
+  `;
+
+  /*
+  unknown
+  */
+  sortida += '<h3>unknown</h3>';
+
+  /*
+  The unknown type represents any value. 
+  This is similar to the any type, 
+  but is safer because it’s not legal to do anything with an unknown value:
+
+  function f1(a: any) {
+    a.b(); // OK
+  }
+  function f2(a: unknown) {
+    a.b();
+  'a' is of type 'unknown'.
+  }
+  */
+
+  function f1(a: any) {
+    a.b(); // OK
+  }
+  function f2(a: unknown) {
+    // a.b();
+    //'a' is of type 'unknown'.
+  }
+
+  sortida += `<code>
+  <b>//The unknown type represents any value. This is similar to the any type,<br>
+  //but is safer because it's not legal to do anything with an unknown value.</b><br>
+  function f1(a: any) {<br>
+    &nbsp;a.b(); // OK<br>
+  }<br>
+  function f2(a: <mark>unknown</mark>) {<br>
+    &nbsp;//a.b();<br>
+    &nbsp;//'a' is of type 'unknown'.<br>
+  }<br>
+  </code>
+  `;
+
+  /*
+  This is useful when describing function types because you can describe functions 
+  that accept any value without having any values in your function body.
+
+  Conversely, you can describe a function that returns a value of unknown type:
+
+  function safeParse(s: string): unknown {
+    return JSON.parse(s);
+  }
+  
+  // Need to be careful with 'obj'!
+  const obj = safeParse(someRandomString);
+  */
+
+  function safeParse(s: string): unknown {
+    return JSON.parse(s);
+  }
+  const jsonString = '{"result":true, "count":42}';
+  // Need to be careful with 'obj'!
+  const obj = safeParse(jsonString);
+  console.log(obj);
+
+  sortida += `<code>
+  <b>//useful because you can describe functions<br>
+  //that accept any value without having 'any' values in your function body</b><br>
+  function safeParse(s: string): <mark>unknown</mark> {<br>
+    &nbsp;return JSON.parse(s);<br>
+  }<br>
+  const jsonString = '{"result":true, "count":42}';<br>
+  // Need to be careful with 'obj'!<br>
+  const obj = safeParse(jsonString);<br>
+  </code>
+  `;
+
+  /*
+  never
+  */
+  sortida += '<h3>never</h3>';
+
+  /*
+
+  Some functions never return a value:
+
+  function fail(msg: string): never {
+    throw new Error(msg);
+  }
+
+  The never type represents values which are never observed. 
+  In a return type, this means that the function throws an exception 
+  or terminates execution of the program.
+
+  */
+
+  function fail(msg: string): never {
+    throw new Error(msg);
+  }
+  //fail('fatal error!');
+
+  sortida += `<code>
+  <b>//The never type represents values which are never observed<br>
+  //In a return type, this means that the function throws an exception<br> 
+  //or terminates execution of the program</b><br>
+  function fail(msg: string): <mark>never</mark> {<br>
+    &nbsp;throw new Error(msg);<br>
+  }<br>
+  //fail('fatal error!');<br>
+  </code>
+  `;
+
+  /*
+  never also appears when TypeScript determines there’s nothing left in a union.
+
+  function fn(x: string | number) {
+    if (typeof x === "string") {
+      // do something
+    } else if (typeof x === "number") {
+      // do something else
+    } else {
+      x; // has type 'never'!
+    }
+  }
+  */
+
+  function fn(x: string | number) {
+    if (typeof x === 'string') {
+      // do something
+    } else if (typeof x === 'number') {
+      // do something else
+    } else {
+      x; // has type 'never'!
+    }
+  }
+
+  sortida += `<code>
+  <b>//never also appears when TypeScript determines there’s nothing left in a union</b><br>
+  function fn(x: string | number) {<br>
+    &nbsp;if (typeof x === 'string') {<br>
+      &nbsp;&nbsp;// do something<br>
+    &nbsp;} else if (typeof x === 'number') {<br>
+      &nbsp;&nbsp;// do something else<br>
+    &nbsp;} else {<br>
+      &nbsp;&nbsp;<mark>x; // has type 'never'!</mark><br>
+    &nbsp;}<br>
+  }<br>
+  </code>
+  `;
+
+  /*
+  Function
+  */
+
+  sortida += '<h3>Function</h3>';
+
+  /*
+  The global type Function describes properties like bind, call, apply, and others 
+  present on all function values in JavaScript. 
+  It also has the special property that values of type Function can always be called; 
+  these calls return any:
+
+  function doSomething(f: Function) {
+    return f(1, 2, 3);
+  }
+  
+  This is an untyped function call and is generally best avoided because of the unsafe any return type.
+
+  If you need to accept an arbitrary function but don’t intend to call it, 
+  the type () => void is generally safer.
+  */
+
+  function doSomething(f: Function) {
+    return f(1, 2, 3);
+  }
+
+  //filtra noms que comencen per P
+  const filtrarNomsP = (arr: string[]): string[] => {
+    return arr.filter((nom) => nom[0].toUpperCase() == 'P');
+  };
+  const noms = ['Pepet', 'Pepito', 'Pepeta', 'Josepeta', 'Pepa'];
+  //let resultat: Function;  //Function retorna sempre any
+  let resultat: (arr: string[]) => string[]; //així seria més segur
+  resultat = filtrarNomsP;
+  console.log(resultat(noms));
+
+  sortida += `<code>
+  <b>//tipus que admet una funció javascript i amb les seves propietats<br>
+  //sempre retorna 'any'<br>
+  //generalment serà més segur amb el tipus () => void</b><br>
+  function doSomething(f: <mark>Function</mark>) {<br>
+    &nbsp;return f(1, 2, 3);<br>
+  }<br>
+  </code>
+  `;
+  sortida += `<code>
+  //funció que filtra noms que comencen per P<br>
+  const filtrarNomsP = (arr: string[]): string[] => {<br>
+    &nbsp;return arr.filter((nom) => nom[0].toUpperCase() == 'P');<br>
+  };<br>
+  const noms = ['Pepet', 'Pepito', 'Pepeta', 'Josepeta', 'Pepa'];<br>
+  <mark>//let resultat: Function;  //Function retorna sempre any<br>
+  let resultat: (arr: string[]) => string[]; //així seria més segur</mark><br>
+  resultat = filtrarNomsP;<br>
+  </code>
+  `;
+
+  return sortida;
+};
+
+const restParametersArguments = () => {
+  /*
+  Rest Parameters and Arguments
+  */
+  let sortida = '<h2>Rest Parameters and Arguments</h2>';
+
+  /*
+  Rest Parameters
+  */
+  sortida += '<h3>Rest Parameters</h3>';
+
+  /*
+
+  In addition to using optional parameters or overloads to make functions that can accept 
+  a variety of fixed argument counts, 
+  we can also define functions that take an unbounded number of arguments using rest parameters.
+
+  A rest parameter appears after all other parameters, and uses the ... syntax:
+
+  function multiply(n: number, ...m: number[]) {
+    return m.map((x) => n * x);
+  }
+  // 'a' gets value [10, 20, 30, 40]
+  const a = multiply(10, 1, 2, 3, 4);
+
+  In TypeScript, the type annotation on these parameters is implicitly any[] instead of any, 
+  and any type annotation given must be of the form Array<T> or T[], 
+  or a tuple type (which we’ll learn about later).
+
+  */
+
+  function multiply(n: number, ...m: number[]) {
+    return m.map((x) => n * x);
+  }
+
+  const a = multiply(10, 1, 2, 3, 4);
+  // 'a' gets value [10, 20, 30, 40]
+  console.log(a);
+
+  sortida += `<code>
+  <b>//A rest parameter appears after all other parameters, and uses the <mark>...</mark> syntax<br>
+  //the type annotation on these parameters is implicitly any[]<br>
+  //and any type annotation given must be of the form Array<T> or T[]</b><br>
+  function multiply(n: number, <mark>...m: number[]</mark>) {<br>
+    &nbsp;return m.map((x) => n * x);<br>
+  }<br>
+  const a = multiply(10, 1, 2, 3, 4);<br>
+  // 'a' gets value [10, 20, 30, 40]<br>
+  </code>
+`;
+
+  /*
+  Rest Arguments
+  */
+  sortida += '<h3>Rest Arguments</h3>';
+
+  /*
+  Conversely, we can provide a variable number of arguments from an iterable object 
+  (for example, an array) using the spread syntax. 
+  For example, the push method of arrays takes any number of arguments:
+
+  const arr1 = [1, 2, 3];
+  const arr2 = [4, 5, 6];
+  arr1.push(...arr2);
+  */
+  const arr1 = [1, 2, 3];
+  console.log(arr1);
+  const arr2 = [4, 5, 6];
+  console.log(arr2);
+  arr1.push(...arr2);
+  console.log(arr1);
+
+  sortida += `<code>
+  <b>//Conversely, we can provide a variable number of arguments from an iterable object<br> 
+  //(for example, an array) using the spread syntax</b><br>
+  const arr1 = [1, 2, 3];<br>
+  const arr2 = [4, 5, 6];<br>
+  arr1.push(<mark>...arr2</mark>);<br>
+  </code>
+`;
+
+  /*
+  Note that in general, TypeScript does not assume that arrays are immutable. 
+  This can lead to some surprising behavior:
+
+  // Inferred type is number[] -- "an array with zero or more numbers",
+  // not specifically two numbers
+  const args = [8, 5];
+  const angle = Math.atan2(...args);
+  A spread argument must either have a tuple type or be passed to a rest parameter.
+
+  The best fix for this situation depends a bit on your code, but in general a const context is the most straightforward solution:
+
+  // Inferred as 2-length tuple
+  const args = [8, 5] as const;
+  // OK
+  const angle = Math.atan2(...args);
+  
+  Using rest arguments may require turning on downlevelIteration when targeting older runtimes.
+
+  */
+
+  return sortida;
+};
+
+const parameterDestructuring = () => {
+  /*
+  Parameter Destructuring
+  */
+
+  let sortida = '<h2>Parameter Destructuring</h2>';
+
+  /*
+  You can use parameter destructuring to conveniently unpack objects provided as 
+  an argument into one or more local variables in the function body. 
+  
+  In JavaScript, it looks like this:
+
+  function sum({ a, b, c }) {
+    console.log(a + b + c);
+  }
+  sum({ a: 10, b: 3, c: 9 });
+  
+  
+  The type annotation for the object goes after the destructuring syntax:
+
+  function sum({ a, b, c }: { a: number; b: number; c: number }) {
+    console.log(a + b + c);
+  }
+  
+  This can look a bit verbose, but you can use a named type here as well:
+
+  // Same as prior example
+  type ABC = { a: number; b: number; c: number };
+  function sum({ a, b, c }: ABC) {
+    console.log(a + b + c);
+  }
+  */
+
+  //In JavaScript, it looks like this:
+  function sum1({ a, b, c }) {
+    console.log(a + b + c);
+  }
+  sum1({ a: 10, b: 3, c: 9 });
+
+  //The type annotation for the object goes after the destructuring syntax:
+  function sum2({ a, b, c }: { a: number; b: number; c: number }) {
+    console.log(a + b + c);
+  }
+  sum2({ a: 10, b: 3, c: 9 });
+
+  //This can look a bit verbose, but you can use a named type here as well:
+  // Same as prior example
+  type ABC = { a: number; b: number; c: number };
+  function sum3({ a, b, c }: ABC) {
+    console.log(a + b + c);
+  }
+  sum3({ a: 10, b: 3, c: 9 });
+
+  sortida += `<code>
+  <b>//In JavaScript, it looks like this</b><br>
+  function sum1({ a, b, c }) {<br>
+    &nbsp;console.log(a + b + c);<br>
+  }<br>
+  sum1({ a: 10, b: 3, c: 9 });<br><br>
+  <b>//The type annotation for the object goes after the destructuring syntax</b><br>
+  function sum2({ a, b, c }: { a: number; b: number; c: number }) {<br>
+    &nbsp;console.log(a + b + c);<br>
+  }<br><br>
+  <mark>//This can look a bit verbose, but you can use a named type here as well<br>
+  //Same as prior example</mark><br>
+  type ABC = { a: number; b: number; c: number };<br>
+  function sum3({ a, b, c }: ABC) {<br>
+    &nbsp;console.log(a + b + c);<br>
+  }<br>
   </code>
 `;
 
   return sortida;
 };
+
+const assignabilityFunctions = () => {
+  
+  /*
+  Assignability of Functions
+  */
+  let sortida = '<h2>Assignability of Functions</h2>';
+
+  /*
+  Return type void
+  */
+  sortida += '<h3>Return type void</h3>';
+
+  /*
+  The void return type for functions can produce some unusual, but expected behavior.
+
+  Contextual typing with a return type of void does not force functions to not return something. 
+  
+  Another way to say this is a contextual function type with a void return type 
+  (type voidFunc = () => void), when implemented, can return any other value, but it will be ignored.
+
+  Thus, the following implementations of the type () => void are valid:
+
+
+  type voidFunc = () => void;
+ 
+  const f1: voidFunc = () => {
+    return true;
+  };
+  
+  const f2: voidFunc = () => true;
+  
+  const f3: voidFunc = function () {
+    return true;
+  };
+
+
+  And when the return value of one of these functions is assigned to another variable, 
+  it will retain the type of void:
+
+  const v1 = f1();
+  const v2 = f2();
+  const v3 = f3();
+
+  This behavior exists so that the following code is valid even 
+  though Array.prototype.push returns a number and the Array.prototype.forEach 
+  method expects a function with a return type of void.
+
+  const src = [1, 2, 3];
+  const dst = [0];
+  
+  src.forEach((el) => dst.push(el));
+
+
+  There is one other special case to be aware of, when a literal function definition has a void return type, that function must not return anything.
+
+  function f2(): void {
+    // @ts-expect-error
+    return true;
+  }
+  
+  const f3 = function (): void {
+    // @ts-expect-error
+    return true;
+  };
+  
+  */
+
+  type voidFunc = () => void;
+  const f1: voidFunc = () => {
+    return true;
+  };
+  const f2: voidFunc = () => true;
+  const f3: voidFunc = function () {
+    return true;
+  };
+
+  const v1 = f1();
+  const v2 = f2();
+  const v3 = f3();
+
+  const src = [1, 2, 3];
+  const dst = [0];
+  const returnVoid = src.forEach((el) => dst.push(el));
+
+  function f4(): void {
+    // @ts-expect-error
+    return true;
+  }
+  const f5 = function (): void {
+    // @ts-expect-error
+    return true;
+  };
+
+
+  sortida += `<code>
+  <b>//The 'void' return type for functions can produce some unusual, but expected behavior<br>
+  //Thus, the following implementations of the type () => void are valid</b><br>
+  <mark>type voidFunc = () => void</mark>;<br>
+  const f1: voidFunc = () => {<br>
+    &nbsp;return true;<br>
+  };<br>
+  const f2: voidFunc = () => true;<br>
+  const f3: voidFunc = function () {<br>
+    &nbsp;return true;<br>
+  };<br>
+  <b>//And when the return value of one of these functions is assigned to another variable,<br>
+  //it will retain the type of void</b><br>
+  const v1 = f1();<br>
+  const v2 = f2();<br>
+  const v3 = f3();<br><br>
+  <b>//for example Array.prototype.forEach method expects a function with a return type of void</b><br>
+  const src = [1, 2, 3];<br>
+  const dst = [0];<br>
+  const returnVoid = src.forEach((el) => dst.push(el));<br><br>
+  <b>//There is one other special case to be aware of,<br>
+  //when a literal function definition has a void return type,<br>
+  //that function must not return anything.</b><br>
+  function f4(): void {<br>
+    &nbsp;// @ts-expect-error<br>
+    &nbsp;return true;<br>
+  }<br>
+  const f5 = function (): void {<br>
+    &nbsp;// @ts-expect-error<br>
+    &nbsp;return true;<br>
+  };<br>
+  </code>
+`;
+
+
+
+  return sortida;
+}
 
 init.montaPagina();
 const sortida = document.getElementById('sortida');
@@ -1147,4 +1759,7 @@ if (sortida) {
   sortida.innerHTML += optionalParameters();
   sortida.innerHTML += functionOverloads();
   sortida.innerHTML += otherTypes();
+  sortida.innerHTML += restParametersArguments();
+  sortida.innerHTML += parameterDestructuring();
+  sortida.innerHTML += assignabilityFunctions();
 }
