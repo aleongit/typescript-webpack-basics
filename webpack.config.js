@@ -27,6 +27,7 @@ module.exports = {
   entry: {
     main: './src/index.ts',
     init: './src/init.ts',
+    helpers: './src/helpers.ts',
     //types: './src/types/index.ts',
     //...
     ...entries //expandir objecte 'entries'

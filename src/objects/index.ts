@@ -1,4 +1,6 @@
 import * as init from '../init';
+import { getImgWithLink } from '../helpers';
+
 import '../main.css';
 //import "./styles.css"; //component styles
 
@@ -46,12 +48,7 @@ if (sortida) {
   sortida.innerHTML += quickReference();
   //add images
   imatges.forEach((img) => {
-    const imatge = new Image();
-    const a = document.createElement('a');
-    imatge.src = img;
-    a.appendChild(imatge);
-    a.setAttribute('href', imatge.src);
-    sortida.appendChild(a);
+    sortida.appendChild(getImgWithLink(img));
   });
   sortida.innerHTML += propertyModifiers();
 }
