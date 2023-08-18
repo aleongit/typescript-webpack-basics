@@ -3,7 +3,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 
-let htmlPageNames = ['types', 'narrowing', 'functions'];
+let htmlPageNames = ['types', 'narrowing', 'functions', 'objects'];
 
 let multipleHtmlPlugins = htmlPageNames.map((name) => {
   return new HtmlWebpackPlugin({
@@ -21,6 +21,7 @@ module.exports = {
     types: './src/types/index.ts',
     narrowing: './src/narrowing/index.ts',
     functions: './src/functions/index.ts',
+    objects: './src/objects/index.ts',
     //... repeat until example 4
     init: './src/init.ts'
   },
