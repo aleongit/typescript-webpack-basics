@@ -155,8 +155,8 @@ const typeAnnotationVar = () => {
   */
 
   sortida += `<code>
-  <span class="ressalta">let myName: string = "Alice"</span> és tan correcte com 
-  <span class="ressalta">let myName = "Alice";</span><br>
+  <mark>let myName: string = "Alice"</mark> és tan correcte com 
+  <mark>let myName = "Alice";</mark><br>
   </code>
   `;
   return sortida;
@@ -205,8 +205,8 @@ const functions = () => {
   const funcioSalut = (nom: string) => {<br>
     &nbsp;console.log("Hola " + nom.toUpperCase() + " !!");<br>
   }<br><br>
-  <b>ok</b> si la crides amb <span class="ressalta">funcioSalut('Pastanaga');</span><br>
-  <b>ko</b> si la crides amb <span class="ressalta">funcioSalut(42);</span><br>
+  <b>ok</b> si la crides amb <mark>funcioSalut('Pastanaga');</mark><br>
+  <b>ko</b> si la crides amb <mark>funcioSalut(42);</mark><br>
   </code>
   `;
   funcioSalut('Pastanaga');

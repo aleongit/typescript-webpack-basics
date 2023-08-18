@@ -236,7 +236,7 @@ code {
   margin: 1em 0;
 }
 
-code .ressalta {
+mark {
   font-weight: bold;
   background-color: #e3e1e1;
 }

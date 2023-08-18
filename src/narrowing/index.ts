@@ -66,7 +66,7 @@ This might be a good segue into what we’ll call “truthiness” checking.
   function printAll(strs: string | string[] | null) {<br>
     &nbsp;if (typeof strs === "object") {<br>
       &nbsp;&nbsp;for (const s of strs) {<br>
-  <span class="ressalta">//'strs' is possibly 'null'.</span><br>
+  <mark>//'strs' is possibly 'null'.</mark><br>
       &nbsp;&nbsp;console.log(s);<br>
       &nbsp;&nbsp;}<br>
     &nbsp;} else if (typeof strs === "string") {<br>
@@ -157,7 +157,7 @@ const truthinessNarrowing = () => {
 
   sortida += `<code>
   function printAll(strs: string | string[] | null) {<br>
-    &nbsp;if (<span class="ressalta">strs &&</span> typeof strs === "object") {<br>
+    &nbsp;if (<mark>strs &&</mark> typeof strs === "object") {<br>
       &nbsp;&nbsp;for (const s of strs) {<br>
       &nbsp;&nbsp;console.log(s);<br>
       &nbsp;&nbsp;}<br>
@@ -231,7 +231,7 @@ const truthinessNarrowing = () => {
     &nbsp;values: number[] | undefined,<br>
     &nbsp;factor: number<br>
   ): number[] | undefined {<br>
-    &nbsp;<span class="ressalta">if (!values)</span> {<br>
+    &nbsp;<mark>if (!values)</mark> {<br>
       &nbsp;&nbsp;return values;<br>
     &nbsp;} else {<br>
       &nbsp;&nbsp;return values.map((x) => x * factor);<br>
@@ -314,7 +314,7 @@ const equalityNarrowing = () => {
 
   sortida += `<code>
   function printAll(strs: string | string[] | null) {<br>
-    &nbsp;<span class="ressalta">if (strs !== null)</span> {<br>
+    &nbsp;<mark>if (strs !== null)</mark> {<br>
       &nbsp;&nbsp;if (typeof strs === 'object') {<br>
         &nbsp;&nbsp;&nbsp;for (const s of strs) {<br>
           &nbsp;&nbsp;&nbsp;&nbsp;console.log(s);<br>
@@ -374,7 +374,7 @@ const equalityNarrowing = () => {
   }<br><br>
   function multiplyValue(container: Container, factor: number) {<br>
     &nbsp;// Remove both 'null' and 'undefined' from the type.<br>
-    &nbsp;<span class="ressalta">if (container.value != null)</span> {<br>
+    &nbsp;<mark>if (container.value != null)</mark> {<br>
       &nbsp;&nbsp;console.log(container.value);<br>
       &nbsp;&nbsp;// Now we can safely multiply 'container.value'.<br>
       &nbsp;&nbsp;container.value *= factor;<br>
@@ -438,7 +438,7 @@ const inOperator = () => {
   type Peix = { neda: () => void };<br>
   type Ocell = { vola: () => void };<br><br>
   const moure = (animal: Peix | Ocell) => {<br>
-    &nbsp;<span class="ressalta">if ('neda' in animal)</span> {<br>
+    &nbsp;<mark>if ('neda' in animal)</mark> {<br>
       &nbsp;&nbsp;return animal.neda();<br>
     &nbsp;}<br>
     &nbsp;&nbsp;return animal.vola();<br>
@@ -514,7 +514,7 @@ const instanceOf = () => {
 
   sortida += `<code>
   function logValue(x: Date | string) {<br>
-    &nbsp;<span class="ressalta">if (x instanceof Date)</span> {<br>
+    &nbsp;<mark>if (x instanceof Date)</mark> {<br>
       &nbsp;&nbsp;return x.toUTCString();<br>
     &nbsp;} else {<br>
       &nbsp;&nbsp;return x.toUpperCase();<br>
@@ -594,9 +594,9 @@ console.log(x);
   <b>//let x: string | number</b><br><br>
   x = 1;<br>
   console.log(x);<br>
-  <b>//let x: number</b><br><br><br>
-  <span class="ressalta">//x = true; //error</span><br>
-  <span class="ressalta">//Type 'boolean' is not assignable to type 'string | number'.</span><br><br>
+  <b>//let x: number</b><br><br>
+  <mark>//x = true; //error</mark><br>
+  <mark>//Type 'boolean' is not assignable to type 'string | number'.</mark><br><br>
   x = 'goodbye!';<br>
   console.log(x);<br>
   <b>//let x: string</b><br>
@@ -686,18 +686,18 @@ const controlFlow = () => {
       &nbsp;let x: string | number | boolean;<br><br>
       &nbsp;x = Math.random() < 0.5;<br>
       &nbsp;console.log(x);<br>
-      &nbsp;<span class="ressalta">//let x: boolean</span><br><br>
+      &nbsp;<mark>//let x: boolean</mark><br><br>
       &nbsp;if (Math.random() < 0.5) {<br>
         &nbsp;&nbsp;x = "hello";<br>
         &nbsp;&nbsp;console.log(x);<br>           
-        &nbsp;&nbsp;<span class="ressalta">//let x: string</span><br>
+        &nbsp;&nbsp;<mark>//let x: string</mark><br>
         &nbsp;} else {<br>
           &nbsp;&nbsp;x = 100;<br>
           &nbsp;&nbsp;console.log(x);<br>              
-          &nbsp;&nbsp;<span class="ressalta">//let x: number</span><br>
+          &nbsp;&nbsp;<mark>//let x: number</mark><br>
       &nbsp;}<br>
       &nbsp;return x;<br>      
-        &nbsp;&nbsp;<span class="ressalta">//let x: string | number</span><br>
+        &nbsp;&nbsp;<mark>//let x: string | number</mark><br>
       }<br>
 </code>
 `;
@@ -797,7 +797,7 @@ const typePredicates = () => {
       &nbsp;&nbsp;? <Fish>{ name: 'Nemo', swim: () => 'nedo!' }<br>
       &nbsp;&nbsp;: <Bird>{ name: 'Piolin', fly: () => 'volo' };<br>
   }<br><br>
-  function isFish(pet: Fish | Bird): <span class="ressalta">pet is Fish</span> {<br>
+  function isFish(pet: Fish | Bird): <mark>pet is Fish</mark> {<br>
     &nbsp;return (pet as Fish).swim !== undefined;<br>
   }<br><br>
   const zoo: (Fish | Bird)[] = [getSmallPet(), getSmallPet(), getSmallPet()];<br>
@@ -805,7 +805,7 @@ const typePredicates = () => {
   <b>// or, equivalently</b><br>
   const underWater2: Fish[] = zoo.filter(isFish) as Fish[];<br><br>
   <b>// The predicate may need repeating for more complex examples</b><br>
-  const underWater3: Fish[] = zoo.filter((pet): <span class="ressalta">pet is Fish</span> => {<br>
+  const underWater3: Fish[] = zoo.filter((pet): <mark>pet is Fish</mark> => {<br>
     &nbsp;if (pet.name === 'sharkey') return false;<br>
     &nbsp;return isFish(pet);<br>
   });<br>
@@ -998,7 +998,7 @@ const discriminatedUnions = () => {
   */
 
   sortida += `<code>
-  <span class="ressalta">//We can definitely do better</span><br>
+  <mark>//We can definitely do better</mark><br>
   interface Shape {<br>
     &nbsp;kind: "circle" | "square";<br>
     &nbsp;radius?: number;<br>
@@ -1038,7 +1038,7 @@ const discriminatedUnions = () => {
   console.log(getArea({ kind: 'square', sideLength: 4 }));
 
   sortida += `<code>
-  <span class="ressalta">//Doing better</span><br>
+  <mark>//Doing better</mark><br>
   interface Circle {<br>
     &nbsp;kind: 'circle';<br>
     &nbsp;radius: number;<br>
@@ -1052,10 +1052,10 @@ const discriminatedUnions = () => {
     &nbsp;switch (shape.kind) {<br>
       &nbsp;&nbsp;case 'circle':<br>
         &nbsp;&nbsp;&nbsp;return Math.PI * shape.radius ** 2;<br>
-      &nbsp;&nbsp;<span class="ressalta">//(parameter) shape: Circle</span><br>
+      &nbsp;&nbsp;<mark>//(parameter) shape: Circle</mark><br>
       &nbsp;&nbsp;case 'square':<br>
         &nbsp;&nbsp;&nbsp;return shape.sideLength ** 2;<br>
-      &nbsp;&nbsp;<span class="ressalta">//(parameter) shape: Square</span><br>
+      &nbsp;&nbsp;<mark>//(parameter) shape: Square</mark><br>
     &nbsp;}<br>
   }<br>
 </code>
@@ -1117,9 +1117,9 @@ const never = () => {
         &nbsp;&nbsp;&nbsp;return Math.PI * shape.radius ** 2;<br>
       &nbsp;&nbsp;case "square":<br>
         &nbsp;&nbsp;&nbsp;return shape.sideLength ** 2;<br>
-      &nbsp;&nbsp;<span class="ressalta">default:</span><br>
-        &nbsp;&nbsp;&nbsp;<span class="ressalta">const _exhaustiveCheck: never = shape;</span><br>
-        &nbsp;&nbsp;&nbsp;<span class="ressalta">return _exhaustiveCheck;</span><br>
+      &nbsp;&nbsp;<mark>default:</mark><br>
+        &nbsp;&nbsp;&nbsp;<mark>const _exhaustiveCheck: never = shape;</mark><br>
+        &nbsp;&nbsp;&nbsp;<mark>return _exhaustiveCheck;</mark><br>
     &nbsp;}<br>
   }<br>
 
@@ -1152,7 +1152,7 @@ const never = () => {
   */
 
   sortida += `<code>
-  <span class="ressalta">//Adding a new member to the Shape union, will cause a TypeScript error</span><br>
+  <mark>//Adding a new member to the Shape union, will cause a TypeScript error</mark><br>
   interface Triangle {<br>
     &nbsp;kind: 'triangle';<br>
     &nbsp;sideLength: number;<br>
@@ -1165,7 +1165,7 @@ const never = () => {
       &nbsp;&nbsp;case "square":<br>
         &nbsp;&nbsp;&nbsp;return shape.sideLength ** 2;<br>
       &nbsp;&nbsp;default:<br>
-        &nbsp;&nbsp;&nbsp;<span class="ressalta">//error de _exhaustiveCheck si no hi ha cas Triangle</span><br>
+        &nbsp;&nbsp;&nbsp;<mark>//error de _exhaustiveCheck si no hi ha cas Triangle</mark><br>
         &nbsp;&nbsp;&nbsp;const _exhaustiveCheck: never = shape;<br>
         &nbsp;&nbsp;&nbsp;return _exhaustiveCheck;<br>
     &nbsp;}<br>
