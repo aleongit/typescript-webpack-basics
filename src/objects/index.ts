@@ -1,4 +1,4 @@
-import * as init from '../init';
+import { montaPagina } from '../init';
 import { getImgWithLink } from '../helpers';
 
 import '../main.css';
@@ -41,7 +41,7 @@ test
   return sortida;
 };
 
-init.montaPagina();
+montaPagina();
 
 const sortida = document.getElementById('sortida');
 if (sortida) {

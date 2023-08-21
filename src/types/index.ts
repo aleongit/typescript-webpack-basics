@@ -1,4 +1,4 @@
-import * as init from '../init';
+import { montaPagina } from '../init';
 import '../main.css';
 //import "./styles.css"; //component styles
 
@@ -1416,7 +1416,7 @@ const lessCommonPrimitives = () => {
   return sortida;
 };
 
-init.montaPagina();
+montaPagina();
 const sortida = document.getElementById('sortida');
 if (sortida) {
   sortida.innerHTML += primitives();

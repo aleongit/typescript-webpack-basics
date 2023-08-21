@@ -1,7 +1,7 @@
 //import _ from "lodash"; // Lodash, now imported by this script
 //import * as _ from 'lodash'; //typscript
 import './main.css';
-import * as init from './init';
+import { montaPagina } from './init';
 
 /*
 function component() {
@@ -13,4 +13,4 @@ function component() {
 }
 */
 
-init.montaPagina();
+montaPagina();
