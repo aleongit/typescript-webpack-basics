@@ -3,9 +3,9 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 
-let htmlPageNames = ['types', 'narrowing', 'functions', 'objects'];
+const htmlPageNames = ['types', 'narrowing', 'functions', 'objects'];
 
-let multipleHtmlPlugins = htmlPageNames.map((name) => {
+const multipleHtmlPlugins = htmlPageNames.map((name) => {
   return new HtmlWebpackPlugin({
     title: 'TypeScript - ' + name.charAt(0).toUpperCase() + name.slice(1),
     template: `./src/index.html`, // relative path to the HTML files
@@ -17,7 +17,7 @@ let multipleHtmlPlugins = htmlPageNames.map((name) => {
 //generar objecte {} amb punts d'entrada ts per expandir module.exports.entry
 //array to object amb 'reduce'
 //let obj = ['a', 'b', 'c'].reduce((a, v) => ({ ...a, [v]: v }), {});
-let entries = htmlPageNames.reduce((acumulat, item, index, arra) => {
+const entries = htmlPageNames.reduce((acumulat, item, index, arra) => {
   acumulat[item] = `./src/${item}/index.ts`;
   return acumulat;
 }, {}); // {} inici objecte buit
