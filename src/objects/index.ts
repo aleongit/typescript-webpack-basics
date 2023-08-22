@@ -6,7 +6,6 @@ import '../main.css';
 
 import png1 from '../img/TypeScript Types.png';
 import png2 from '../img/TypeScript Interfaces.png';
-import { isArray } from 'lodash';
 const imatges = [png1, png2];
 
 //https://www.typescriptlang.org/docs/handbook/2/objects.html
@@ -1201,7 +1200,7 @@ const genericObjectTypes = () => {
     // ...
     console.log(a, b);
     console.log('pair és ' + typeof pair); //object
-    console.log(isArray(pair)); //true
+    console.log(Array.isArray(pair)); //true
   }
   doSomething2(['hello', 42]);
 
