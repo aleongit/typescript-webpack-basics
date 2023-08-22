@@ -1,1 +1,7 @@
-export const htmlPageNames: string[] = ['types', 'narrowing', 'functions', 'objects'];
+export const htmlPageNames: string[] = [
+  'types',
+  'narrowing',
+  'functions',
+  'objects',
+  'manipulation'
+];

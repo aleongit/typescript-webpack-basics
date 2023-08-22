@@ -3,7 +3,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 
-const htmlPageNames = ['types', 'narrowing', 'functions', 'objects'];
+const htmlPageNames = ['types', 'narrowing', 'functions', 'objects', 'manipulation'];
 
 const multipleHtmlPlugins = htmlPageNames.map((name) => {
   return new HtmlWebpackPlugin({
