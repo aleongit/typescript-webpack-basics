@@ -231,10 +231,183 @@ const workingGenerics = () => {
   return sortida;
 };
 
+const genericTypes = () => {
+  /*
+  Generic Types
+  */
+  let sortida = '<h2>Generic Types</h2>';
+
+  /*
+  In previous sections, we created generic identity functions that worked over a range of types. 
+  In this section, we’ll explore the type of the functions themselves and how to create generic interfaces.
+
+  The type of generic functions is just like those of non-generic functions, 
+  with the type parameters listed first, similarly to function declarations:
+
+  function identity<Type>(arg: Type): Type {
+    return arg;
+  }
+  
+  let myIdentity: <Type>(arg: Type) => Type = identity;
+
+   */
+  function identity<Type>(arg: Type): Type {
+    return arg;
+  }
+  let myIdentity: <Type>(arg: Type) => Type = identity;
+  console.log(myIdentity);
+
+  sortida += `<code>
+  <mark>//type of generic functions</mark><br><br>
+  function identity<mark>&lt;Type&gt;</mark>(arg: <mark>Type</mark>): <mark>Type</mark> {<br>
+    &nbsp;return arg;<br>
+  }<br>
+  let myIdentity: <mark>&lt;Type&gt;</mark>(arg: <mark>Type</mark>) => <mark>Type</mark> = identity;<br>
+  </code>`;
+
+  /*
+  We could also have used a different name for the generic type parameter in the type, 
+  so long as the number of type variables and how the type variables are used line up.
+
+  function identity<Input>(arg: Input): Input {
+    return arg;
+  }
+  
+  let myIdentity: <Input>(arg: Input) => Input = identity;
+  */
+
+  function identity2<Input>(arg: Input): Input {
+    return arg;
+  }
+  let myIdentity2: <Input>(arg: Input) => Input = identity2;
+
+  sortida += `<code>
+  <b>//We could also have used a different name for the generic type parameter in the type,<br>
+  so long as the number of type variables and how the type variables are used line up.</b><br><br>
+  function identity<mark>&lt;Input&gt;</mark>(arg: <mark>Input</mark>): <mark>Input</mark> {<br>
+    &nbsp;return arg;<br>
+  }<br>
+  let myIdentity: <mark>&lt;Input&gt;</mark>(arg: <mark>Input</mark>) => <mark>Input</mark> = identity;<br>
+  </code>`;
+
+  /*
+  We can also write the generic type as a call signature of an object literal type:
+
+  function identity<Type>(arg: Type): Type {
+    return arg;
+  }
+  
+  let myIdentity: { <Type>(arg: Type): Type } = identity;
+  */
+
+  function identity3<Type>(arg: Type): Type {
+    return arg;
+  }
+  let myIdentity3: { <Type>(arg: Type): Type } = identity3;
+  console.log(myIdentity3);
+
+  sortida += `<code>
+  <b>//We can also write the generic type as a call signature of an object literal type</b><br><br>
+  function identity&lt;Type&gt;(arg: Type): Type {<br>
+    return arg;<br>
+  }<br>
+  let myIdentity: <mark>{ &lt;Type&gt;(arg: Type): Type }</mark> = identity;<br>
+  </code>`;
+
+  /*
+  Which leads us to writing our first generic interface. 
+  Let’s take the object literal from the previous example and move it to an interface:
+
+  interface GenericIdentityFn {
+    <Type>(arg: Type): Type;
+  }
+  
+  function identity<Type>(arg: Type): Type {
+    return arg;
+  }
+  
+  let myIdentity: GenericIdentityFn = identity;
+  */
+
+  interface GenericIdentityFn {
+    <Type>(arg: Type): Type;
+  }
+  function identity4<Type>(arg: Type): Type {
+    return arg;
+  }
+  let myIdentity4: GenericIdentityFn = identity4;
+
+  sortida += `<code>
+  <b>//to writing our first generic interface.<br>
+  //Let's take the object literal from the previous example and move it to an interface</b><br><br>
+  <mark>interface GenericIdentityFn {<br>
+    &nbsp;&lt;Type&gt;(arg: Type): Type;<br>
+  }</mark><br>
+  function identity&ltType&gt(arg: Type): Type {<br>
+    &nbsp;return arg;<br>
+  }<br>
+  let myIdentity: <mark>GenericIdentityFn</mark> = identity;<br>
+  </code>`;
+
+  /*
+  In a similar example, we may want to move the generic parameter to be a parameter 
+  of the whole interface. 
+  This lets us see what type(s) we’re generic over (e.g. Dictionary<string> rather than just Dictionary).
+  This makes the type parameter visible to all the other members of the interface.
+
+  interface GenericIdentityFn<Type> {
+    (arg: Type): Type;
+  }
+  
+  function identity<Type>(arg: Type): Type {
+    return arg;
+  }
+  
+  let myIdentity: GenericIdentityFn<number> = identity;
+  */
+  interface GenericIdentityFn2<Type> {
+    (arg: Type): Type;
+  }
+
+  function identity5<Type>(arg: Type): Type {
+    return arg;
+  }
+  let myIdentity5: GenericIdentityFn2<number> = identity5;
+
+  sortida += `<code>
+  <b>//In a similar example,<br>
+  //we may want to move the generic parameter to be a parameter of the whole interface.</b><br><br>
+  <mark>interface GenericIdentityFn&lt;Type&gt; {<br>
+    &nbsp;(arg: Type): Type;<br>
+  }</mark><br>
+  function identity&lt;Type&gt;(arg: Type): Type {<br>
+    &nbsp;return arg;<br>
+  }<br>
+  let myIdentity: <mark>GenericIdentityFn&lt;number&gt;</mark> = identity;<br>
+  </code>`;
+
+  /*
+  Notice that our example has changed to be something slightly different. 
+  Instead of describing a generic function, 
+  we now have a non-generic function signature that is a part of a generic type. 
+  When we use GenericIdentityFn, we now will also need to specify the corresponding type argument 
+  (here: number), effectively locking in what the underlying call signature will use. 
+  Understanding when to put the type parameter directly on the call signature 
+  and when to put it on the interface itself will be helpful in describing 
+  what aspects of a type are generic.
+
+  In addition to generic interfaces, we can also create generic classes. 
+  Note that it is not possible to create generic enums and namespaces.
+  */
+
+  return sortida;
+};
+
 montaPagina();
 
 const sortida = document.getElementById('sortida');
 if (sortida) {
   sortida.innerHTML += generics();
   sortida.innerHTML += workingGenerics();
+  sortida.innerHTML += genericTypes();
 }
