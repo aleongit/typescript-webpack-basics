@@ -67,6 +67,11 @@ export const titles: { [Key in htmlPageNamesType]: string[] } = {
     'Using Type Parameters in Generic Constraints',
     'Using Class Types in Generics',
     'Generic Parameter Defaults',
-    'Keyof Type Operator'
+    'Keyof Type Operator',
+    'Typeof Type Operator',
+    'Indexed Access Types',
+    'Conditional Types',
+    'Mapped Types',
+    'Template Literal Types'
   ]
 };

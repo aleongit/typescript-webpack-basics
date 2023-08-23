@@ -6,7 +6,6 @@ import '../main.css';
 //constants
 const h2 = titles.manipulation;
 
-
 //https://www.typescriptlang.org/docs/handbook/2/types-from-types.html
 
 const generics = (title: string) => {
@@ -809,7 +808,7 @@ const genericParameterDefaults = (title: string) => {
   return sortida;
 };
 
-const KeyofTypeOperator = (title: string) => {
+const keyofTypeOperator = (title: string) => {
   /*
   Keyof Type Operator
   */
@@ -889,6 +888,332 @@ const KeyofTypeOperator = (title: string) => {
   return sortida;
 };
 
+const typeofTypeOperator = (title: string) => {
+  /*
+  Typeof Type Operator
+  */
+  let sortida = `<h2 id="${title}">${title}</h2>`;
+
+  /*
+  JavaScript already has a typeof operator you can use in an expression context:
+
+  // Prints "string"
+  console.log(typeof "Hello world");
+  
+  TypeScript adds a typeof operator you can use in a type context to refer to the type 
+  of a variable or property:
+
+  let s = "hello";
+  let n: typeof s;
+      //let n: string
+  */
+
+  sortida += `<code>
+  <b>//JavaScript already has a typeof operator you can use in an expression context</b><br>
+  console.log(<mark>typeof</mark> "Hello world");<br>
+  <b>// Prints "string"</b><br><br>
+  <b>//TypeScript adds a typeof operator you can use in a type context<br>
+  //to refer to the type of a variable or property</b><br>
+  let s = "hello";<br>
+  let n: <mark>typeof</mark> s;<br>
+  <b>//let n: string</b><br>
+  </code>`;
+
+  /*
+  This isn’t very useful for basic types, 
+  but combined with other type operators, you can use typeof to conveniently express many patterns. 
+  
+  For an example, let’s start by looking at the predefined type ReturnType<T>. 
+  It takes a function type and produces its return type:
+
+  type Predicate = (x: unknown) => boolean;
+  type K = ReturnType<Predicate>;
+  //type K = boolean
+  
+
+  If we try to use ReturnType on a function name, we see an instructive error:
+
+  function f() {
+    return { x: 10, y: 3 };
+  }
+  type P = ReturnType<f>;
+  //'f' refers to a value, but is being used as a type here. Did you mean 'typeof f'?
+
+  Remember that values and types aren’t the same thing. 
+  To refer to the type that the value f has, we use typeof:
+
+  function f() {
+    return { x: 10, y: 3 };
+  }
+  type P = ReturnType<typeof f>;
+      //type P = {
+      x: number;
+      y: number;
+      }
+
+
+  Limitations
+  TypeScript intentionally limits the sorts of expressions you can use typeof on.
+
+  Specifically, it’s only legal to use typeof on identifiers (i.e. variable names) or their properties. 
+  This helps avoid the confusing trap of writing code you think is executing, but isn’t:
+
+  // Meant to use = ReturnType<typeof msgbox>
+  let shouldContinue: typeof msgbox("Are you sure you want to continue?");
+
+  
+  */
+
+  type Predicate = (x: unknown) => boolean;
+  type K = ReturnType<Predicate>;
+
+  function f() {
+    return { x: 10, y: 3 };
+  }
+  type P = ReturnType<typeof f>;
+
+  sortida += `<code>
+  <b>//For an example, let's start by looking at the predefined type ReturnType<T>.<br>
+  //It takes a function type and produces its return type</b><br><br>
+  type Predicate = (x: unknown) => boolean;<br>
+  type K = ReturnType&lt;Predicate&gt;;<br>
+  //type K = boolean<br><br>
+  </code>`;
+
+  sortida += `<code>
+  <b>//If we try to use ReturnType on a function name, we see an instructive error:</b><br>
+  function f() {<br>
+    &nbsp;return { x: 10, y: 3 };<br>
+  }<br>
+  type P = ReturnType<mark>&lt;f&gt;</mark>;<br>
+  <mark>//'f' refers to a value, but is being used as a type here. Did you mean 'typeof f'?<mark><br>
+  </code>`;
+
+  sortida += `<code>
+  <b>//Remember that values and types aren't the same thing.<br>
+  //To refer to the type that the value f has, we use typeof</b><br><br>
+  function f() {<br>
+    &nbsp;return { x: 10, y: 3 };<br>
+  }<br>
+  type P = ReturnType&lt;<mark>typeof</mark> f&gt;;<br>
+  <b>//type P = {<br>
+    &nbsp;x: number;<br>
+    &nbsp;y: number;<br>
+    &nbsp;}</b><br>
+  </code>`;
+
+  return sortida;
+};
+
+const indexedAccessTypes = (title: string) => {
+  /*
+  Indexed Access Types
+  */
+  let sortida = `<h2 id="${title}">${title}</h2>`;
+
+  /*
+  We can use an indexed access type to look up a specific property on another type:
+
+  type Person = { age: number; name: string; alive: boolean };
+  type Age = Person["age"];
+      //type Age = number
+  */
+  type Person = { age: number; name: string; alive: boolean };
+  type Age = Person['age'];
+  //type Age = number
+
+  sortida += `<code>
+  <b>//We can use an indexed access type to look up a specific property on another type</b><br><br>
+  type Person = { age: number; name: string; alive: boolean };<br>
+  <mark>type Age = Person['age'];</mark><br>
+  <b> &nbsp;//type Age = number</b><br>
+  </code>`;
+
+  /*
+  The indexing type is itself a type, so we can use unions, keyof, or other types entirely:
+
+  type I1 = Person["age" | "name"];
+        //type I1 = string | number
+  type I2 = Person[keyof Person];   
+        //type I2 = string | number | boolean
+  type AliveOrName = "alive" | "name";
+  type I3 = Person[AliveOrName];  
+        //type I3 = string | boolean
+  */
+  type I1 = Person['age' | 'name'];
+  //type I1 = string | number
+  type I2 = Person[keyof Person];
+  //type I2 = string | number | boolean
+  type AliveOrName = 'alive' | 'name';
+  type I3 = Person[AliveOrName];
+  //type I3 = string | boolean
+
+  sortida += `<code>
+  <b>//The indexing type is itself a type, so we can use unions, keyof, or other types entirely</b><br><br>
+  type I1 = <mark>Person["age" | "name"]</mark>;<br>
+        &nbsp;<b>//type I1 = string | number</b><br>
+  type I2 = <mark>Person[keyof Person]</mark>;<br>
+        &nbsp;<b>//type I2 = string | number | boolean</b><br>
+  type AliveOrName = "alive" | "name";<br>
+  type I3 = <mark>Person[AliveOrName]</mark>;<br>
+        &nbsp;<b>//type I3 = string | boolean</b><br>
+  </code>`;
+
+  /*
+  You’ll even see an error if you try to index a property that doesn’t exist:
+
+  type I1 = Person["alve"];
+  Property 'alve' does not exist on type 'Person'.
+
+  Another example of indexing with an arbitrary type is using 'number'
+  to get the type of an array’s elements. 
+  We can combine this with typeof to conveniently capture the element type of an array literal:
+
+  const MyArray = [
+    { name: "Alice", age: 15 },
+    { name: "Bob", age: 23 },
+    { name: "Eve", age: 38 },
+  ];
+  
+  type Person = typeof MyArray[number];
+      //type Person = {
+        name: string;
+        age: number;
+      }
+  type Age = typeof MyArray[number]["age"];
+      //type Age = number
+  
+  // Or
+  type Age2 = Person["age"];
+      //type Age2 = number
+
+  */
+
+  const MyArray = [
+    { name: 'Alice', age: 15 },
+    { name: 'Bob', age: 23 },
+    { name: 'Eve', age: 38 }
+  ];
+  type Persona = (typeof MyArray)[number];
+  /*type Person = {
+      name: string;
+      age: number;
+    }*/
+  type Edat = (typeof MyArray)[number]['age'];
+  //type Edat = number
+
+  // Or
+  type Edat2 = Persona['age'];
+  //type Edat2 = number
+
+  sortida += `<code>
+  <b>//Another example of indexing with an arbitrary type is using <mark>number</mark><br>
+  //to get the type of an array's elements.<br> 
+  //We can combine this with <mark>typeof</mark> to conveniently capture the element type of an array literal</b><br><br>
+  const MyArray = [<br>
+    &nbsp;{ name: 'Alice', age: 15 },<br>
+    &nbsp;{ name: 'Bob', age: 23 },<br>
+    &nbsp;{ name: 'Eve', age: 38 }<br>
+  ];<br><br>
+  type Persona = <mark>(typeof MyArray)[number]</mark>;<br>
+    &nbsp;<b>//type Person = {<br>
+      &nbsp;&nbsp;name: string;<br>
+      &nbsp;&nbsp;age: number;<br>
+    &nbsp;}</b><br>
+  type Edat = <mark>(typeof MyArray)[number]['age'];</mark><br>
+  <b>//type Edat = number</b><br><br>
+  // Or<br>
+  type Edat2 = <mark>Persona['age'];</mark><br>
+  <b>//type Edat2 = number</b><br>
+  </code>`;
+
+  /*
+  You can only use types when indexing, meaning you can’t use a const to make a variable reference:
+
+  const key = "age";
+  type Age = Person[key];
+  //Type 'key' cannot be used as an index type.
+  //'key' refers to a value, but is being used as a type here. Did you mean 'typeof key'?
+  
+  However, you can use a type alias for a similar style of refactor:
+
+  type key = "age";
+  type Age = Person[key];
+  */
+
+  const key = 'age';
+  type Age3 = Person[typeof key];
+
+  sortida += `<code>
+  <b>//You can only use types when indexing</b><br>
+  <mark>const</mark> key = "age";<br>
+  type Age = Person[key];<br>
+  <b>//Type 'key' cannot be used as an index type.</b><br>
+  <b>//'key' refers to a value, but is being used as a type here. Did you mean 'typeof key'?</b><br><br>
+  <mark>//However, you can use a type alias for a similar style of refactor</mark><br>
+  <mark>type</mark> key = "age";<br>
+  type Age = Person[key];<br>
+  //or<br>
+  <mark>const</mark> key = "age";<br>
+  type Age = Person[<mark>typeof key</mark>];<br>
+  </code>`;
+
+  return sortida;
+};
+
+const conditionalTypes = (title: string) => {
+  /*
+  Conditional Types
+  */
+  let sortida = `<h2 id="${title}">${title}</h2>`;
+
+  /*
+  At the heart of most useful programs, we have to make decisions based on input. 
+  JavaScript programs are no different, but given the fact that values can be easily introspected, 
+  those decisions are also based on the types of the inputs. 
+  Conditional types help describe the relation between the types of inputs and outputs.
+
+  interface Animal {
+    live(): void;
+  }
+  interface Dog extends Animal {
+    woof(): void;
+  }
+  type Example1 = Dog extends Animal ? number : string;
+        //type Example1 = number
+  
+  type Example2 = RegExp extends Animal ? number : string;
+        //type Example2 = string
+   */
+
+  interface Animal {
+    live(): void;
+  }
+  interface Dog extends Animal {
+    woof(): void;
+  }
+  type Example1 = Dog extends Animal ? number : string;
+  //type Example1 = number
+  type Example2 = RegExp extends Animal ? number : string;
+  //type Example2 = string
+
+  sortida += `<code>
+  <b>//Conditional types help describe the relation between the types of inputs and outputs</b><br><br>
+  interface Animal {<br>
+    &nbsp;live(): void;<br>
+  }<br>
+  interface Dog extends Animal {<br>
+    &nbsp;woof(): void;<br>
+  }<br>
+  type Example1 = <mark>Dog extends Animal ? number : string;</mark><br>
+  //type Example1 = number<br>
+  type Example2 = <mark>RegExp extends Animal ? number : string;</mark><br>
+  //type Example2 = string<br>
+  </code>`;
+
+  return sortida;
+};
+
 montaPagina(h2);
 const sortida = document.getElementById('sortida');
 if (sortida) {
@@ -900,5 +1225,8 @@ if (sortida) {
   sortida.innerHTML += typeParametersGenericConstraints(h2[5]);
   sortida.innerHTML += classTypesGenerics(h2[6]);
   sortida.innerHTML += genericParameterDefaults(h2[7]);
-  sortida.innerHTML += KeyofTypeOperator(h2[8]);
+  sortida.innerHTML += keyofTypeOperator(h2[8]);
+  sortida.innerHTML += typeofTypeOperator(h2[9]);
+  sortida.innerHTML += indexedAccessTypes(h2[10]);
+  sortida.innerHTML += conditionalTypes(h2[11]);
 }
