@@ -64,7 +64,7 @@ nav {
   border: solid #bbb9b9;
   border-width: 1px 0 1px 0;
   margin: 5px 0 1em;
-  /*gap: 5px;*/
+  gap: 5px;
 }
 
 .logo {
@@ -118,6 +118,12 @@ nav {
 .button:hover {
   border-color: #b5b5b5;
   color: #363636;
+}
+
+.button.is-submenu {
+  padding-bottom: 0;
+  padding-top: 0;
+  color: black;
 }
 
 .button.is-info {

@@ -22,7 +22,22 @@ const getPath = () => {
   h1!.innerText = 'Hello! ' + path;
 };
 
-export const montaPagina = () => {
-  fesMenu();
+const fesSubmenu = (titols: string[]): void => {
+  const submenu = document.getElementById('submenu');
+  titols.forEach((titol) => {
+    const a = document.createElement('a');
+    const text = document.createTextNode(titol);
+    a.setAttribute('href', `#${titol}`);
+    a.setAttribute('class', 'button is-submenu sense-deco');
+    a.appendChild(text);
+    submenu?.appendChild(a);
+  });
+};
+
+export const montaPagina = (titols?: string[]) => {
   getPath();
+  fesMenu();
+  if (titols) {
+    fesSubmenu(titols);
+  }
 };
