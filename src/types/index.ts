@@ -1,14 +1,19 @@
 import { montaPagina } from '../init';
+import { titles } from '../constants';
 import '../main.css';
 //import "./styles.css"; //component styles
 
+//constants
+const h2 = titles.types;
+
+
 //https://www.typescriptlang.org/docs/handbook/2/everyday-types.html
 
-const primitives = () => {
+const primitives = (title: string) => {
   /*
 The primitives: string, number, and boolean
 */
-  let sortida = '<h2>The primitives: string, number, and boolean</h2>';
+  let sortida = `<h2 id="${title}">${title}</h2>`;
   /*
 JavaScript has three very commonly used primitives: string, number, and boolean.
 Each has a corresponding type in TypeScript. 
@@ -41,11 +46,11 @@ la variable <b>bolea</b> de tipus <b>${typeof bolea}</b> amb valor <b>${bolea}</
   return sortida;
 };
 
-const arrays = () => {
+const arrays = (title: string) => {
   /*
 Arrays
 */
-  let sortida = '<h2>Arrays</h2>';
+  let sortida = `<h2 id="${title}">${title}</h2>`;
 
   /*
 To specify the type of an array like [1, 2, 3], you can use the syntax number[];
@@ -67,11 +72,11 @@ la variable <b>lletres</b> de tipus <b>${typeof lletres}</b> amb valor <b>${llet
   return sortida;
 };
 
-const typeAni = () => {
+const typeAni = (title: string) => {
   /*
   Any
   */
-  let sortida = '<h2>Any</h2>';
+  let sortida = `<h2 id="${title}">${title}</h2>`;
   /*
   TypeScript also has a special type, any, 
   that you can use whenever you don’t want a particular value to cause typechecking errors.
@@ -127,11 +132,11 @@ const typeAni = () => {
   return sortida;
 };
 
-const typeAnnotationVar = () => {
+const typeAnnotationVar = (title: string) => {
   /*
   Type Annotations on Variables
   */
-  let sortida = '<h2>Type Annotations on Variables</h2>';
+  let sortida = `<h2 id="${title}">${title}</h2>`;
 
   /*
   When you declare a variable using const, var, or let, you can optionally add a type annotation 
@@ -162,11 +167,11 @@ const typeAnnotationVar = () => {
   return sortida;
 };
 
-const functions = () => {
+const functions = (title: string) => {
   /*
   Functions
   */
-  let sortida = '<h2>Functions</h2>';
+  let sortida = `<h2 id="${title}">${title}</h2>`;
   /*
   Functions are the primary means of passing data around in JavaScript.
   TypeScript allows you to specify the types of both the input and output values of functions.
@@ -322,11 +327,11 @@ const functions = () => {
   return sortida;
 };
 
-const objectTypes = () => {
+const objectTypes = (title: string) => {
   /*
   Object Types
   */
-  let sortida = '<h2>Object Types</h2>';
+  let sortida = `<h2 id="${title}">${title}</h2>`;
 
   /*
   Apart from primitives, the most common sort of type you’ll encounter is an object type. 
@@ -438,11 +443,11 @@ const objectTypes = () => {
   return sortida;
 };
 
-const unionTypes = () => {
+const unionTypes = (title: string) => {
   /*
   Union Types
   */
-  let sortida = '<h2>Union Types</h2>';
+  let sortida = `<h2 id="${title}">${title}</h2>`;
 
   /*
   TypeScript’s type system allows you to build new types out of existing ones 
@@ -640,12 +645,12 @@ const unionTypes = () => {
   return sortida;
 };
 
-const typeAliases = () => {
+const typeAliases = (title: string) => {
   /*
   Type Aliases
   */
 
-  let sortida = '<h2>Type Aliases</h2>';
+  let sortida = `<h2 id="${title}">${title}</h2>`;
 
   /*
   We’ve been using object types and union types by writing them directly in type annotations. 
@@ -734,12 +739,12 @@ const typeAliases = () => {
   return sortida;
 };
 
-const interfaces = () => {
+const interfaces = (title: string) => {
   /*
   Interfaces
   */
 
-  let sortida = '<h2>Interfaces</h2>';
+  let sortida = `<h2 id="${title}">${title}</h2>`;
 
   /*
   An interface declaration is another way to name an object type:
@@ -917,12 +922,12 @@ If you would like a heuristic, use interface until you need to use features from
   return sortida;
 };
 
-const typeAssertions = () => {
+const typeAssertions = (title: string) => {
   /*
   Type Assertions
   */
 
-  let sortida = '<h2>Type Assertions</h2>';
+  let sortida = `<h2 id="${title}">${title}</h2>`;
 
   /*
   Sometimes you will have information about the type of a value that TypeScript can’t know about.
@@ -980,12 +985,12 @@ const typeAssertions = () => {
   return sortida;
 };
 
-const literalTypes = () => {
+const literalTypes = (title: string) => {
   /*
   Literal Types
   */
 
-  let sortida = '<h2>Literal Types</h2>';
+  let sortida = `<h2 id="${title}">${title}</h2>`;
 
   /*
   In addition to the general types string and number,
@@ -1221,12 +1226,12 @@ const literalTypes = () => {
   return sortida;
 };
 
-const nullUndefined = () => {
+const nullUndefined = (title: string) => {
   /*
   null and undefined
   */
 
-  let sortida = '<h3>null and undefined</h3>';
+  let sortida = `<h2 id="${title}">${title}</h2>`;
 
   /*
   JavaScript has two primitive values used to signal absent or uninitialized value: 
@@ -1306,12 +1311,12 @@ const nullUndefined = () => {
   return sortida;
 };
 
-const enums = () => {
+const enums = (title: string) => {
   /*
   Enums
   */
 
-  let sortida = '<h2>Enums</h2>';
+  let sortida = `<h2 id="${title}">${title}</h2>`;
 
   /*
   Enums are a feature added to JavaScript by TypeScript which allows for describing 
@@ -1351,12 +1356,12 @@ const enums = () => {
   return sortida;
 };
 
-const lessCommonPrimitives = () => {
+const lessCommonPrimitives = (title: string) => {
   /*
   Less Common Primitives
   */
 
-  let sortida = '<h2>Less Common Primitives</h2>';
+  let sortida = `<h2 id="${title}">${title}</h2>`;
 
   /*
   It’s worth mentioning the rest of the primitives in JavaScript which are represented 
@@ -1416,21 +1421,21 @@ const lessCommonPrimitives = () => {
   return sortida;
 };
 
-montaPagina();
+montaPagina(h2);
 const sortida = document.getElementById('sortida');
 if (sortida) {
-  sortida.innerHTML += primitives();
-  sortida.innerHTML += arrays();
-  sortida.innerHTML += typeAni();
-  sortida.innerHTML += typeAnnotationVar();
-  sortida.innerHTML += functions();
-  sortida.innerHTML += objectTypes();
-  sortida.innerHTML += unionTypes();
-  sortida.innerHTML += typeAliases();
-  sortida.innerHTML += interfaces();
-  sortida.innerHTML += typeAssertions();
-  sortida.innerHTML += literalTypes();
-  sortida.innerHTML += nullUndefined();
-  sortida.innerHTML += enums();
-  sortida.innerHTML += lessCommonPrimitives();
+  sortida.innerHTML += primitives(h2[0]);
+  sortida.innerHTML += arrays(h2[1]);
+  sortida.innerHTML += typeAni(h2[2]);
+  sortida.innerHTML += typeAnnotationVar(h2[3]);
+  sortida.innerHTML += functions(h2[4]);
+  sortida.innerHTML += objectTypes(h2[5]);
+  sortida.innerHTML += unionTypes(h2[6]);
+  sortida.innerHTML += typeAliases(h2[7]);
+  sortida.innerHTML += interfaces(h2[8]);
+  sortida.innerHTML += typeAssertions(h2[9]);
+  sortida.innerHTML += literalTypes(h2[10]);
+  sortida.innerHTML += nullUndefined(h2[11]);
+  sortida.innerHTML += enums(h2[12]);
+  sortida.innerHTML += lessCommonPrimitives(h2[13]);
 }

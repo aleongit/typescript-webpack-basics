@@ -1,17 +1,21 @@
 import { montaPagina } from '../init';
-import { getImgWithLink } from '../helpers';
-
+import { titles } from '../constants';
 import '../main.css';
 //import "./styles.css"; //component styles
 
+//constants
+const h2 = titles.manipulation;
+
+
 //https://www.typescriptlang.org/docs/handbook/2/types-from-types.html
 
-const generics = () => {
+const generics = (title: string) => {
   /*
 Generics
 */
 
-  let sortida = '<h2>Hello World of Generics</h2>';
+  //let sortida = '<h2>Hello World of Generics</h2>';
+  let sortida = `<h2 id="${title}">${title}</h2>`;
 
   /*
   To start off, let’s do the “hello world” of generics: the identity function. 
@@ -119,11 +123,11 @@ Generics
   return sortida;
 };
 
-const workingGenerics = () => {
+const workingGenerics = (title: string) => {
   /*
   Working with Generic Type Variables
   */
-  let sortida = '<h2>Working with Generic Type Variables</h2>';
+  let sortida = `<h2 id="${title}">${title}</h2>`;
 
   /*
   When you begin to use generics, you’ll notice that when you create generic functions like identity, 
@@ -231,11 +235,11 @@ const workingGenerics = () => {
   return sortida;
 };
 
-const genericTypes = () => {
+const genericTypes = (title: string) => {
   /*
   Generic Types
   */
-  let sortida = '<h2>Generic Types</h2>';
+  let sortida = `<h2 id="${title}">${title}</h2>`;
 
   /*
   In previous sections, we created generic identity functions that worked over a range of types. 
@@ -403,11 +407,11 @@ const genericTypes = () => {
   return sortida;
 };
 
-const genericClasses = () => {
+const genericClasses = (title: string) => {
   /*
   Generic Classes
   */
-  let sortida = '<h2>Generic Classes</h2>';
+  let sortida = `<h2 id="${title}">${title}</h2>`;
 
   /*
   A generic class has a similar shape to a generic interface. Generic classes have a generic type parameter list in angle brackets (<>) following the name of the class.
@@ -497,12 +501,404 @@ const genericClasses = () => {
   return sortida;
 };
 
-montaPagina();
+const genericConstraints = (title: string) => {
+  /*
+  Generic Constraints
+  */
+  let sortida = `<h2 id="${title}">${title}</h2>`;
 
+  /*
+  If you remember from an earlier example, 
+  you may sometimes want to write a generic function that works on a set of types 
+  where you have some knowledge about what capabilities that set of types will have. 
+  In our loggingIdentity example, we wanted to be able to access the .length property of arg, 
+  but the compiler could not prove that every type had a .length property, 
+  so it warns us that we can’t make this assumption.
+
+  function loggingIdentity<Type>(arg: Type): Type {
+    console.log(arg.length);
+  Property 'length' does not exist on type 'Type'.
+    return arg;
+  }
+
+  Instead of working with any and all types, 
+  we’d like to constrain this function to work with any and all types 
+  that also  have the .length property. 
+  As long as the type has this member, we’ll allow it, but it’s required to have at least this member. 
+  To do so, we must list our requirement as a constraint on what Type can be.
+
+  To do so, we’ll create an interface that describes our constraint. 
+  Here, we’ll create an interface that has a single .length property 
+  and then we’ll use this interface and the extends keyword to denote our constraint:
+
+  interface Lengthwise {
+    length: number;
+  }
+  
+  function loggingIdentity<Type extends Lengthwise>(arg: Type): Type {
+    console.log(arg.length); // Now we know it has a .length property, so no more error
+    return arg;
+  }
+   */
+
+  /*
+  function loggingIdentity<Type>(arg: Type): Type {
+    //console.log(arg.length); //error
+    //Property 'length' does not exist on type 'Type'.
+    return arg;
+  }
+
+  Because the generic function is now constrained, it will no longer work over any and all types:
+
+  loggingIdentity(3);
+  Argument of type 'number' is not assignable to parameter of type 'Lengthwise'.
+  
+  Instead, we need to pass in values whose type has all the required properties:
+
+  loggingIdentity({ length: 10, value: 3 });
+
+
+  */
+
+  interface Lengthwise {
+    length: number;
+  }
+  function loggingIdentity<Type extends Lengthwise>(arg: Type): Type {
+    console.log(arg.length); // Now we know it has a .length property, so no more error
+    return arg;
+  }
+  //loggingIdentity(25) //error no .length
+  loggingIdentity('hello');
+  loggingIdentity({ length: 10, value: 3 });
+
+  sortida += `<code>
+  function loggingIdentity&lt;Type&gt;(arg: Type): Type {<br>
+    &nbsp;<mark>console.log(arg.length); //error</mark><br>
+    &nbsp;<b>//Property 'length' does not exist on type 'Type'</b><br>
+    &nbsp;return arg;<br>
+  }<br>
+  <mark>//because .length is not common for all the types</mark><br>
+  </code>`;
+
+  sortida += `<code>
+  <b>//create an interface that describes our constraint (.length) to extend generic type</b><br><br>
+  <mark>interface Lengthwise {<br>
+    &nbsp;length: number;<br>
+  }</mark><br>
+  function loggingIdentity&lt;Type <mark>extends Lengthwise</mark>&gt;(arg: Type): Type {<br>
+    &nbsp;console.log(arg.length); <b>//Now we know it has a .length property, so no more error</b><br>
+    &nbsp;return arg;<br>
+  }<br>
+  //loggingIdentity(25) <b>//error no .length</b><br>
+  loggingIdentity('hello');<br>
+  loggingIdentity({ length: 10, value: 3 });<br>
+  </code>`;
+
+  return sortida;
+};
+
+const typeParametersGenericConstraints = (title: string) => {
+  /*
+  Using Type Parameters in Generic Constraints
+  */
+  let sortida = `<h2 id="${title}">${title}</h2>`;
+
+  /*
+  You can declare a type parameter that is constrained by another type parameter. 
+  
+  For example, here we’d like to get a property from an object given its name. 
+  We’d like to ensure that we’re not accidentally grabbing a property that does not exist on the obj, 
+  so we’ll place a constraint between the two types:
+
+  function getProperty<Type, Key extends keyof Type>(obj: Type, key: Key) {
+    return obj[key];
+  }
+  
+  let x = { a: 1, b: 2, c: 3, d: 4 };
+  
+  getProperty(x, "a");
+  getProperty(x, "m");
+  Argument of type '"m"' is not assignable to parameter of type '"a" | "b" | "c" | "d"'.
+   */
+
+  function getProperty<Type, Key extends keyof Type>(obj: Type, key: Key) {
+    return obj[key];
+  }
+
+  let x = { a: 1, b: 2, c: 3, d: 4 };
+
+  getProperty(x, 'a');
+  //getProperty(x, 'm'); //error
+  //Argument of type '"m"' is not assignable to parameter of type '"a" | "b" | "c" | "d"'.
+  console.log(getProperty(x, 'a'));
+
+  sortida += `<code>
+  <b>//You can declare a type parameter that is constrained by another type parameter</b><br><br>
+  function getProperty<mark>&lt;Type, Key extends keyof Type&gt;</mark>(obj: <mark>Type</mark>, key: <mark>Key</mark>) {<br>
+    &nbsp;return obj[key];<br>
+  }<br>
+  let x = { a: 1, b: 2, c: 3, d: 4 };<br>
+  getProperty(x, 'a');<br>
+  //getProperty(x, 'm'); <b>//error</b><br>
+  <b>//Argument of type '"m"' is not assignable to parameter of type '"a" | "b" | "c" | "d"'</b><br>
+  </code>`;
+
+  return sortida;
+};
+
+const classTypesGenerics = (title: string) => {
+  /*
+  Using Class Types in Generics
+  */
+
+  let sortida = `<h2 id="${title}">${title}</h2>`;
+
+  /*
+  When creating factories in TypeScript using generics, 
+  it is necessary to refer to class types by their constructor functions. For example,
+
+  function create<Type>(c: { new (): Type }): Type {
+    return new c();
+  }
+
+  A more advanced example uses the prototype property to infer and constrain relationships 
+  between the constructor function and the instance side of class types.
+
+  class BeeKeeper {
+    hasMask: boolean = true;
+  }
+  
+  class ZooKeeper {
+    nametag: string = "Mikle";
+  }
+  
+  class Animal {
+    numLegs: number = 4;
+  }
+  
+  class Bee extends Animal {
+    numLegs = 6;
+    keeper: BeeKeeper = new BeeKeeper();
+  }
+  
+  class Lion extends Animal {
+    keeper: ZooKeeper = new ZooKeeper();
+  }
+  
+  function createInstance<A extends Animal>(c: new () => A): A {
+    return new c();
+  }
+  
+  createInstance(Lion).keeper.nametag;
+  createInstance(Bee).keeper.hasMask;
+
+  This pattern is used to power the mixins design pattern.
+  https://www.typescriptlang.org/docs/handbook/mixins.html
+
+   */
+
+  class Cosa {
+    nom: string = 'nom de la cosa';
+    preu: number = 0;
+  }
+
+  function create<Type>(c: { new (): Type }): Type {
+    return new c();
+  }
+  console.log(create(Date));
+  console.log(create(Cosa));
+
+  sortida += `<code>
+  <b>//When creating factories in TypeScript using generics, 
+  it is necessary to refer to class types by their constructor functions</b><br><br>
+  class Cosa {<br>
+    &nbsp;nom: string = 'nom de la cosa';<br>
+    &nbsp;preu: number = 0;<br>
+  }<br><br>
+  function create<mark>&lt;Type&gt;</mark>(c: <mark>{ new (): Type }</mark>): <mark>Type</mark> {<br>
+    &nbsp;return new c();<br>
+  }<br>
+  console.log(create(Date));<br>
+  console.log(create(Cosa));<br>
+  </code>`;
+
+  sortida += `<code>
+  <b>//A more advanced example uses the prototype property to infer and constrain relationships<br>
+  //between the constructor function and the instance side of class types.<br>
+  //This pattern is used to power the mixins design pattern.</b><br><br>
+  class BeeKeeper {<br>
+    &nbsp;hasMask: boolean = true;<br>
+  }<br>  
+  class ZooKeeper {<br>
+    &nbsp;nametag: string = "Mikle";<br>
+  }<br>  
+  class Animal {<br>
+    &nbsp;numLegs: number = 4;<br>
+  }<br>  
+  class Bee extends Animal {<br>
+    &nbsp;numLegs = 6;<br>
+    &nbsp;<mark>keeper: BeeKeeper = new BeeKeeper();</mark><br>
+  }<br>
+  class Lion extends Animal {<br>
+    &nbsp;<mark>keeper: ZooKeeper = new ZooKeeper();</mark><br>
+  }<br><br>
+  function createInstance<mark>&lt;A extends Animal&gt;</mark>(c: new () => <mark>A</mark>): <mark>A</mark> {<br>
+    &nbsp;return new c();<br>
+  }<br><br>
+  <mark>createInstance(Lion).keeper.nametag;<br>
+  createInstance(Bee).keeper.hasMask;</mark><br>
+  </code>`;
+
+  return sortida;
+};
+
+const genericParameterDefaults = (title: string) => {
+  /*
+  Generic Parameter Defaults
+  */
+  let sortida = `<h2 id="${title}">${title}</h2>`;
+
+  /*
+  Consider a function that creates a new HTMLElement. 
+  Calling the function with no arguments generates a Div; 
+  calling it with an element as the first argument generates an element of the argument’s type. 
+  You can optionally pass a list of children as well. 
+  Previously you would have to define it as:
+
+  declare function create(): Container<HTMLDivElement, HTMLDivElement[]>;
+  Cannot find name 'Container'.
+  declare function create<T extends HTMLElement>(element: T): Container<T, T[]>;
+  Cannot find name 'Container'.
+  declare function create<T extends HTMLElement, U extends HTMLElement>(
+    element: T,
+    children: U[]
+  ): Container<T, U[]>;
+  Cannot find name 'Container'.
+   */
+
+  /*
+  function create<T extends HTMLElement = HTMLDivElement, U = T[]>(
+    element?: T,
+    children?: U
+  ): Container<T, U> {
+    console.log('created!')
+  };
+  */
+
+  sortida += `<code>
+  <b>//Consider a function that creates a new HTMLElement.<br>
+  //Calling the function with no arguments generates a Div.<br>
+  //Calling it with an element as the first argument generates an element of the argument's type.<br>
+  //You can optionally pass a list of children as well.</b><br><br>
+  declare function create(): Container&lt;HTMLDivElement, HTMLDivElement[]&gt;;<br>
+  declare function create&lt;T extends HTMLElement&gt;(element: T): Container&lt;T, T[]&gt;;<br>
+  declare function create&lt;T extends HTMLElement, U extends HTMLElement&gt;(<br>
+    &nbsp;element: T,<br>
+    &nbsp;children: U[]<br>
+  ): Container&lt;T, U[]&gt;;<br>
+  </code>`;
+
+  sortida += `<code>
+  <mark>With generic parameter defaults we can reduce it to</mark><br><br>
+  declare function create&lt;T extends HTMLElement = HTMLDivElement, U = T[]&gt;(<br>
+    &nbsp;element?: T,<br>
+    &nbsp;children?: U<br>
+  ): Container<T, U>;<br>
+  </code>`;
+
+  return sortida;
+};
+
+const KeyofTypeOperator = (title: string) => {
+  /*
+  Keyof Type Operator
+  */
+  let sortida = `<h2 id="${title}">${title}</h2>`;
+
+  /*
+
+  The keyof operator takes an object type and produces a string or numeric literal union of its keys. 
+  The following type P is the same type as type P = "x" | "y":
+
+  type Point = { x: number; y: number };
+  type P = keyof Point;
+        //type P = keyof Point
+   */
+
+  type Point = { x: number; y: number };
+  type P = keyof Point;
+  //type P = keyof Point
+  //is the same type as type P = "x" | "y"
+
+  const exampleP: P = 'x';
+
+  sortida += `<code>
+  <b>//The keyof operator takes an object type and produces a string or numeric literal union of its keys</b><br><br>
+  type Point = { x: number; y: number };<br>
+  type P = <mark>keyof</mark> Point;<br>
+  <b>//type P = keyof Point<br>
+  //is the same type as type P = "x" | "y"</b><br><br>
+  const exampleP : P = 'x'
+  </code>`;
+
+  /*
+  If the type has a string or number index signature, keyof will return those types instead:
+
+  type Arrayish = { [n: number]: unknown };
+  type A = keyof Arrayish;
+      //type A = number
+  
+  type Mapish = { [k: string]: boolean };
+  type M = keyof Mapish; 
+      //type M = string | number
+
+  Note that in this example, M is string | number — 
+  this is because JavaScript object keys are always coerced to a string, 
+  so obj[0] is always the same as obj["0"].
+
+  keyof types become especially useful when combined with mapped types, 
+  which we’ll learn more about later.
+
+  */
+
+  type Arrayish = { [n: number]: unknown };
+  type A = keyof Arrayish;
+
+  const testArrayish: Arrayish = ['a', 'b', 'c'];
+  console.log(testArrayish);
+
+  type Mapish = { [k: string]: boolean };
+  type M = keyof Mapish;
+
+  const testMapish: Mapish = { a: true, b: false };
+  console.log(testMapish);
+
+  sortida += `<code>
+  <b>//If the type has a string or number index signature, keyof will return those types instead</b><br><br>
+  type Arrayish = <mark>{ [n: number]: unknown }</mark>;<br>
+  type A = keyof Arrayish;<br>
+  <mark>//type A = number</mark><br><br>
+  type Mapish = <mark>{ [k: string]: boolean }</mark>;<br>
+  type M = keyof Mapish;<br>
+  <mark>//type M = string | number</mark><br>
+  <b>//Note that in this example, M is string | number<br>
+  //this is because JavaScript object keys are always coerced to a string,<br>
+  //so obj[0] is always the same as obj["0"].</b><br>
+  </code>`;
+
+  return sortida;
+};
+
+montaPagina(h2);
 const sortida = document.getElementById('sortida');
 if (sortida) {
-  sortida.innerHTML += generics();
-  sortida.innerHTML += workingGenerics();
-  sortida.innerHTML += genericTypes();
-  sortida.innerHTML += genericClasses();
+  sortida.innerHTML += generics(h2[0]);
+  sortida.innerHTML += workingGenerics(h2[1]);
+  sortida.innerHTML += genericTypes(h2[2]);
+  sortida.innerHTML += genericClasses(h2[3]);
+  sortida.innerHTML += genericConstraints(h2[4]);
+  sortida.innerHTML += typeParametersGenericConstraints(h2[5]);
+  sortida.innerHTML += classTypesGenerics(h2[6]);
+  sortida.innerHTML += genericParameterDefaults(h2[7]);
+  sortida.innerHTML += KeyofTypeOperator(h2[8]);
 }

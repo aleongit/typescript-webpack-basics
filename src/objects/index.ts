@@ -1,6 +1,6 @@
 import { montaPagina } from '../init';
+import { titles } from '../constants';
 import { getImgWithLink } from '../helpers';
-
 import '../main.css';
 //import "./styles.css"; //component styles
 
@@ -8,14 +8,17 @@ import png1 from '../img/TypeScript Types.png';
 import png2 from '../img/TypeScript Interfaces.png';
 const imatges = [png1, png2];
 
+//constants
+const h2 = titles.objects;
+
 //https://www.typescriptlang.org/docs/handbook/2/objects.html
 
-const quickReference = () => {
+const quickReference = (title: string) => {
   /*
 Quick Reference
 */
 
-  let sortida = '<h2>Quick Reference</h2>';
+  let sortida = `<h2 id="${title}">${title}</h2>`;
 
   /*
   We have cheat-sheets available for both type and interface, 
@@ -25,11 +28,11 @@ Quick Reference
   return sortida;
 };
 
-const propertyModifiers = () => {
+const propertyModifiers = (title: string) => {
   /*
   Property Modifiers
   */
-  let sortida = '<h2>Property Modifiers</h2>';
+  let sortida = `<h2 id="${title}">${title}</h2>`;
 
   /*
   Each property in an object type can specify a couple of things: 
@@ -412,11 +415,11 @@ const propertyModifiers = () => {
   return sortida;
 };
 
-const excessPropertyChecks = () => {
+const excessPropertyChecks = (title: string) => {
   /*
   Excess Property Checks
   */
-  let sortida = '<h2>Excess Property Checks</h2>';
+  let sortida = `<h2 id="${title}">${title}</h2>`;
 
   /*
   Where and how an object is assigned a type can make a difference in the type system. 
@@ -579,11 +582,11 @@ const excessPropertyChecks = () => {
   return sortida;
 };
 
-const extendingTypes = () => {
+const extendingTypes = (title: string) => {
   /*
   Extending Types
   */
-  let sortida = '<h2>Extending Types</h2>';
+  let sortida = `<h2 id="${title}">${title}</h2>`;
 
   /*
 
@@ -688,11 +691,11 @@ const extendingTypes = () => {
   return sortida;
 };
 
-const intersectionTypes = () => {
+const intersectionTypes = (title: string) => {
   /*
   Intersection Types
   */
-  let sortida = '<h2>Intersection Types</h2>';
+  let sortida = `<h2 id="${title}">${title}</h2>`;
 
   /*
   interfaces allowed us to build up new types from other types by extending them. 
@@ -773,11 +776,11 @@ const intersectionTypes = () => {
   return sortida;
 };
 
-const genericObjectTypes = () => {
+const genericObjectTypes = (title: string) => {
   /*
   Generic Object Types
   */
-  let sortida = '<h2>Generic Object Types</h2>';
+  let sortida = `<h2 id="${title}">${title}</h2>`;
 
   /*
   Let’s imagine a Box type that can contain any value - strings, numbers, Giraffes, whatever.
@@ -1504,18 +1507,17 @@ This is handy when you want to take a variable number of arguments with a rest p
   return sortida;
 };
 
-montaPagina();
-
+montaPagina(h2);
 const sortida = document.getElementById('sortida');
 if (sortida) {
-  sortida.innerHTML += quickReference();
+  sortida.innerHTML += quickReference(h2[0]);
   //add images
   imatges.forEach((img) => {
     sortida.appendChild(getImgWithLink(img));
   });
-  sortida.innerHTML += propertyModifiers();
-  sortida.innerHTML += excessPropertyChecks();
-  sortida.innerHTML += extendingTypes();
-  sortida.innerHTML += intersectionTypes();
-  sortida.innerHTML += genericObjectTypes();
+  sortida.innerHTML += propertyModifiers(h2[1]);
+  sortida.innerHTML += excessPropertyChecks(h2[2]);
+  sortida.innerHTML += extendingTypes(h2[3]);
+  sortida.innerHTML += intersectionTypes(h2[4]);
+  sortida.innerHTML += genericObjectTypes(h2[5]);
 }

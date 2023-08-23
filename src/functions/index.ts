@@ -1,15 +1,19 @@
 import { montaPagina } from '../init';
+import { titles } from '../constants';
 import '../main.css';
 //import "./styles.css"; //component styles
 
+//constants
+const h2 = titles.functions;
+
 //https://www.typescriptlang.org/docs/handbook/2/narrowing.html
 
-const functionTypeExpressions = () => {
+const functionTypeExpressions = (title: string) => {
   /*
 Function Type Expressions
 */
 
-  let sortida = '<h2>Function Type Expressions</h2>';
+  let sortida = `<h2 id="${title}">${title}</h2>`;
 
   /*
   The simplest way to describe a function is with a function type expression. 
@@ -79,12 +83,12 @@ Function Type Expressions
   return sortida;
 };
 
-const callSignatures = () => {
+const callSignatures = (title: string) => {
   /*
   Call Signatures
   */
 
-  let sortida = '<h2>Call Signatures</h2>';
+  let sortida = `<h2 id="${title}">${title}</h2>`;
 
   /*
   In JavaScript, functions can have properties in addition to being callable. 
@@ -148,12 +152,12 @@ const callSignatures = () => {
   return sortida;
 };
 
-const constructSignatures = () => {
+const constructSignatures = (title: string) => {
   /*
   Construct Signatures
   */
 
-  let sortida = '<h2>Construct Signatures</h2>';
+  let sortida = `<h2 id="${title}">${title}</h2>`;
 
   /*
   JavaScript functions can also be invoked with the new operator. 
@@ -199,12 +203,12 @@ interface CallOrConstruct {<br>
   return sortida;
 };
 
-const genericFunctions = () => {
+const genericFunctions = (title: string) => {
   /*
   Generic Functions
   */
 
-  let sortida = '<h2>Generic Functions</h2>';
+  let sortida = `<h2 id="${title}">${title}</h2>`;
 
   /*
   Generic Functions
@@ -671,11 +675,11 @@ Inference
   return sortida;
 };
 
-const optionalParameters = () => {
+const optionalParameters = (title: string) => {
   /*
   Optional Parameters
   */
-  let sortida = '<h2>Optional Parameters</h2>';
+  let sortida = `<h2 id="${title}">${title}</h2>`;
 
   /*
   Functions in JavaScript often take a variable number of arguments. 
@@ -837,11 +841,11 @@ const optionalParameters = () => {
   return sortida;
 };
 
-const functionOverloads = () => {
+const functionOverloads = (title: string) => {
   /*
   Function Overloads
   */
-  let sortida = '<h2>Function Overloads</h2>';
+  let sortida = `<h2 id="${title}">${title}</h2>`;
 
   /*
   Some JavaScript functions can be called in a variety of argument counts and types. 
@@ -1119,12 +1123,12 @@ const functionOverloads = () => {
   return sortida;
 };
 
-const otherTypes = () => {
+const otherTypes = (title: string) => {
   /*
   Other Types to Know About
   */
 
-  let sortida = '<h2>Other Types to Know About</h2>';
+  let sortida = `<h2 id="${title}">${title}</h2>`;
 
   /*
   There are some additional types you’ll want to recognize
@@ -1437,11 +1441,11 @@ object
   return sortida;
 };
 
-const restParametersArguments = () => {
+const restParametersArguments = (title: string) => {
   /*
   Rest Parameters and Arguments
   */
-  let sortida = '<h2>Rest Parameters and Arguments</h2>';
+  let sortida = `<h2 id="${title}">${title}</h2>`;
 
   /*
   Rest Parameters
@@ -1542,12 +1546,12 @@ const restParametersArguments = () => {
   return sortida;
 };
 
-const parameterDestructuring = () => {
+const parameterDestructuring = (title: string) => {
   /*
   Parameter Destructuring
   */
 
-  let sortida = '<h2>Parameter Destructuring</h2>';
+  let sortida = `<h2 id="${title}">${title}</h2>`;
 
   /*
   You can use parameter destructuring to conveniently unpack objects provided as 
@@ -1618,11 +1622,11 @@ const parameterDestructuring = () => {
   return sortida;
 };
 
-const assignabilityFunctions = () => {
+const assignabilityFunctions = (title: string) => {
   /*
   Assignability of Functions
   */
-  let sortida = '<h2>Assignability of Functions</h2>';
+  let sortida = `<h2 id="${title}">${title}</h2>`;
 
   /*
   Return type void
@@ -1747,17 +1751,17 @@ const assignabilityFunctions = () => {
   return sortida;
 };
 
-montaPagina();
+montaPagina(h2);
 const sortida = document.getElementById('sortida');
 if (sortida) {
-  sortida.innerHTML += functionTypeExpressions();
-  sortida.innerHTML += callSignatures();
-  sortida.innerHTML += constructSignatures();
-  sortida.innerHTML += genericFunctions();
-  sortida.innerHTML += optionalParameters();
-  sortida.innerHTML += functionOverloads();
-  sortida.innerHTML += otherTypes();
-  sortida.innerHTML += restParametersArguments();
-  sortida.innerHTML += parameterDestructuring();
-  sortida.innerHTML += assignabilityFunctions();
+  sortida.innerHTML += functionTypeExpressions(h2[0]);
+  sortida.innerHTML += callSignatures(h2[1]);
+  sortida.innerHTML += constructSignatures(h2[2]);
+  sortida.innerHTML += genericFunctions(h2[3]);
+  sortida.innerHTML += optionalParameters(h2[4]);
+  sortida.innerHTML += functionOverloads(h2[5]);
+  sortida.innerHTML += otherTypes(h2[6]);
+  sortida.innerHTML += restParametersArguments(h2[7]);
+  sortida.innerHTML += parameterDestructuring(h2[8]);
+  sortida.innerHTML += assignabilityFunctions(h2[9]);
 }

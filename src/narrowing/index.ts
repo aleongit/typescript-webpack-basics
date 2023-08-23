@@ -1,15 +1,19 @@
 import { montaPagina } from '../init';
+import { titles } from '../constants';
 import '../main.css';
 //import "./styles.css"; //component styles
 
+//constants
+const h2 = titles.narrowing;
+
 //https://www.typescriptlang.org/docs/handbook/2/narrowing.html
 
-const typeofTypeGuards = () => {
+const typeofTypeGuards = (title: string) => {
   /*
 typeof type guards
 */
 
-  let sortida = '<h2>typeof  type guards</h2>';
+  let sortida = `<h2 id="${title}">${title}</h2>`;
 
   /*
 As we’ve seen, JavaScript supports a typeof operator which can give very basic information 
@@ -80,12 +84,12 @@ This might be a good segue into what we’ll call “truthiness” checking.
   return sortida;
 };
 
-const truthinessNarrowing = () => {
+const truthinessNarrowing = (title: string) => {
   /*
   Truthiness narrowing
   */
 
-  let sortida = '<h2>Truthiness narrowing</h2>';
+  let sortida = `<h2 id="${title}">${title}</h2>`;
 
   /*
   Truthiness might not be a word you’ll find in the dictionary,
@@ -246,12 +250,12 @@ const truthinessNarrowing = () => {
   return sortida;
 };
 
-const equalityNarrowing = () => {
+const equalityNarrowing = (title: string) => {
   /*
   Equality narrowing
   */
 
-  let sortida = '<h2>Equality narrowing</h2>';
+  let sortida = `<h2 id="${title}">${title}</h2>`;
 
   /*
   TypeScript also uses switch statements and equality 
@@ -393,11 +397,11 @@ const equalityNarrowing = () => {
   return sortida;
 };
 
-const inOperator = () => {
+const inOperator = (title: string) => {
   /*
   The in operator narrowing
   */
-  let sortida = '<h2>The in operator narrowing</h2>';
+  let sortida = `<h2 id="${title}">${title}</h2>`;
 
   /*
   JavaScript has an operator for determining if an object or its prototype chain has a property 
@@ -474,11 +478,11 @@ function move(animal: Fish | Bird | Human) {
   return sortida;
 };
 
-const instanceOf = () => {
+const instanceOf = (title: string) => {
   /*
   instanceof narrowing
   */
-  let sortida = '<h2>instanceof narrowing</h2>';
+  let sortida = `<h2 id="${title}">${title}</h2>`;
 
   /*
   JavaScript has an operator for checking whether or not a value is an “instance” of another value.
@@ -528,12 +532,12 @@ const instanceOf = () => {
   return sortida;
 };
 
-const assignments = () => {
+const assignments = (title: string) => {
   /*
   Assignments
   */
 
-  let sortida = '<h2>Assignments</h2>';
+  let sortida = `<h2 id="${title}">${title}</h2>`;
 
   /*
   As we mentioned earlier, when we assign to any variable, 
@@ -606,12 +610,12 @@ console.log(x);
   return sortida;
 };
 
-const controlFlow = () => {
+const controlFlow = (title: string) => {
   /*
   Control flow analysis
   */
 
-  let sortida = '<h2>Control flow analysis</h2>';
+  let sortida = `<h2 id="${title}">${title}</h2>`;
 
   /*
   Up until this point, we’ve gone through some basic examples of how TypeScript narrows 
@@ -705,12 +709,12 @@ const controlFlow = () => {
   return sortida;
 };
 
-const typePredicates = () => {
+const typePredicates = (title: string) => {
   /*
   Using type predicates
   */
 
-  let sortida = '<h2>Using type predicates</h2>';
+  let sortida = `<h2 id="${title}">${title}</h2>`;
 
   /*
   We’ve worked with existing JavaScript constructs to handle narrowing so far, 
@@ -827,12 +831,12 @@ const typePredicates = () => {
   return sortida;
 };
 
-const discriminatedUnions = () => {
+const discriminatedUnions = (title: string) => {
   /*
   Discriminated unions
   */
 
-  let sortida = '<h2>Discriminated unions</h2>';
+  let sortida = `<h2 id="${title}">${title}</h2>`;
 
   /*
   Most of the examples we’ve looked at so far have focused around narrowing single variables 
@@ -1064,12 +1068,12 @@ const discriminatedUnions = () => {
   return sortida;
 };
 
-const never = () => {
+const never = (title: string) => {
   /*
   The never type
   */
 
-  let sortida = '<h2>The never type</h2>';
+  let sortida = `<h2 id="${title}">${title}</h2>`;
 
   /*
   When narrowing, you can reduce the options of a union to a point where you have removed 
@@ -1177,17 +1181,17 @@ const never = () => {
   return sortida;
 };
 
-montaPagina();
+montaPagina(h2);
 const sortida = document.getElementById('sortida');
 if (sortida) {
-  sortida.innerHTML += typeofTypeGuards();
-  sortida.innerHTML += truthinessNarrowing();
-  sortida.innerHTML += equalityNarrowing();
-  sortida.innerHTML += inOperator();
-  sortida.innerHTML += instanceOf();
-  sortida.innerHTML += assignments();
-  sortida.innerHTML += controlFlow();
-  sortida.innerHTML += typePredicates();
-  sortida.innerHTML += discriminatedUnions();
-  sortida.innerHTML += never();
+  sortida.innerHTML += typeofTypeGuards(h2[0]);
+  sortida.innerHTML += truthinessNarrowing(h2[1]);
+  sortida.innerHTML += equalityNarrowing(h2[2]);
+  sortida.innerHTML += inOperator(h2[3]);
+  sortida.innerHTML += instanceOf(h2[4]);
+  sortida.innerHTML += assignments(h2[5]);
+  sortida.innerHTML += controlFlow(h2[6]);
+  sortida.innerHTML += typePredicates(h2[7]);
+  sortida.innerHTML += discriminatedUnions(h2[8]);
+  sortida.innerHTML += never(h2[9]);
 }
