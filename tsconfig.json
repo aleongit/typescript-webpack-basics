@@ -5,10 +5,11 @@
     "noImplicitAny": false,
     "strict": false,
     "strictNullChecks": true,
+    "allowUnreachableCode": true,
     "module": "es6",
     "target": "es5",
     "jsx": "react",
     "allowJs": true,
-    "moduleResolution": "node",
+    "moduleResolution": "node"
   }
 }
