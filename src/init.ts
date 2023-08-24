@@ -1,6 +1,12 @@
 import { htmlPageNames } from './constants';
 const menu = htmlPageNames;
 
+const getPath = () => {
+  const path = window.location.pathname;
+  const h1 = document.getElementById('titol');
+  h1!.innerText = 'Hello! ' + path;
+};
+
 const fesMenu = () => {
   //agafa nav
   const nav = document.getElementById('menu');
@@ -16,12 +22,6 @@ const fesMenu = () => {
   });
 };
 
-const getPath = () => {
-  const path = window.location.pathname;
-  const h1 = document.getElementById('titol');
-  h1!.innerText = 'Hello! ' + path;
-};
-
 const fesSubmenu = (titols: string[]): void => {
   const submenu = document.getElementById('submenu');
   titols.forEach((titol) => {
@@ -34,10 +34,36 @@ const fesSubmenu = (titols: string[]): void => {
   });
 };
 
+function backToTop() {
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+}
+
+function activaBoto(boto: HTMLButtonElement) {
+  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+    boto.style.display = 'block';
+  } else {
+    boto.style.display = 'none';
+  }
+}
+
+const posaBotoBackToTop = (): void => {
+  const boto = <HTMLButtonElement>document.getElementById('button-back-to-top');
+  if (boto) {
+    // When the user scrolls down 20px from the top of the document, show the button
+    window.onscroll = function () {
+      activaBoto(boto);
+    };
+    // When the user clicks on the button, scroll to the top of the document
+    boto.addEventListener('click', backToTop);
+  }
+};
+
 export const montaPagina = (titols?: string[]) => {
   getPath();
   fesMenu();
   if (titols) {
     fesSubmenu(titols);
   }
+  posaBotoBackToTop();
 };

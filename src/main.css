@@ -163,6 +163,17 @@ nav {
   opacity: 0.9;
 }
 
+#button-back-to-top {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: none;
+  font-family: monospace;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
 .pregunta {
   background: white;
   padding: 10px;
