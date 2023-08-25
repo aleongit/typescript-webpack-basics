@@ -6,6 +6,7 @@
     "strict": false,
     "strictNullChecks": true,
     "allowUnreachableCode": false,
+    "strictPropertyInitialization": false,
     "module": "es6",
     "target": "es5",
     "jsx": "react",
