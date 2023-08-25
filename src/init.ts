@@ -39,7 +39,7 @@ function backToTop() {
   document.documentElement.scrollTop = 0;
 }
 
-function activaBoto(boto: HTMLButtonElement) {
+function faScroll(boto: HTMLButtonElement) {
   if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
     boto.style.display = 'block';
   } else {
@@ -47,12 +47,12 @@ function activaBoto(boto: HTMLButtonElement) {
   }
 }
 
-const posaBotoBackToTop = (): void => {
+const activaBotoBackToTop = (): void => {
   const boto = <HTMLButtonElement>document.getElementById('button-back-to-top');
   if (boto) {
     // When the user scrolls down 20px from the top of the document, show the button
     window.onscroll = function () {
-      activaBoto(boto);
+      faScroll(boto);
     };
     // When the user clicks on the button, scroll to the top of the document
     boto.addEventListener('click', backToTop);
@@ -65,5 +65,5 @@ export const montaPagina = (titols?: string[]) => {
   if (titols) {
     fesSubmenu(titols);
   }
-  posaBotoBackToTop();
+  activaBotoBackToTop();
 };
