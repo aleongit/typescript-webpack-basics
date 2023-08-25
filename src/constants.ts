@@ -3,7 +3,8 @@ export const htmlPageNames = [
   'narrowing',
   'functions',
   'objects',
-  'manipulation'
+  'manipulation',
+  'classes'
 ] as const; //  aconst assertion per poder exportar els valors de l'array com a tipus
 
 type htmlPageNamesType = (typeof htmlPageNames)[number]; //tipus amb els valors array
@@ -73,5 +74,20 @@ export const titles: { [Key in htmlPageNamesType]: string[] } = {
     'Conditional Types',
     'Mapped Types',
     'Template Literal Types'
+  ],
+  classes: [
+    'Class Members',
+    'Class Heritage',
+    'Member Visibility',
+    'Static Members',
+    'static Blocks in Classes',
+    'Generic Classes',
+    'this at Runtime in Classes',
+    'this Types',
+    'Parameter Properties',
+    'Class Expressions',
+    'Constructor Signatures',
+    'abstract Classes and Members',
+    'Relationships Between Classes'
   ]
 };
