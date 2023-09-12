@@ -258,6 +258,302 @@ Class Members
   const ok = new Greeter(<mark>'change world'</mark>); <b>//ok</b><br>
   </code>`;
 
+  /*
+  Constructors
+  */
+  sortida += '<h3>Constructors</h3>';
+
+  /*
+  Class constructors are very similar to functions. 
+  You can add parameters with type annotations, default values, and overloads:
+
+class Point {
+    x: number;
+    y: number;
+  
+    // Normal signature with defaults
+    constructor(x = 0, y = 0) {
+      this.x = x;
+      this.y = y;
+    }
+  }
+
+  class Point {
+    // Overloads
+    constructor(x: number, y: string);
+    constructor(s: string);
+    constructor(xs: any, y?: any) {
+      // TBD
+    }
+  }
+
+  There are just a few differences between class constructor signatures and function signatures:
+
+  - Constructors can’t have type parameters - these belong on the outer class declaration, 
+  which we’ll learn about later
+  
+  - Constructors can’t have return type annotations - 
+  the class instance type is always what’s returned
+
+  */
+
+  sortida += `<code>
+  //Class constructors are very similar to functions.<br>
+  //You can add parameters with type annotations, default values, and overloads.<br><br>
+  class Point {<br>
+    &nbsp;x: number;<br>
+    &nbsp;y: number;<br><br>  
+    &nbsp;<b>// Normal signature with defaults</b><br>
+    &nbsp;<mark>constructor(x = 0, y = 0)</mark> {<br>
+      &nbsp;&nbsp;this.x = x;<br>
+      &nbsp;&nbsp;this.y = y;<br>
+    &nbsp;}<br>
+  }<br>
+  </code>`;
+
+  sortida += `<code>
+  class Point {<br>
+    &nbsp;<b>// Overloads</b><br>
+    &nbsp;constructor(x: number, y: string);<br>
+    &nbsp;constructor(s: string);<br>
+    &nbsp;constructor(xs: any, y?: any) {<br>
+      &nbsp;&nbsp;// TBD<br>
+    &nbsp;}<br>
+  }<br>
+  </code>`;
+
+  /*
+  Super Calls
+  */
+  sortida += '<h4>Super Calls</h4>';
+
+  /*
+  Just as in JavaScript, if you have a base class, you’ll need to call super(); 
+  in your constructor body before using any this. members:
+
+  class Base {
+    k = 4;
+  }
+  
+  class Derived extends Base {
+    constructor() {
+      // Prints a wrong value in ES5; throws exception in ES6
+      console.log(this.k);
+  'super' must be called before accessing 'this' in the constructor of a derived class.
+      super();
+    }
+  }
+  
+  Forgetting to call super is an easy mistake to make in JavaScript, 
+  but TypeScript will tell you when it’s necessary.
+  */
+
+  class Base {
+    k = 4;
+  }
+
+  class Derived extends Base {
+    constructor() {
+      // Prints a wrong value in ES5; throws exception in ES6
+      //console.log(this.k); //error
+      //'super' must be called before accessing 'this' in the constructor of a derived class.
+
+      super();
+      console.log(this.k); //ok after super()
+    }
+  }
+
+  sortida += `<code>
+  //Just as in JavaScript, if you have a base class, you'll need to call <mark>super();</mark><br> 
+  in your constructor body before using any this. members<br><br>
+  class Base {<br>
+    &nbsp;k = 4;<br>
+  }<br><br>
+  class Derived <mark>extends</mark> Base {<br>
+    &nbsp;constructor() {<br>
+      &nbsp;&nbsp;<mark>console.log(this.k); //error</mark><br>
+      &nbsp;&nbsp;<b>//'super' must be called before accessing 'this' in the constructor of a derived class</b><br><br>
+      &nbsp;&nbsp;<mark>super();</mark><br>
+      &nbsp;&nbsp;<b>console.log(this.k); //ok after super()</b><br>
+    &nbsp;}<br>
+  }<br>
+  </code>`;
+
+  /*
+  Methods
+  */
+  sortida += '<h3>Methods</h3>';
+
+  /*
+  A function property on a class is called a method. 
+  Methods can use all the same type annotations as functions and constructors:
+
+  class Point {
+    x = 10;
+    y = 10;
+  
+    scale(n: number): void {
+      this.x *= n;
+      this.y *= n;
+    }
+  }
+
+  Other than the standard type annotations, TypeScript doesn’t add anything else new to methods.
+
+  Note that inside a method body, 
+  it is still mandatory to access fields and other methods via this.. 
+  An unqualified name in a method body will always refer to something in the enclosing scope:
+
+
+  let x: number = 0;
+ 
+  class C {
+    x: string = "hello";
+  
+    m() {
+      // This is trying to modify 'x' from line 1, not the class property
+      x = "world"; //error
+  //Type 'string' is not assignable to type 'number'.
+    }
+  }
+
+  */
+
+  let x: number = 0;
+
+  class C {
+    x: string = 'hello';
+
+    m() {
+      // This is trying to modify 'x' from line 1, not the class property
+      //x = "world"; //error
+      //Type 'string' is not assignable to type 'number'.
+      this.x = 'world'; //ok
+    }
+  }
+
+  sortida += `<code>
+  <b>//A function property on a class is called a <mark>method</mark>.<br>
+  Methods can use all the same type annotations as functions and constructors</b><br><br>
+  class Point {<br>
+    &nbsp;x = 10;<br>
+    &nbsp;y = 10;<br><br>
+    &nbsp;<mark>scale(n: number): void </mark>{<br>
+      &nbsp;&nbsp;this.x *= n;<br>
+      &nbsp;&nbsp;this.y *= n;<br>
+    &nbsp;}<br>
+  }<br>
+  </code>`;
+
+  sortida += `<code>
+  <b>//use <mark>this.</mark> to access fields and other methods</b><br><br>
+  let <mark>x</mark>: number = 0;<br><br> 
+  class C {<br>
+    &nbsp;<mark>x</mark>: string = "hello";<br><br>  
+    &nbsp;m() {<br>
+      &nbsp;&nbsp;<b>// This is trying to modify 'x' from line 1, not the class property</b><br>
+      &nbsp;&nbsp;<mark>x = "world"; //error</mark><br>
+      &nbsp;&nbsp;<b>//Type 'string' is not assignable to type 'number'.</b><br><br>
+      &nbsp;&nbsp;<mark>this.x = 'world'; //ok</mark><br>
+    &nbsp;}<br>
+  }<br>
+  </code>`;
+
+  /*
+  Getters / Setters
+  */
+  sortida += '<h3>Getters / Setters</h3>';
+
+  /*
+  Classes can also have accessors:
+
+  class C {
+    _length = 0;
+    get length() {
+      return this._length;
+    }
+    set length(value) {
+      this._length = value;
+    }
+  }
+
+  Note that a field-backed get/set pair with no extra logic is very rarely useful in JavaScript. 
+  It’s fine to expose public fields if you don’t need to add additional logic 
+  during the get/set operations.
+
+  TypeScript has some special inference rules for accessors:
+
+  - If get exists but no set, the property is automatically readonly
+  - If the type of the setter parameter is not specified, 
+  it is inferred from the return type of the getter
+  - Getters and setters must have the same Member Visibility
+  
+  Since TypeScript 4.3, it is possible to have accessors with different types for getting and setting.
+
+  */
+
+  sortida += `<code>
+  class C {<br>
+    &nbsp;_length = 0;<br>
+    &nbsp;<mark>get</mark> length() {<br>
+      &nbsp;&nbsp;return this._length;<br>
+    &nbsp;}<br>
+    &nbsp;<mark>set</mark> length(value) {<br>
+      &nbsp;&nbsp;this._length = value;<br>
+    &nbsp;}<br>
+  }<br>
+  </code>`;
+
+  /*
+  Index Signatures
+  */
+  sortida += '<h3>Index Signatures</h3>';
+
+  /*
+  Classes can declare index signatures; 
+  these work the same as Index Signatures for other object types:
+
+  class MyClass {
+    [s: string]: boolean | ((s: string) => boolean);
+  
+    check(s: string) {
+      return this[s] as boolean;
+    }
+  }
+
+  Because the index signature type needs to also capture the types of methods, 
+  it’s not easy to usefully use these types. 
+  Generally it’s better to store indexed data in another place instead of on the class instance itself.
+  */
+
+  sortida += `<code>
+  <b>//Classes can declare index signatures;<br>
+  these work the same as <mark>Index Signatures for other object types</mark></b><br><br>
+  class MyClass {<br>
+    &nbsp;<mark>[s: string]: boolean | ((s: string) => boolean);</mark><br><br>
+    &nbsp;check(s: string) {<br>
+      &nbsp;&nbsp;return this[s] as boolean;<br>
+    &nbsp;}<br>
+  }<br>
+  </code>`;
+
+  return sortida;
+};
+
+const classHeritage = (title: string) => {
+  /*
+Class Heritage
+*/
+
+  let sortida = `<h2 id="${title}">${title}</h2>`;
+
+  /*
+   */
+
+  sortida += `<code>
+test
+</code>`;
+
   return sortida;
 };
 
@@ -265,4 +561,5 @@ montaPagina(h2);
 const sortida = document.getElementById('sortida');
 if (sortida) {
   sortida.innerHTML += classMembers(h2[0]);
+  sortida.innerHTML += classHeritage(h2[1]);
 }
