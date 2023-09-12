@@ -548,11 +548,291 @@ Class Heritage
   let sortida = `<h2 id="${title}">${title}</h2>`;
 
   /*
-   */
+Like other languages with object-oriented features, classes in JavaScript can inherit from base classes.
+*/
+
+  /*
+implements Clauses
+*/
+  sortida += '<h3>implements Clauses</h3>';
+
+  /*
+You can use an implements clause to check that a class satisfies a particular interface. 
+An error will be issued if a class fails to correctly implement it:
+
+interface Pingable {
+  ping(): void;
+}
+ 
+class Sonar implements Pingable {
+  ping() {
+    console.log("ping!");
+  }
+}
+ 
+class Ball implements Pingable {
+  //Class 'Ball' incorrectly implements interface 'Pingable'.
+  //Property 'ping' is missing in type 'Ball' but required in type 'Pingable'.
+  pong() {
+    console.log("pong!");
+  }
+}
+
+Classes may also implement multiple interfaces, e.g. class C implements A, B {.
+*/
 
   sortida += `<code>
-test
+<b>//You can use an <mark>implements</mark> clause to check that a class satisfies a particular <mark>interface</mark></b><br><br>
+<mark>interface</mark> Pingable {<br>
+  &nbsp;ping(): void;<br>
+}<br><br>
+class Sonar <mark>implements</mark> Pingable {<br>
+  &nbsp;ping() {<br>
+    &nbsp;&nbsp;console.log("ping!");<br>
+  &nbsp;}<br>
+}<br><br>
+class Ball <mark>implements</mark> Pingable {<br>
+  &nbsp;<mark>//Property 'ping' is missing in type 'Ball' but required in type 'Pingable'.</mark><br>
+  &nbsp;<b>//Class 'Ball' incorrectly implements interface 'Pingable'</b><br>
+  &nbsp;pong() {<br>
+    &nbsp;&nbsp;console.log("pong!");<br>
+  &nbsp;}<br>
+}<br>
 </code>`;
+
+  /*
+Cautions
+
+It’s important to understand that an implements clause is only a check that the class can be treated as the interface type. It doesn’t change the type of the class or its methods at all. A common source of error is to assume that an implements clause will change the class type - it doesn’t!
+
+interface Checkable {
+  check(name: string): boolean;
+}
+ 
+class NameChecker implements Checkable {
+  check(s) {
+Parameter 's' implicitly has an 'any' type.
+    // Notice no error here
+    return s.toLowerCase() === "ok";
+  }
+}
+
+
+In this example, we perhaps expected that s’s type would be influenced 
+by the name: string parameter of check. 
+It is not - implements clauses don’t change how the class body is checked or its type inferred.
+*/
+
+  /*
+Similarly, implementing an interface with an optional property doesn’t create that property:
+
+interface A {
+  x: number;
+  y?: number;
+}
+class C implements A {
+  x = 0;
+}
+const c = new C();
+c.y = 10;
+//Property 'y' does not exist on type 'C'.
+*/
+
+  /*
+extends Clauses
+*/
+  sortida += '<h3>extends Clauses</h3>';
+
+  /*
+Classes may extend from a base class. 
+A derived class has all the properties and methods of its base class, 
+and can also define additional members.
+
+class Animal {
+  move() {
+    console.log("Moving along!");
+  }
+}
+ 
+class Dog extends Animal {
+  woof(times: number) {
+    for (let i = 0; i < times; i++) {
+      console.log("woof!");
+    }
+  }
+}
+ 
+const d = new Dog();
+// Base class method
+d.move();
+// Derived class method
+d.woof(3);
+*/
+
+  class Animal {
+    move() {
+      console.log('Moving along!');
+    }
+  }
+
+  class Dog extends Animal {
+    woof(times: number) {
+      for (let i = 0; i < times; i++) {
+        console.log('woof!');
+      }
+    }
+  }
+
+  const d = new Dog();
+  // Base class method
+  d.move();
+  // Derived class method
+  d.woof(3);
+
+  sortida += `<code>
+  //<b>Classes may <mark>extend</mark> from a base class.<br>
+  A derived class has all the properties and methods of its base class, and can also define additional members</b><br><br>
+  class Animal {<br>
+    &nbsp;move() {<br>
+      &nbsp;&nbsp;console.log('Moving along!');<br>
+    &nbsp;}<br>
+  }<br><br>
+  class Dog <mark>extends</mark> Animal {<br>
+    &nbsp;woof(times: number) {<br>
+      &nbsp;&nbsp;for (let i = 0; i < times; i++) {<br>
+        &nbsp;&nbsp;&nbsp;console.log('woof!');<br>
+      &nbsp;&nbsp;}<br>
+    &nbsp;}<br>
+  }<br><br>
+  const d = new Dog();<br>
+  <b>d.move();</b><br>
+  <mark>// Base class method</mark><br>
+  <b>d.woof(3);</b><br>
+  <mark>// Derived class method</mark><br>
+  </code>`;
+
+  /*
+  Overriding Methods
+  */
+  sortida += '<h4>Overriding Methods</h4>';
+
+  /*
+  A derived class can also override a base class field or property.
+  You can use the super. syntax to access base class methods. 
+  Note that because JavaScript classes are a simple lookup object, 
+  there is no notion of a “super field”.
+
+  TypeScript enforces that a derived class is always a subtype of its base class.
+
+  For example, here’s a legal way to override a method:
+
+  class Base {
+    greet() {
+      console.log("Hello, world!");
+    }
+  }
+  
+  class Derived extends Base {
+    greet(name?: string) {
+      if (name === undefined) {
+        super.greet();
+      } else {
+        console.log(`Hello, ${name.toUpperCase()}`);
+      }
+    }
+  }
+
+  const d = new Derived();
+  d.greet();
+  d.greet("reader");
+
+
+  It’s important that a derived class follow its base class contract. 
+  Remember that it’s very common (and always legal!) to refer to a derived class instance 
+  through a base class reference:
+
+  // Alias the derived instance through a base class reference
+  const b: Base = d;
+  // No problem
+  b.greet();
+
+
+  What if Derived didn’t follow Base’s contract?
+
+  class Base {
+    greet() {
+      console.log("Hello, world!");
+    }
+  }
+  
+  class Derived extends Base {
+    // Make this parameter required
+    greet(name: string) {
+    //Property 'greet' in type 'Derived' is not assignable to the same property in base type 'Base'.
+    //Type '(name: string) => void' is not assignable to type '() => void'.
+      console.log(`Hello, ${name.toUpperCase()}`);
+    }
+  }
+  
+  If we compiled this code despite the error, this sample would then crash:
+
+  const b: Base = new Derived();
+  // Crashes because "name" will be undefined
+  b.greet();
+
+
+  */
+
+  class Base {
+    greet() {
+      console.log('Hello, world!');
+    }
+  }
+
+  class Derived extends Base {
+    greet(name?: string) {
+      if (name === undefined) {
+        super.greet();
+      } else {
+        console.log(`Hello, ${name.toUpperCase()}`);
+      }
+    }
+  }
+
+  const d1 = new Derived();
+  d1.greet();
+  d1.greet('reader');
+
+  // Alias the derived instance through a base class reference
+  const b1: Base = d1;
+  // No problem
+  b1.greet();
+
+  sortida += `<code>
+  <b>//A derived class can also override a base class field or property.<br>
+  You can use the super. syntax to access base class methods.<br> 
+  Here's a legal way to override a method</b><br><br>
+  class Base {<br>
+    &nbsp;greet() {<br>
+      &nbsp;&nbsp;console.log('Hello, world!');<br>
+    &nbsp;}<br>
+  }<br><br>
+  class Derived <b>extends</b> Base {<br>
+    &nbsp;<mark>greet(name?: string) {<br>
+      &nbsp;&nbsp;if (name === undefined) {</mark><br>
+        &nbsp;&nbsp;&nbsp;<b>super.greet();</b><br>
+      &nbsp;&nbsp;} else {<br>
+        &nbsp;&nbsp;&nbsp;console.log(${'`Hello, ${name.toUpperCase()}`'});<br>
+      &nbsp;&nbsp;}<br>
+    &nbsp;}<br>
+  }<br><br>
+  const d = new Derived();<br>
+  d.greet();<br>
+  d.greet('reader');<br><br>
+  <b>// Alias the derived instance through a base class reference</b><br>
+  const b: <mark>Base</mark> = d;<br>
+  b.greet(); <b>//No problem</b><br>
+  </code>`;
 
   return sortida;
 };
