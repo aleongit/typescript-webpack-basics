@@ -834,6 +834,289 @@ d.woof(3);
   b.greet(); <b>//No problem</b><br>
   </code>`;
 
+  /*
+  Type-only Field Declarations
+  */
+  sortida += '<h4>Type-only Field Declarations</h4>';
+
+  /*
+  When target >= ES2022 or useDefineForClassFields is true, 
+  class fields are initialized after the parent class constructor completes, 
+  overwriting any value set by the parent class. 
+  This can be a problem when you only want to re-declare a more accurate type for an inherited field. 
+  To handle these cases, you can write 'declare' to indicate to TypeScript 
+  that there should be no runtime effect for this field declaration.
+
+  interface Animal {
+    dateOfBirth: any;
+  }
+  
+  interface Dog extends Animal {
+    breed: any;
+  }
+  
+  class AnimalHouse {
+    resident: Animal;
+    constructor(animal: Animal) {
+      this.resident = animal;
+    }
+  }
+  
+  class DogHouse extends AnimalHouse {
+    // Does not emit JavaScript code,
+    // only ensures the types are correct
+    declare resident: Dog;
+    constructor(dog: Dog) {
+      super(dog);
+    }
+  }
+
+  */
+
+  interface Animal {
+    dateOfBirth: any;
+  }
+
+  interface Dog extends Animal {
+    breed: any;
+  }
+
+  class AnimalHouse {
+    resident: Animal;
+    constructor(animal: Animal) {
+      this.resident = animal;
+    }
+  }
+
+  class DogHouse extends AnimalHouse {
+    // Does not emit JavaScript code,
+    // only ensures the types are correct
+    declare resident: Dog;
+    constructor(dog: Dog) {
+      super(dog);
+    }
+  }
+
+  const animal = new Animal();
+  const gos = new Dog();
+  const casaAnimal = new AnimalHouse(animal);
+  const casaGos = new DogHouse(gos);
+
+  console.log(animal);
+  console.log(gos);
+  console.log(casaAnimal);
+  console.log(casaGos);
+
+  sortida += `<code>
+  //When <mark>target >= ES2022</mark> or <mark>useDefineForClassFields is true</mark>,<br>
+  class fields are initialized after the parent class constructor completes,<br>
+  overwriting any value set by the parent class.<br> 
+  This can be a problem when you only want to re-declare a more accurate type for an inherited field.<br> 
+  To handle these cases, you can write <mark>declare</mark> to indicate to TypeScript<br>
+  that there should be no runtime effect for this field declaration.<br><br>
+  interface Animal {<br>
+    &nbsp;dateOfBirth: any;<br>
+  }<br><br>
+  interface Dog extends Animal {<br>
+    &nbsp;breed: any;<br>
+  }<br><br>
+  class AnimalHouse {<br>
+    &nbsp;resident: Animal;<br>
+    &nbsp;constructor(animal: Animal) {<br>
+      &nbsp;&nbsp;this.resident = animal;<br>
+    &nbsp;}<br>
+  }<br><br>
+  class DogHouse extends AnimalHouse {<br>
+    &nbsp;<b>// Does not emit JavaScript code,<br>
+    &nbsp;// only ensures the types are correct</b><br>
+    &nbsp;<mark>declare</mark> resident: Dog;<br>
+    &nbsp;constructor(dog: Dog) {<br>
+      &nbsp;&nbsp;super(dog);<br>
+    &nbsp;}<br>
+  }<br>
+  </code>`;
+
+  /*
+  Initialization Order
+  */
+  sortida += '<h4>Initialization Order</h4>';
+
+  /*
+  The order that JavaScript classes initialize can be surprising in some cases. 
+  Let’s consider this code:
+
+  class Base {
+    name = "base";
+    constructor() {
+      console.log("My name is " + this.name);
+    }
+  }
+  
+  class Derived extends Base {
+    name = "derived";
+  }
+  
+  // Prints "base", not "derived"
+  const d = new Derived();
+  */
+
+  class Base1 {
+    name = 'base';
+    constructor() {
+      console.log('My name is ' + this.name);
+    }
+  }
+
+  class Derived1 extends Base1 {
+    name = 'derived';
+  }
+
+  const d2 = new Derived1();
+  // Prints "base", not "derived"
+
+  console.log(d2.name);
+  // Prints "derived"
+
+  /*
+  What happened here?
+
+  The order of class initialization, as defined by JavaScript, is:
+
+  - The base class fields are initialized
+  - The base class constructor runs
+  - The derived class fields are initialized
+  - The derived class constructor runs
+  
+  This means that the base class constructor saw its own value for 'name' during its own constructor, 
+  because the derived class field initializations hadn’t run yet.
+  */
+
+  sortida += `<code>
+  <b>//The order that JavaScript classes initialize can be surprising in some cases</b><br><br>
+  The order of class initialization, as defined by JavaScript, is:<br>
+  - The base class fields are initialized<br>
+  - The base class constructor runs<br>
+  - The derived class fields are initialized<br>
+  - The derived class constructor runs<br><br>  
+  class Base {<br>
+    &nbsp;name = "base";<br>
+    &nbsp;constructor() {<br>
+      &nbsp;&nbsp;console.log("My name is " + this.name);<br>
+    &nbsp;}<br>
+  }<br><br>   
+  class Derived extends Base {<br>
+    name = "derived";<br>
+  }<br><br>   
+  const d = new Derived();<br>
+  <mark>// Prints "base", not "derived"</mark><br><br>
+  console.log(d2.name);<br>
+  <mark>// Prints "derived"</mark><br><br>
+  <b>//This means that the base class constructor saw its own value for <mark>name</mark> during its own constructor,<br> 
+  because the derived class field initializations hadn't run yet.</b><br>
+  </code>`;
+
+  /*
+  Inheriting Built-in Types
+  */
+
+  /*
+  Note: If you don’t plan to inherit from built-in types like Array, Error, Map, etc. 
+  or your compilation target is explicitly set to ES6/ES2015 or above, you may skip this section
+
+  In ES2015, constructors which return an object implicitly substitute the value of 'this' 
+  for any callers of super(...). 
+  It is necessary for generated constructor code to capture any potential return value of super(...) 
+  and replace it with this.
+
+  As a result, subclassing Error, Array, and others may no longer work as expected. 
+  This is due to the fact that constructor functions for Error, Array, and the like use ECMAScript 6’s 
+  new.target to adjust the prototype chain; however, 
+  there is no way to ensure a value for new.target when invoking a constructor in ECMAScript 5. 
+  Other downlevel compilers generally have the same limitation by default.
+
+  For a subclass like the following:
+
+  class MsgError extends Error {
+    constructor(m: string) {
+      super(m);
+    }
+    sayHello() {
+      return "hello " + this.message;
+    }
+  }
+
+  you may find that:
+
+  - methods may be undefined on objects returned by constructing these subclasses, 
+  so calling sayHello will result in an error.
+  - instanceof will be broken between instances of the subclass and their instances, 
+  so (new MsgError()) instanceof MsgError will return false.
+  As a recommendation, you can manually adjust the prototype immediately after any super(...) calls.
+
+  class MsgError extends Error {
+    constructor(m: string) {
+      super(m);
+  
+      // Set the prototype explicitly.
+      Object.setPrototypeOf(this, MsgError.prototype);
+    }
+  
+    sayHello() {
+      return "hello " + this.message;
+    }
+  }
+
+  However, any subclass of MsgError will have to manually set the prototype as well. 
+  For runtimes that don’t support Object.setPrototypeOf, you may instead be able to use __proto__.
+
+  Unfortunately, these workarounds will not work on Internet Explorer 10 and prior. 
+  One can manually copy methods from the prototype onto the instance itself 
+  (i.e. MsgError.prototype onto this), but the prototype chain itself cannot be fixed.
+
+  */
+
+  /*
+  class MsgError extends Error {
+    constructor(m: string) {
+      super(m);
+    }
+    sayHello() {
+      return 'hello ' + this.message;
+    }
+  }
+  */
+  class MsgError extends Error {
+    constructor(m: string) {
+      super(m);
+
+      // Set the prototype explicitly.
+      Object.setPrototypeOf(this, MsgError.prototype);
+    }
+
+    sayHello() {
+      return 'hello ' + this.message;
+    }
+  }
+
+  const err = new MsgError('error del bo!');
+  console.log(err.sayHello());
+
+  return sortida;
+};
+
+const memberVisibility = (title: string) => {
+  /*
+Member Visibility
+*/
+
+  let sortida = `<h2 id="${title}">${title}</h2>`;
+
+  /*
+   */
+  sortida += `<code>
+test
+</code>`;
+
   return sortida;
 };
 
@@ -842,4 +1125,5 @@ const sortida = document.getElementById('sortida');
 if (sortida) {
   sortida.innerHTML += classMembers(h2[0]);
   sortida.innerHTML += classHeritage(h2[1]);
+  sortida.innerHTML += memberVisibility(h2[2]);
 }
