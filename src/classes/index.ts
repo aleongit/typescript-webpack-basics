@@ -1112,10 +1112,661 @@ Member Visibility
   let sortida = `<h2 id="${title}">${title}</h2>`;
 
   /*
+  You can use TypeScript 
+  to control whether certain methods or properties are visible to code outside the class.
    */
+
+  /*
+  public
+  */
+  sortida += '<h3>public</h3>';
+
+  /*
+  The default visibility of class members is public.
+  A public member can be accessed anywhere:
+
+  class Greeter {
+    public greet() {
+      console.log("hi!");
+    }
+  }
+  const g = new Greeter();
+  g.greet();
+  
+  Because public is already the default visibility modifier, 
+  you don’t ever need to write it on a class member, 
+  but might choose to do so for style/readability reasons.
+  */
+
+  class Greeter {
+    public greet() {
+      console.log('hi!');
+    }
+  }
+  const g = new Greeter();
+  g.greet();
+
   sortida += `<code>
-test
-</code>`;
+  <b>//The default visibility of class members is <mark>public</mark></b><br>
+  class Greeter {<br>
+    &nbsp;<mark>public</mark> greet() {<br>
+      &nbsp;&nbsp;console.log("hi!");<br>
+    &nbsp;}<br>
+  }<br><br>
+  const g = new Greeter();<br>
+  g.greet();<br><br>
+  <b>//you don't ever need to write <mark>public</mark>,<br> 
+  but might choose to do so for style/readability reasons</b><br>
+  </code>`;
+
+  /*
+  protected
+  */
+  sortida += '<h3>protected</h3>';
+
+  /*
+  protected members are only visible to subclasses of the class they’re declared in.
+
+  class Greeter {
+    public greet() {
+      console.log("Hello, " + this.getName());
+    }
+    protected getName() {
+      return "hi";
+    }
+  }
+  
+  class SpecialGreeter extends Greeter {
+    public howdy() {
+      // OK to access protected member here
+      console.log("Howdy, " + this.getName());
+    }
+  }
+  const g = new SpecialGreeter();
+  g.greet(); // OK
+  g.getName();
+  Property 'getName' is protected and only accessible within class 'Greeter' and its subclasses.
+
+  */
+
+  class Greeter2 {
+    public greet() {
+      console.log('Hello, ' + this.getName());
+    }
+    protected getName() {
+      return 'Pepet';
+    }
+  }
+
+  class SpecialGreeter extends Greeter2 {
+    public howdy() {
+      // OK to access protected member here
+      console.log('Howdy, ' + this.getName());
+    }
+  }
+  const s = new SpecialGreeter();
+  s.greet(); // OK
+  //s.getName(); // ERROR
+  //Property 'getName' is protected and only accessible within class 'Greeter' and its subclasses.
+
+  s.howdy(); // OK
+
+  sortida += `<code>
+  <b>//<mark>protected</mark> members are only visible to subclasses of the class they're declared in.</b><br><br>
+  class Greeter {<br>
+    &nbsp;public greet() {<br>
+      &nbsp;&nbsp;console.log('Hello, ' + this.getName());<br>
+    &nbsp;}<br>
+    &nbsp;<mark>protected</mark> getName() {<br>
+      &nbsp;&nbsp;return 'Pepet';<br>
+    &nbsp;}<br>
+  }<br><br>
+  class SpecialGreeter extends Greeter {<br>
+    &nbsp;public howdy() {<br>
+      &nbsp;&nbsp;console.log('Howdy, ' + this.getName());<br>
+      &nbsp;&nbsp;<mark>// OK to access protected member here</mark><br>
+    &nbsp;}<br>
+  }<br><br>
+  const s = new SpecialGreeter();<br>
+  s.greet(); <b>// OK</b><br>
+  s.howdy(); <b>// OK</b><br>
+  <mark>//s.getName(); // ERROR</mark><br>
+  <b>//Property 'getName' is protected and only accessible within class 'Greeter' and its subclasses.</b><br>
+  </code>`;
+
+  /*
+  Exposure of protected members
+  */
+  sortida += '<h4>Exposure of protected members</h4>';
+
+  /*
+  Derived classes need to follow their base class contracts, 
+  but may choose to expose a subtype of base class with more capabilities. 
+  This includes making protected members public:
+
+  class Base {
+    protected m = 10;
+  }
+  class Derived extends Base {
+    // No modifier, so default is 'public'
+    m = 15;
+  }
+  const d = new Derived();
+  console.log(d.m); // OK
+
+  Note that Derived was already able to freely read and write m, 
+  so this doesn’t meaningfully alter the “security” of this situation. 
+  The main thing to note here is that in the derived class, 
+  we need to be careful to repeat the protected modifier if this exposure isn’t intentional.
+
+  */
+
+  class Base {
+    protected m = 10;
+  }
+  class Derived extends Base {
+    // No modifier, so default is 'public'
+    m = 15;
+  }
+  const d = new Derived();
+  console.log(d.m); // OK
+
+  sortida += `<code>
+  <b>//a subclass can make publics the protected members of a class</b><br><br>
+  class Base {<br>
+    &nbsp;protected m = 10;<br>
+  }<br><br>
+  class Derived extends Base {<br>
+    &nbsp;<mark>// No modifier, so default is 'public'</mark><br>
+    &nbsp;m = 15;<br>
+  }<br>
+  const d = new Derived();<br>
+  console.log(d.m); <b>// OK</b><br>
+  </code>`;
+
+  /*
+  Cross-hierarchy protected access
+  */
+  sortida += '<h4>Cross-hierarchy protected access</h4>';
+
+  /*
+  Different OOP languages disagree about whether it’s legal 
+  to access a protected member through a base class reference:
+
+  class Base {
+    protected x: number = 1;
+  }
+  class Derived1 extends Base {
+    protected x: number = 5;
+  }
+  class Derived2 extends Base {
+    f1(other: Derived2) {
+      other.x = 10;
+    }
+    f2(other: Derived1) {
+      other.x = 10;
+  Property 'x' is protected and only accessible within class 'Derived1' and its subclasses.
+    }
+  }
+
+  Java, for example, considers this to be legal. 
+  On the other hand, C# and C++ chose that this code should be illegal.
+
+  TypeScript sides with C# and C++ here, 
+  because accessing x in Derived2 should only be legal from Derived2’s subclasses, 
+  and Derived1 isn’t one of them. Moreover, 
+  if accessing x through a Derived1 reference is illegal (which it certainly should be!), 
+  then accessing it through a base class reference should never improve the situation.
+
+  See also Why Can’t I Access A Protected Member From A Derived Class?
+  which explains more of C#‘s reasoning.
+
+  */
+
+  class Base2 {
+    protected x: number = 1;
+  }
+  class Derived1 extends Base2 {
+    protected x: number = 5;
+  }
+  class Derived2 extends Base2 {
+    f1(other: Derived2) {
+      other.x = 10;
+    }
+    f2(other: Derived1) {
+      //other.x = 10; // ERROR
+      //Property 'x' is protected and only accessible within class 'Derived1' and its subclasses.
+    }
+  }
+
+  sortida += `<code>
+  <b>//Different OOP languages disagree about whether it's legal to access a protected member through a base class reference<br>
+  //Java, for example, considers this to be legal. On the other hand, C# and C++ chose that this code should be illegal.<br>
+  //TypeScript sides with C# and C++ here</b><br><br>
+  class Base {<br>
+    &nbsp;protected x: number = 1;<br>
+  }<br><br>
+  class Derived1 extends Base {<br>
+    &nbsp;protected x: number = 5;<br>
+  }<br><br>
+  class Derived2 extends Base {<br>
+    &nbsp;f1(other: Derived2) {<br>
+      &nbsp;&nbsp;other.x = 10;<br>
+    &nbsp;}<br>
+    &nbsp;f2(other: Derived1) {<br>
+      &nbsp;&nbsp;<mark>//other.x = 10; // ERROR</mark><br>
+      &nbsp;&nbsp;<b>//Property 'x' is protected and only accessible within class 'Derived1' and its subclasses.</b><br>
+    &nbsp;}<br>
+  }<br>
+  </code>`;
+
+  /*
+  private
+  */
+  sortida += '<h3>private</h3>';
+
+  /*
+  'private' is like 'protected', but doesn’t allow access to the member even from subclasses:
+
+  class Base {
+    private x = 0;
+  }
+  const b = new Base();
+  // Can't access from outside the class
+  console.log(b.x);
+  //Property 'x' is private and only accessible within class 'Base'.
+  
+  class Derived extends Base {
+    showX() {
+      // Can't access in subclasses
+      console.log(this.x);
+  //Property 'x' is private and only accessible within class 'Base'.
+    }
+  }
+
+  */
+
+  class Base3 {
+    private x = 0;
+  }
+  const b = new Base3();
+  //console.log(b.x); // ERROR
+  // Can't access from outside the class
+  //Property 'x' is private and only accessible within class 'Base'.
+
+  class Derived3 extends Base3 {
+    showX() {
+      //console.log(this.x); // ERROR
+      // Can't access in subclasses
+      //Property 'x' is private and only accessible within class 'Base'.
+    }
+  }
+
+  sortida += `<code>
+  <b>//<mark>private</mark> is like <mark>protected</mark>, but doesn't allow access to the member even from subclasses</b><br><br>
+  class Base {<br>
+    &nbsp;<mark>private</mark> x = 0;<br>
+  }<br><br>
+  const b = new Base();<br>
+  <b>console.log(b.x); // ERROR</b><br>
+  <mark>// Can't access from outside the class</mark><br>
+  <b>//Property 'x' is private and only accessible within class 'Base'.</b><br><br>
+  class Derived extends Base {<br>
+    &nbsp;showX() {<br>
+      &nbsp;&nbsp;<b>console.log(this.x); // ERROR</b><br>
+      &nbsp;&nbsp;<mark>// Can't access in subclasses</mark><br>
+      &nbsp;&nbsp;<b>//Property 'x' is private and only accessible within class 'Base'.</b><br>
+    &nbsp;}<br>
+  }<br>
+  </code>`;
+
+  /*
+  Because private members aren’t visible to derived classes, a derived class can’t increase their visibility:
+
+  class Base {
+    private x = 0;
+  }
+  class Derived extends Base {
+  Class 'Derived' incorrectly extends base class 'Base'.
+    Property 'x' is private in type 'Base' but not in type 'Derived'.
+    x = 1;
+  }
+  */
+
+  sortida += `<code>
+  <b>//a derived class can't increase their visibility</b><br><br>
+  class Base {<br>
+    &nbsp;<mark>private</mark> x = 0;<br>
+  }<br><br>
+  class Derived extends Base {<br>
+    &nbsp;<mark>x = 1; //ERROR</mark><br>
+    &nbsp;<b>//Class 'Derived' incorrectly extends base class 'Base'.<br>
+    &nbsp;Property 'x' is private in type 'Base' but not in type 'Derived'.</b><br>
+  }<br>
+  </code>`;
+
+  /*
+  Cross-instance private access
+
+  Different OOP languages disagree about whether different instances of the same class 
+  may access each others’ private members. 
+  While languages like Java, C#, C++, Swift, and PHP allow this, Ruby does not.
+
+  TypeScript does allow cross-instance private access:
+
+  class A {
+    private x = 10;
+  
+    public sameAs(other: A) {
+      // No error
+      return other.x === this.x;
+    }
+  }
+  */
+
+  /*
+  Caveats
+  */
+  sortida += '<h4>Caveats</h4>';
+
+  /*
+  Like other aspects of TypeScript’s type system, 
+  private and protected are only enforced during type checking.
+
+  This means that JavaScript runtime constructs like in or simple property lookup can still access 
+  a private or protected member:
+
+  class MySafe {
+    private secretKey = 12345;
+  }
+  
+  // In a JavaScript file...
+  const s = new MySafe();
+  // Will print 12345
+  console.log(s.secretKey);
+
+
+
+  private also allows access using bracket notation during type checking. 
+  This makes private-declared fields potentially easier to access for things like unit tests, with the drawback that these fields are soft private and don’t strictly enforce privacy.
+
+  class MySafe {
+    private secretKey = 12345;
+  }
+  
+  const s = new MySafe();
+  
+  // Not allowed during type checking
+  console.log(s.secretKey);
+  Property 'secretKey' is private and only accessible within class 'MySafe'.
+
+  */
+
+  class MySafe {
+    private secretKey = 12345;
+  }
+
+  const safe = new MySafe();
+  //console.log(safe.secretKey); // ERROR
+  // Not allowed during type checking
+  //Property 'secretKey' is private and only accessible within class 'MySafe'.
+
+  console.log(safe['secretKey']); // OK
+
+  sortida += `<code>
+  class MySafe {<br>
+    &nbsp;private secretKey = 12345;<br>
+  }<br><br>   
+  const safe = new MySafe();<br>
+  <b>console.log(safe.secretKey); // ERROR</b><br>
+  <mark>// Not allowed during type checking</mark><br>
+  <b>//Property 'secretKey' is private and only accessible within class 'MySafe'.</b><br><br>   
+  <b>console.log(safe["secretKey"]);  // OK</b><br>
+  <mark>//private also allows access using bracket notation during type checking</mark><br>
+  </code>`;
+
+  /*
+  Unlike TypeScripts’s private, 
+  JavaScript’s private fields (#) remain private after compilation 
+  and do not provide the previously mentioned escape hatches like bracket notation access, 
+  making them hard private.
+
+  class Dog {
+    #barkAmount = 0;
+    personality = "happy";
+  
+    constructor() {}
+  }
+
+  When compiling to ES2021 or less, TypeScript will use WeakMaps in place of #.
+
+  "use strict";
+  var _Dog_barkAmount;
+  class Dog {
+      constructor() {
+          _Dog_barkAmount.set(this, 0);
+          this.personality = "happy";
+      }
+  }
+  _Dog_barkAmount = new WeakMap();
+
+
+  If you need to protect values in your class from malicious actors, 
+  you should use mechanisms that offer hard runtime privacy, such as closures, WeakMaps, 
+  or private fields. 
+  Note that these added privacy checks during runtime could affect performance.
+
+  */
+
+  class Dog {
+    //#barkAmount = 0;
+    //Private identifiers are only available when targeting ECMAScript 2015 and higher
+    personality = 'happy';
+    constructor() {}
+  }
+
+  sortida += `<code>
+  <b>//hard private: JavaScript's private fields (#) remain private after compilation</b><br><br>
+  class Dog {<br>
+    &nbsp;<mark>#</mark>barkAmount = 0;<br>
+    &nbsp;<mark>//Private identifiers are only available when targeting ECMAScript 2015 and higher</mark><br>
+    &nbsp;personality = "happy";<br>
+    &nbsp;constructor() {}<br>
+  }<br><br>
+  <b>//When compiling to ES2021 or less, TypeScript will use <mark>WeakMaps</mark> in place of #</b><br>
+  </code>`;
+
+  return sortida;
+};
+
+const staticMembers = (title: string) => {
+  /*
+  Static Members
+  */
+  let sortida = `<h2 id="${title}">${title}</h2>`;
+
+  /*
+  Classes may have static members.
+  These members aren’t associated with a particular instance of the class.
+  They can be accessed through the class constructor object itself:
+
+  class MyClass {
+    static x = 0;
+    static printX() {
+      console.log(MyClass.x);
+    }
+  }
+  console.log(MyClass.x);
+  MyClass.printX();
+
+   */
+
+  class MyClass {
+    static x = 0;
+    static printX() {
+      console.log(MyClass.x);
+    }
+  }
+  console.log(MyClass.x);
+  MyClass.printX();
+
+  sortida += `<code>
+  <b>//These members aren't associated with a particular instance of the class.<br>
+  They can be accessed through the class constructor object itself</b><br>
+  <mark>No cal instanciar l'objecte per utilitzar-ho</mark><br><br>
+  class MyClass {<br>
+    &nbsp;<mark>static</mark> x = 0;<br>
+    &nbsp;<mark>static</mark> printX() {<br>
+      &nbsp;&nbsp;console.log(MyClass.x);<br>
+    &nbsp;}<br>
+  }<br>
+  console.log(MyClass.x);<br>
+  MyClass.printX();<br>
+  </code>`;
+
+  /*
+  Static members can also use the same public, protected, and private visibility modifiers:
+
+  class MyClass {
+    private static x = 0;
+  }
+  console.log(MyClass.x);
+  //Property 'x' is private and only accessible within class 'MyClass'.
+  */
+
+  class MyClass2 {
+    private static x = 0;
+  }
+  //console.log(MyClass2.x); //ERROR
+  //Property 'x' is private and only accessible within class 'MyClass'.
+
+  sortida += `<code>
+  <b>//<mark>Static</mark> members can also use the same <mark>public</mark>, <mark>protected</mark>, and <mark>private</mark> visibility modifiers</b><br><br>
+  class MyClass {<br>
+    &nbsp;<mark>private static</mark> x = 0;<br>
+  }<br>
+  <mark>console.log(MyClass.x); //ERROR</mark><br>
+  <b>//Property 'x' is private and only accessible within class 'MyClass'.</b><br>
+  </code>`;
+
+  /*
+  Static members are also inherited:
+
+  class Base {
+    static getGreeting() {
+      return "Hello world";
+    }
+  }
+  class Derived extends Base {
+    myGreeting = Derived.getGreeting();
+  }
+  */
+
+  class Base {
+    static getGreeting() {
+      return 'Hello world';
+    }
+  }
+  class Derived extends Base {
+    myGreeting = Derived.getGreeting();
+  }
+
+  sortida += `<code>
+  <mark>//Static members are also inherited</mark><br><br>
+  class Base {<br>
+    &nbsp;static getGreeting() {<br>
+      &nbsp;&nbsp;return "Hello world";<br>
+    &nbsp;}<br>
+  }<br>
+  class Derived <mark>extends</mark> Base {<br>
+    &nbsp;myGreeting = Derived.getGreeting();<br>
+  }<br>
+  </code>`;
+
+  /*
+  Special Static Names
+  */
+  sortida += '<h4>Special Static Names</h4>';
+
+  /*
+  It’s generally not safe/possible to overwrite properties from the Function prototype. 
+  Because classes are themselves functions that can be invoked with new, 
+  certain static names can’t be used. 
+  Function properties like name, length, and call aren’t valid to define as static members:
+
+  class S {
+    static name = "S!";
+  Static property 'name' conflicts with built-in property 'Function.name' of constructor function 'S'.
+  }
+  */
+
+  sortida += `<code>
+  <b>//Function properties like <mark>name</mark>, <mark>length</mark>, and <mark>call</mark> aren't valid to define as static members<br><br>
+  class S {<br>
+    &nbsp;<mark>static name = "S!"; //ERROR</mark><br>
+    &nbsp;<b>//Static property 'name' conflicts with built-in property 'Function.name' of constructor function 'S'.</b><br>
+  }
+  </code>`;
+
+  /*
+  Why No Static Classes?
+  */
+  sortida += '<h4>Why No Static Classes?</h4>';
+
+  /*
+  TypeScript (and JavaScript) don’t have a construct called static class the same way as, 
+  for example, C# does.
+
+  Those constructs only exist because those languages force all data and functions to be inside a class;
+  because that restriction doesn’t exist in TypeScript, there’s no need for them. 
+  A class with only a single instance is typically just represented as a normal object 
+  in JavaScript/TypeScript.
+
+  For example, we don’t need a “static class” syntax in TypeScript because a regular object 
+  (or even top-level function) will do the job just as well:
+
+  // Unnecessary "static" class
+  class MyStaticClass {
+    static doSomething() {}
+  }
+  
+  // Preferred (alternative 1)
+  function doSomething() {}
+  
+  // Preferred (alternative 2)
+  const MyHelperObject = {
+    dosomething() {},
+  };
+  */
+
+  sortida += `<code>
+  <mark>// Unnecessary "static" class</mark><br>
+  class MyStaticClass {<br>
+    &nbsp;static doSomething() {}<br>
+  }<br><br>   
+  <mark>// Preferred (alternative 1)</mark><br>
+  function doSomething() {}<br><br>
+  <mark>// Preferred (alternative 2)</mark><br>
+  const MyHelperObject = {<br>
+    &nbsp;dosomething() {},<br>
+  };<br>
+  </code>`;
+
+  return sortida;
+};
+
+const staticBlocksClasses = (title: string) => {
+  /*
+  static Blocks in Classes
+  */
+  let sortida = `<h2 id="${title}">${title}</h2>`;
+
+  /*
+   */
+
+  sortida += `<code>
+  test
+  </code>`;
 
   return sortida;
 };
@@ -1126,4 +1777,6 @@ if (sortida) {
   sortida.innerHTML += classMembers(h2[0]);
   sortida.innerHTML += classHeritage(h2[1]);
   sortida.innerHTML += memberVisibility(h2[2]);
+  sortida.innerHTML += staticMembers(h2[3]);
+  sortida.innerHTML += staticBlocksClasses(h2[4]);
 }
