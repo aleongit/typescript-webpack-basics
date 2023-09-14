@@ -1762,6 +1762,340 @@ const staticBlocksClasses = (title: string) => {
   let sortida = `<h2 id="${title}">${title}</h2>`;
 
   /*
+  Static blocks allow you to write a sequence of statements with their own scope 
+  that can access private fields within the containing class. 
+  This means that we can write initialization code with all the capabilities of writing statements, 
+  no leakage of variables, and full access to our class’s internals.
+
+  class Foo {
+      static #count = 0;
+  
+      get count() {
+          return Foo.#count;
+      }
+  
+      static {
+          try {
+              const lastInstances = loadLastInstances();
+              Foo.#count += lastInstances.length;
+          }
+          catch {}
+      }
+  }
+   */
+
+  sortida += `<code>
+  test
+  </code>`;
+
+  return sortida;
+};
+
+const genericClasses = (title: string) => {
+  /*
+  Generic Classes
+  */
+  let sortida = `<h2 id="${title}">${title}</h2>`;
+
+  /*
+  Classes, much like interfaces, can be generic. 
+  When a generic class is instantiated with new, 
+  its type parameters are inferred the same way as in a function call:
+
+  class Box<Type> {
+    contents: Type;
+    constructor(value: Type) {
+      this.contents = value;
+    }
+  }
+  
+  const b = new Box("hello!");
+  //const b: Box<string>
+
+
+  Classes can use generic constraints and defaults the same way as interfaces.
+
+   */
+
+  class Box<Type> {
+    contents: Type;
+    constructor(value: Type) {
+      this.contents = value;
+    }
+  }
+
+  const b1 = new Box('hello!');
+  //const b: Box<string>
+  const b2 = new Box(666);
+  //const b2: Box<number>
+  console.log(b1);
+  console.log(b2);
+
+  sortida += `<code>
+  <b>//Classes, much like interfaces, can be <mark>generic</mark></b><br><br>
+  class Box<mark>&lt;Type&gt;</mark> {<br>
+    &nbsp;contents: <mark>Type</mark>;<br>
+    &nbsp;constructor(value: <mark>Type</mark>) {<br>
+      &nbsp;&nbsp;this.contents = value;<br>
+    &nbsp;}<br>
+  }<br><br>
+  const b1 = new Box('hello!');<br>
+  <mark>//const b: Box<string></mark><br>
+  const b2 = new Box(666);<br>
+  <mark>//const b2: Box<number></mark><br>
+  </code>`;
+
+  /*
+  Type Parameters in Static Members
+  */
+  sortida += '<h3>Type Parameters in Static Members</h3>';
+
+  /*
+
+  This code isn’t legal, and it may not be obvious why:
+
+  class Box<Type> {
+    static defaultValue: Type; // ERROR
+  //Static members cannot reference class type parameters.
+  }
+
+  Remember that types are always fully erased! 
+  At runtime, there’s only one Box.defaultValue property slot. 
+  This means that setting Box<string>.defaultValue (if that were possible) 
+  would also change Box<number>.defaultValue - not good. 
+  The static members of a generic class can never refer to the class’s type parameters.
+  */
+
+  sortida += `<code>
+  <b>//The static members of a generic class can never refer to the class's type parameters</b><br><br>
+  class Box<mark>&lt;Type&gt;</mark> {<br>
+    &nbsp;<mark>static</mark> defaultValue: <mark>Type</mark>; <b>//ERROR</b><br>
+  <b>//Static members cannot reference class type parameters.</b><br>
+  }
+  </code>`;
+
+  return sortida;
+};
+
+const thisRuntimeClasses = (title: string) => {
+  /*
+  this at Runtime in Classes
+  */
+  let sortida = `<h2 id="${title}">${title}</h2>`;
+
+  /*
+  It’s important to remember that TypeScript doesn’t change the runtime behavior of JavaScript, 
+  and that JavaScript is somewhat famous for having some peculiar runtime behaviors.
+
+  JavaScript’s handling of this is indeed unusual:
+
+  class MyClass {
+    name = "MyClass";
+    getName() {
+      return this.name;
+    }
+  }
+  const c = new MyClass();
+  const obj = {
+    name: "obj",
+    getName: c.getName,
+  };
+  
+  // Prints "obj", not "MyClass"
+  console.log(obj.getName());
+
+
+  Long story short, by default, 
+  the value of this inside a function depends on how the function was called. 
+  In this example, because the function was called through the obj reference, 
+  its value of 'this' was obj rather than the class instance.
+
+  This is rarely what you want to happen! 
+  TypeScript provides some ways to mitigate or prevent this kind of error.
+
+
+   */
+
+  class MyClass {
+    name = 'MyClass';
+    getName() {
+      return this.name;
+    }
+  }
+  const c = new MyClass();
+  const obj = {
+    name: 'obj',
+    getName: c.getName
+  };
+
+  console.log(obj.getName());
+  // Prints "obj", not "MyClass"
+
+  sortida += `<code>
+  <b>//TypeScript doesn't change the runtime behavior of JavaScript,<br>
+  and that JavaScript is somewhat famous for having some peculiar runtime behaviors</b><br><br>
+  class MyClass {<br>
+    &nbsp;name = 'MyClass';<br>
+    &nbsp;getName() {<br>
+      &nbsp;&nbsp;return <mark>this</mark>.name;<br>
+    &nbsp;}<br>
+  }<br>
+  const c = new MyClass();<br>
+  const obj = {<br>
+    &nbsp;name: 'obj',<br>
+    &nbsp;getName: c.getName<br>
+  };<br>
+  console.log(obj.getName());<br>
+  <mark>// Prints "obj", not "MyClass"</mark><br><br>
+  //the value of <mark>this</mark> inside a function depends on how the function was called<br>
+  <mark>but TypeScript provides some ways to mitigate or prevent this kind of error</mark><br>
+  </code>`;
+
+  /*
+  Arrow Functions
+  */
+  sortida += '<h3>Arrow Functions</h3>';
+
+  /*
+  If you have a function that will often be called in a way that loses its this context, 
+  it can make sense to use an arrow function property instead of a method definition:
+
+  class MyClass {
+    name = "MyClass";
+    getName = () => {
+      return this.name;
+    };
+  }
+  const c = new MyClass();
+  const g = c.getName;
+  // Prints "MyClass" instead of crashing
+  console.log(g());
+
+  This has some trade-offs:
+
+  - The 'this' value is guaranteed to be correct at runtime, 
+  even for code not checked with TypeScript
+  - This will use more memory, 
+  because each class instance will have its own copy of each function defined this way
+  - You can’t use super.getName in a derived class, 
+  because there’s no entry in the prototype chain to fetch the base class method from
+  */
+
+  class MyClass2 {
+    name = 'MyClass';
+    getName = () => {
+      return this.name;
+    };
+  }
+  const c2 = new MyClass2();
+  const g = c2.getName;
+  // Prints "MyClass" instead of crashing
+  console.log(g());
+
+  sortida += `<code>
+  <b>//with arrow function works, but not the best way</b><br><br>
+  class MyClass {<br>
+    &nbsp;name = "MyClass";<br>
+    &nbsp;<mark>getName = () => {</mark><br>
+      &nbsp;return <mark>this</mark>.name;<br>
+    &nbsp;};<br>
+  }<br>
+  const c = new MyClass();<br>
+  const g = c.getName;<br>
+  console.log(g());
+  <mark>// Prints "MyClass" instead of crashing</mark>
+  </code>`;
+
+  /*
+  this parameters
+  */
+  sortida += '<h3>this parameters</h3>';
+
+  /*
+  In a method or function definition, 
+  an initial parameter named this has special meaning in TypeScript. 
+  These parameters are erased during compilation:
+
+  // TypeScript input with 'this' parameter
+  function fn(this: SomeType, x: number) {
+    //...
+  }
+
+  // JavaScript output
+  function fn(x) {
+    //...
+  }
+
+  TypeScript checks that calling a function with a this parameter is done so with a correct context. 
+  Instead of using an arrow function, 
+  we can add a this parameter to method definitions to statically enforce 
+  that the method is called correctly:
+
+  class MyClass {
+    name = "MyClass";
+    getName(this: MyClass) {
+      return this.name;
+    }
+  }
+  const c = new MyClass();
+  // OK
+  c.getName();
+  
+  // Error, would crash
+  const g = c.getName;
+  console.log(g());
+  //The 'this' context of type 'void' is not assignable to method's 'this' of type 'MyClass'.
+
+  This method makes the opposite trade-offs of the arrow function approach:
+
+  - JavaScript callers might still use the class method incorrectly without realizing it
+  - Only one function per class definition gets allocated, rather than one per class instance
+  - Base method definitions can still be called via super.
+
+  */
+
+  class MyClass3 {
+    name = 'MyClass';
+    getName(this: MyClass3) {
+      return this.name;
+    }
+  }
+  const c3 = new MyClass3();
+  // OK
+  c3.getName();
+
+  // Error, would crash
+  const g3 = c3.getName;
+  //console.log(g3()); //ERROR
+  //The 'this' context of type 'void' is not assignable to method's 'this' of type 'MyClass'.
+
+  sortida += `<code>
+  <b>//TypeScript checks that calling a function with a <mark>this</mark> parameter is done so with a correct context.<br>
+  Instead of using an arrow function, we can add a this parameter to method definitions to statically enforce that the method is called correctly:</b><br><br>
+  class MyClass {<br>
+    &nbsp;name = "MyClass";<br>
+    &nbsp;getName(<mark>this: MyClass</mark>) {<br>
+      &nbsp;&nbsp;return <mark>this</mark>.name;<br>
+    &nbsp;}<br>
+  }<br><br>
+  const c = new MyClass();<br>
+  c.getName(); <b>//OK</b> <br><br>   
+  <mark>// Error, would crash</mark><br>
+  const g = c.getName;<br>
+  console.log(g()); <b>//ERROR</b><br>
+  <b>//The 'this' context of type 'void' is not assignable to method's 'this' of type 'MyClass'.</b><br>
+  </code>`;
+
+  return sortida;
+};
+
+const thisTypes = (title: string) => {
+  /*
+  this Types
+  */
+  let sortida = `<h2 id="${title}">${title}</h2>`;
+
+  /*
    */
 
   sortida += `<code>
@@ -1778,5 +2112,8 @@ if (sortida) {
   sortida.innerHTML += classHeritage(h2[1]);
   sortida.innerHTML += memberVisibility(h2[2]);
   sortida.innerHTML += staticMembers(h2[3]);
-  sortida.innerHTML += staticBlocksClasses(h2[4]);
+  //sortida.innerHTML += staticBlocksClasses(h2[4]);
+  sortida.innerHTML += genericClasses(h2[4]);
+  sortida.innerHTML += thisRuntimeClasses(h2[5]);
+  sortida.innerHTML += thisTypes(h2[6]);
 }

@@ -80,7 +80,7 @@ export const titles: { [Key in htmlPageNamesType]: string[] } = {
     'Class Heritage',
     'Member Visibility',
     'Static Members',
-    'static Blocks in Classes',
+    //'static Blocks in Classes',
     'Generic Classes',
     'this at Runtime in Classes',
     'this Types',
