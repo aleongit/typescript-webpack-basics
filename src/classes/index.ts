@@ -2096,6 +2096,363 @@ const thisTypes = (title: string) => {
   let sortida = `<h2 id="${title}">${title}</h2>`;
 
   /*
+  In classes, a special type called this refers dynamically to the type of the current class. 
+  Let’s see how this is useful:
+
+  class Box {
+    contents: string = "";
+    set(value: string) {
+    //(method) Box.set(value: string): this
+      this.contents = value;
+      return this;
+    }
+  }
+  */
+
+  class Box {
+    contents: string = '';
+    set(value: string) {
+      //(method) Box.set(value: string): this
+      this.contents = value;
+      return this;
+    }
+  }
+
+  const b = new Box();
+  b.set('hi box!');
+  console.log(b);
+
+  sortida += `<code>
+  <b>//In classes, a special type called <mark>this</mark> refers <em>dynamically</em> to the type of the current class.</b><br><br>
+  class Box {<br>
+    contents: string = '';<br>
+    set(value: string) {<br>
+      &nbsp;<b>//(method) Box.set(value: string): <mark>this</mark></b><br>
+      &nbsp;this.contents = value;<br>
+      &nbsp;return this;<br>
+      &nbsp;}<br>
+  }<br>
+  </code>`;
+
+  /*
+
+  Here, TypeScript inferred the return type of set to be this, rather than Box. 
+  Now let’s make a subclass of Box:
+
+  class ClearableBox extends Box {
+    clear() {
+      this.contents = "";
+    }
+  }
+  
+  const a = new ClearableBox();
+  const b = a.set("hello");
+      //const b: ClearableBox
+
+   */
+
+  class ClearableBox extends Box {
+    clear() {
+      this.contents = '';
+    }
+  }
+
+  const a = new ClearableBox();
+  const z = a.set('hello');
+  //const z: ClearableBox
+
+  sortida += `<code>
+  <b>//Here, TypeScript inferred the return type of <mark>set</mark> to be <mark>this</mark>, rather than <mark>Box</mark>.</b><br><br>
+  class ClearableBox extends Box {<br>
+    &nbsp;clear() {<br>
+      &nbsp;&nbsp;this.contents = "";<br>
+    &nbsp;}<br>
+  }<br>
+  const a = new ClearableBox();<br>
+  const b = a.set("hello");<br>
+  <mark>//const b: ClearableBox</mark><br>
+  </code>`;
+
+  /*
+  You can also use 'this' in a parameter type annotation:
+
+  class Box {
+    content: string = "";
+    sameAs(other: this) {
+      return other.content === this.content;
+    }
+  }
+
+  This is different from writing other: Box — if you have a derived class, 
+  its sameAs method will now only accept other instances of that same derived class:
+
+  class Box {
+    content: string = "";
+    sameAs(other: this) {
+      return other.content === this.content;
+    }
+  }
+  
+  class DerivedBox extends Box {
+    otherContent: string = "?";
+  }
+  
+  const base = new Box();
+  const derived = new DerivedBox();
+  derived.sameAs(base);
+  //Argument of type 'Box' is not assignable to parameter of type 'DerivedBox'.
+    Property 'otherContent' is missing in type 'Box' but required in type 'DerivedBox'.
+
+  */
+
+  class Box2 {
+    content: string = '';
+    sameAs(other: this) {
+      return other.content === this.content;
+    }
+  }
+
+  class DerivedBox2 extends Box2 {
+    otherContent: string = '?';
+  }
+
+  const base = new Box2();
+  const derived = new DerivedBox2();
+  //derived.sameAs(base); //ERROR
+  //Argument of type 'Box' is not assignable to parameter of type 'DerivedBox'.
+  //Property 'otherContent' is missing in type 'Box' but required in type 'DerivedBox'.
+
+  sortida += `<code>
+  <b>//You can also use <mark>this</mark> in a parameter type annotation<br>
+  this is different from writing <mark>other: Box</mark> — if you have a derived class,<br>
+  its <mark>sameAs</mark> method will now only accept other instances of that same derived class</b><br><br>
+  class Box {<br>
+    &nbsp;content: string = "";<br>
+    &nbsp;sameAs(<mark>other: this</mark>) {<br>
+      &nbsp;&nbsp;return other.content === this.content;<br>
+    &nbsp;}<br>
+  }<br><br>   
+  class DerivedBox extends Box {<br>
+    &nbsp;otherContent: string = "?";<br>
+  }<br><br>   
+  const base = new Box();<br>
+  const derived = new DerivedBox();<br>
+  <mark>derived.sameAs(base); //ERROR</mark><br>
+  <b>//Argument of type 'Box' is not assignable to parameter of type 'DerivedBox'.<br>
+  Property 'otherContent' is missing in type 'Box' but required in type 'DerivedBox'.</b><br>
+  </code>`;
+
+  /*
+  this -based type guards
+  */
+  sortida += '<h3>this -based type guards</h3>';
+
+  /*
+
+  You can use 'this is Type' in the return position for methods in classes and interfaces. 
+  When mixed with a type narrowing (e.g. if statements) the type of the target object 
+  would be narrowed to the specified Type.
+
+  class FileSystemObject {
+    isFile(): this is FileRep {
+      return this instanceof FileRep;
+    }
+    isDirectory(): this is Directory {
+      return this instanceof Directory;
+    }
+    isNetworked(): this is Networked & this {
+      return this.networked;
+    }
+    constructor(public path: string, private networked: boolean) {}
+  }
+  
+  class FileRep extends FileSystemObject {
+    constructor(path: string, public content: string) {
+      super(path, false);
+    }
+  }
+  
+  class Directory extends FileSystemObject {
+    children: FileSystemObject[];
+  }
+  
+  interface Networked {
+    host: string;
+  }
+  
+  const fso: FileSystemObject = new FileRep("foo/bar.txt", "foo");
+  
+  if (fso.isFile()) {
+    fso.content;
+    //const fso: FileRep
+  } else if (fso.isDirectory()) {
+    fso.children;
+    //const fso: Directory
+  } else if (fso.isNetworked()) {
+    fso.host;
+    //const fso: Networked & FileSystemObject
+  }
+
+   */
+
+  class FileSystemObject {
+    isFile(): this is FileRep {
+      return this instanceof FileRep;
+    }
+    isDirectory(): this is Directory {
+      return this instanceof Directory;
+    }
+    isNetworked(): this is Networked & this {
+      return this.networked;
+    }
+    constructor(
+      public path: string,
+      private networked: boolean
+    ) {}
+  }
+
+  class FileRep extends FileSystemObject {
+    constructor(
+      path: string,
+      public content: string
+    ) {
+      super(path, false);
+    }
+  }
+
+  class Directory extends FileSystemObject {
+    children: FileSystemObject[];
+  }
+
+  interface Networked {
+    host: string;
+  }
+
+  const fso: FileSystemObject = new FileRep('foo/bar.txt', 'foo');
+
+  if (fso.isFile()) {
+    fso.content;
+    //const fso: FileRep
+  } else if (fso.isDirectory()) {
+    fso.children;
+    //const fso: Directory
+  } else if (fso.isNetworked()) {
+    fso.host;
+    //const fso: Networked & FileSystemObject
+  }
+
+  sortida += `<code>
+  <b>//You can use <mark>this is Type</mark> in the return position for methods in classes and interfaces.<br>
+  When mixed with a type narrowing (e.g. <mark>if</mark> statements) the type of the target object would be narrowed to the specified <mark>Type</mark></b><br><br>
+  class FileSystemObject {<br>
+    &nbsp;isFile(): <mark>this is FileRep</mark> {<br>
+      &nbsp;&nbsp;return this instanceof FileRep;<br>
+    &nbsp;}<br>
+    &nbsp;isDirectory(): <mark>this is Directory</mark> {<br>
+      &nbsp;&nbsp;return this instanceof Directory;<br>
+    &nbsp;}<br>
+    &nbsp;isNetworked(): <mark>this is Networked & this</mark> {<br>
+      &nbsp;&nbsp;return this.networked;<br>
+    &nbsp;}<br>
+    &nbsp;constructor(public path: string, private networked: boolean) {}<br>
+  }<br><br>   
+  class FileRep extends FileSystemObject {<br>
+    &nbsp;constructor(path: string, public content: string) {<br>
+      &nbsp;&nbsp;super(path, false);<br>
+    &nbsp;}<br>
+  }<br><br>   
+  class Directory extends FileSystemObject {<br>
+    &nbsp;children: FileSystemObject[];<br>
+  }<br><br>   
+  interface Networked {<br>
+    &nbsp;host: string;<br>
+  }<br><br>   
+  const fso: FileSystemObject = new FileRep("foo/bar.txt", "foo");<br><br>
+  if (fso.isFile()) {<br>
+    &nbsp;fso.content;<br>
+    &nbsp;<b>//const fso: FileRep</b><br>
+  } else if (fso.isDirectory()) {<br>
+    &nbsp;fso.children;<br>
+    &nbsp;<b>//const fso: Directory</b><br>
+  } else if (fso.isNetworked()) {<br>
+    &nbsp;fso.host;<br>
+    &nbsp;<b>//const fso: Networked & FileSystemObject</b><br>
+  }<br>
+  </code>`;
+
+  /*
+  A common use-case for a this-based type guard is to allow for lazy validation of a particular field. 
+  For example, this case removes an undefined from the value held inside box when hasValue 
+  has been verified to be true:
+
+  class Box<T> {
+    value?: T;
+  
+    hasValue(): this is { value: T } {
+      return this.value !== undefined;
+    }
+  }
+  
+  const box = new Box();
+  box.value = "Gameboy";
+  
+  box.value;
+  //(property) Box<unknown>.value?: unknown
+  
+  if (box.hasValue()) {
+    box.value;   
+    //(property) value: unknown
+  }
+
+  */
+
+  class Box3<T> {
+    value?: T;
+    hasValue(): this is { value: T } {
+      return this.value !== undefined;
+    }
+  }
+
+  const box = new Box3();
+  box.value = 'Gameboy';
+
+  box.value;
+  //(property) Box<unknown>.value?: unknown
+
+  if (box.hasValue()) {
+    box.value;
+    //(property) value: unknown
+  }
+
+  sortida += `<code>
+  <b>//A common use-case for a this-based type guard is to allow for lazy validation of a particular field.<br>
+  This case removes an <mark>undefined</mark> from the value held inside box when <mark>hasValue</mark> has been verified to be true:</b><br><br>
+  class Box&lt;T&gt; {<br>
+    &nbsp;value?: T;<br>
+    &nbsp;<mark>hasValue(): this is { value: T } {</mark><br>
+      &nbsp;&nbsp;return this.value !== undefined;<br>
+    &nbsp;}<br>
+  }<br><br>
+  const box = new Box();<br>
+  box.value = 'Gameboy';<br><br>
+  box.value;<br>
+  <mark>//(property) Box&lt;unknown&gt;.value?: unknown</mark><br><br>
+  if (box.hasValue()) {<br>
+    &nbsp;box.value;<br>
+    &nbsp;<mark>//(property) value: unknown</mark><br>
+  }<br>
+  </code>`;
+
+  return sortida;
+};
+
+const parameterProperties = (title: string) => {
+  /*
+  Parameter Properties
+  */
+  let sortida = `<h2 id="${title}">${title}</h2>`;
+
+  /*
    */
 
   sortida += `<code>
@@ -2116,4 +2473,5 @@ if (sortida) {
   sortida.innerHTML += genericClasses(h2[4]);
   sortida.innerHTML += thisRuntimeClasses(h2[5]);
   sortida.innerHTML += thisTypes(h2[6]);
+  sortida.innerHTML += parameterProperties(h2[7]);
 }
