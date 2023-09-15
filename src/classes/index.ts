@@ -2453,14 +2453,336 @@ const parameterProperties = (title: string) => {
   let sortida = `<h2 id="${title}">${title}</h2>`;
 
   /*
+  TypeScript offers special syntax for turning a constructor parameter into a class property 
+  with the same name and value. 
+  These are called 'parameter properties' and are created by prefixing a constructor argument 
+  with one of the visibility modifiers 'public', 'private', 'protected', or 'readonly'. 
+  The resulting field gets those modifier(s):
+
+
+  class Params {
+    constructor(
+      public readonly x: number,
+      protected y: number,
+      private z: number
+    ) {
+      // No body necessary
+    }
+  }
+  const a = new Params(1, 2, 3);
+  console.log(a.x);
+  //(property) Params.x: number
+  console.log(a.z);
+  //Property 'z' is private and only accessible within class 'Params'.
+
    */
 
+  class Params {
+    constructor(
+      public readonly x: number,
+      protected y: number,
+      private z: number
+    ) {
+      // No body necessary
+    }
+  }
+  const a = new Params(1, 2, 3);
+  console.log(a.x);
+  //(property) Params.x: number
+  //console.log(a.z); // IS PRIVATE
+  //Property 'z' is private and only accessible within class 'Params'.
+
   sortida += `<code>
-  test
+  //<b>TypeScript offers special syntax for turning a constructor parameter into a class property with the same name and value.<br>
+  <mark>parameter properties</mark> and are created by prefixing a constructor argument<br> 
+  with one of the visibility modifiers <mark>public</mark>, <mark>private</mark>, <mark>protected</mark>, or <mark>readonly</mark></b><br><br>
+  class Params {<br>
+    &nbsp;constructor<mark>(<br>
+      &nbsp;&nbsp;public readonly x: number,<br>
+      &nbsp;&nbsp;protected y: number,<br>
+      &nbsp;&nbsp;private z: number<br>
+    &nbsp;)</mark> {<br>
+      &nbsp;&nbsp;<b>// No body necessary</b><br>
+    &nbsp;}<br>
+  }<br><br>
+  const a = new Params(1, 2, 3);<br>
+  console.log(a.x);<br>
+  <b>//(property) Params.x: number</b><br>
+  console.log(a.z); <b>//IS PRIVATE</b><br>
+  <b>//Property 'z' is private and only accessible within class 'Params'.</b><br>
   </code>`;
 
   return sortida;
 };
+
+const classExpressions = (title: string) => {
+  /*
+  Class Expressions
+  */
+  let sortida = `<h2 id="${title}">${title}</h2>`;
+
+  /*
+  Class expressions are very similar to class declarations. 
+  The only real difference is that class expressions don’t need a name, 
+  though we can refer to them via whatever identifier they ended up bound to:
+
+  const someClass = class<Type> {
+    content: Type;
+    constructor(value: Type) {
+      this.content = value;
+    }
+  };
+  
+  const m = new someClass("Hello, world");
+  //const m: someClass<string>
+   */
+
+  const someClass = class<Type> {
+    content: Type;
+    constructor(value: Type) {
+      this.content = value;
+    }
+  };
+
+  const m = new someClass('Hello, world');
+  //const m: someClass<string>
+
+  sortida += `<code>
+  <b>//<mark>Class expressions</mark> are very similar to <mark>class declarations</mark>.<br>
+  The only real difference is that class expressions don't need a name,<br>
+  though we can refer to them via whatever identifier they ended up bound to:</b><br><br>
+  <mark>const someClass = class&lt;Type&gt; {</mark><br>
+    &nbsp;content: Type;<br>
+    &nbsp;constructor(value: Type) {<br>
+      &nbsp;&nbsp;this.content = value;<br>
+    &nbsp;}<br>
+  };<br><br>  
+  const m = new someClass("Hello, world");<br>
+  <b>//const m: someClass&lt;string&gt;</b><br>
+  </code>`;
+
+  return sortida;
+};
+
+const constructorSignatures = (title: string) => {
+  /*
+  Constructor Signatures
+  */
+  let sortida = `<h2 id="${title}">${title}</h2>`;
+
+  /*
+  JavaScript classes are instantiated with the 'new' operator.
+  Given the type of a class itself, the 'InstanceType' utility type models this operation.
+
+
+  class Point {
+    createdAt: number;
+    x: number;
+    y: number
+    constructor(x: number, y: number) {
+      this.createdAt = Date.now()
+      this.x = x;
+      this.y = y;
+    }
+  }
+  type PointInstance = InstanceType<typeof Point>
+  
+  function moveRight(point: PointInstance) {
+    point.x += 5;
+  }
+  
+  const point = new Point(3, 4);
+  moveRight(point);
+  point.x; // => 8
+   */
+
+  class Point {
+    createdAt: number;
+    x: number;
+    y: number;
+    constructor(x: number, y: number) {
+      this.createdAt = Date.now();
+      this.x = x;
+      this.y = y;
+    }
+  }
+  type PointInstance = InstanceType<typeof Point>;
+
+  function moveRight(point: PointInstance) {
+    point.x += 5;
+  }
+
+  const point = new Point(3, 4);
+  moveRight(point);
+  point.x; // => 8
+
+  sortida += `<code>
+  //<b>JavaScript classes are instantiated with the <mark>new</mark> operator.<br>
+  Given the type of a class itself, the <mark>InstanceType</mark> utility type models this operation.</b><br><br>
+  class Point {<br>
+    &nbsp;createdAt: number;<br>
+    &nbsp;x: number;<br>
+    &nbsp;y: number<br>
+    &nbsp;constructor(x: number, y: number) {<br>
+      &nbsp;&nbsp;this.createdAt = Date.now()<br>
+      &nbsp;&nbsp;this.x = x;<br>
+      &nbsp;&nbsp;this.y = y;<br>
+    &nbsp;}<br>
+  }<br><br>
+  type PointInstance = <mark>InstanceType&lt;typeof Point&gt;</mark><br><br>   
+  function moveRight(point: PointInstance) {<br>
+    &nbsp;point.x += 5;<br>
+  }<br><br>  
+  const point = new Point(3, 4);<br>
+  moveRight(point);<br>
+  point.x; // => 8<br>
+  </code>`;
+
+  return sortida;
+};
+
+const abstractClassesMembers = (title: string) => {
+  /*
+  abstract Classes and Members
+  */
+  let sortida = `<h2 id="${title}">${title}</h2>`;
+
+  /*
+
+  Classes, methods, and fields in TypeScript may be abstract.
+
+  An abstract method or abstract field is one that hasn’t had an implementation provided. 
+  These members must exist inside an abstract class, which cannot be directly instantiated.
+
+  The role of abstract classes is to serve as a base class for subclasses 
+  which do implement all the abstract members. 
+  When a class doesn’t have any abstract members, it is said to be concrete.
+
+  Let’s look at an example:
+
+  abstract class Base {
+    abstract getName(): string;
+  
+    printName() {
+      console.log("Hello, " + this.getName());
+    }
+  }
+  
+  const b = new Base();
+  //Cannot create an instance of an abstract class.
+
+   */
+
+  abstract class Base {
+    abstract getName(): string;
+
+    printName() {
+      console.log('Hello, ' + this.getName());
+    }
+  }
+  //const b = new Base(); //ERROR
+  //Cannot create an instance of an abstract class.
+
+  sortida += `<code>
+  <b>//Classes, methods, and fields in TypeScript may be <mark>abstract</mark>.<br>
+  An <mark>abstract</mark> method or <mark>abstract</mark> field is one that hasn't had an implementation provided.<br>
+  These members must exist inside an <mark>abstract</mark> class, which cannot be directly instantiated.</b><br><br>
+  <mark>abstract</mark> class Base {<br>
+    &nbsp;<mark>abstract</mark> getName(): string;<br>
+    &nbsp;printName() {<br>
+      &nbsp;&nbsp;console.log("Hello, " + this.getName());<br>
+    &nbsp;}<br>
+  }<br>
+  const b = new Base(); <b>//ERROR</b><br>
+  <mark>//Cannot create an instance of an abstract class.</mark><br>
+  </code>`;
+
+  /*
+  We can’t instantiate Base with new because it’s abstract. 
+  Instead, we need to make a derived class and implement the abstract members:
+
+  class Derived extends Base {
+    getName() {
+      return "world";
+    }
+  }
+  
+  const d = new Derived();
+  d.printName();
+
+
+  Notice that if we forget to implement the base class’s abstract members, we’ll get an error:
+
+  class Derived extends Base {
+  Non-abstract class 'Derived' does not implement inherited abstract member 'getName' from class 'Base'.
+    // forgot to do anything
+  }
+
+
+
+  */
+
+  class Derived extends Base {
+    getName() {
+      return 'world';
+    }
+  }
+  const d = new Derived();
+  d.printName();
+
+  sortida += `<code>
+  <b>//We can't instantiate <mark>Base</mark> with <mark>new</mark> because it's <mark>abstract</mark>.<br>
+  Instead, we need to make a derived class and implement the <mark>abstract</mark> members:</b><br><br>
+  class Derived extends Base {<br>
+    &nbsp;<mark>getName() {<br>
+      &nbsp;&nbsp;return 'world';<br>
+    &nbsp;}</mark><br>
+  }<br>
+  const d = new Derived();<br>
+  d.printName();<br><br>
+  <b>//Notice that if we forget to implement the base class's abstract members, we'll get an error</b><br>
+  </code>`;
+
+  /*
+  Abstract Construct Signatures
+
+
+  Sometimes you want to accept some class constructor function that produces an instance of a class 
+  which derives from some abstract class.
+
+  For example, you might want to write this code:
+
+  function greet(ctor: typeof Base) {
+    const instance = new ctor();
+  Cannot create an instance of an abstract class.
+    instance.printName();
+  }
+  
+  TypeScript is correctly telling you that you’re trying to instantiate an abstract class. 
+  After all, given the definition of greet, it’s perfectly legal to write this code, 
+  which would end up constructing an abstract class:
+
+  // Bad!
+  greet(Base);
+  
+  Instead, you want to write a function that accepts something with a construct signature:
+
+  function greet(ctor: new () => Base) {
+    const instance = new ctor();
+    instance.printName();
+  }
+  greet(Derived);
+  greet(Base); //ERROR
+  //Argument of type 'typeof Base' is not assignable to parameter of type 'new () => Base'.
+    Cannot assign an abstract constructor type to a non-abstract constructor type.
+  
+  Now TypeScript correctly tells you about which class constructor functions 
+  can be invoked - Derived can because it’s concrete, but Base cannot.
+  */
+
+  return sortida;
+};
+
 
 montaPagina(h2);
 const sortida = document.getElementById('sortida');
@@ -2474,4 +2796,7 @@ if (sortida) {
   sortida.innerHTML += thisRuntimeClasses(h2[5]);
   sortida.innerHTML += thisTypes(h2[6]);
   sortida.innerHTML += parameterProperties(h2[7]);
+  sortida.innerHTML += classExpressions(h2[8]);
+  sortida.innerHTML += constructorSignatures(h2[9]);
+  sortida.innerHTML += abstractClassesMembers(h2[10]);
 }

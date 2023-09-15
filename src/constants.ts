@@ -87,7 +87,7 @@ export const titles: { [Key in htmlPageNamesType]: string[] } = {
     'Parameter Properties',
     'Class Expressions',
     'Constructor Signatures',
-    'abstract Classes and Members',
-    'Relationships Between Classes'
+    'abstract Classes and Members'
+    //'Relationships Between Classes'
   ]
 };
